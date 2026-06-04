@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../core/storage/secure_storage_service.dart';
 import '../auth/screens/login_page.dart';
-import '../home/screens/home_page.dart';
+import '../features/home/screens/home_page.dart';
 
 class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});

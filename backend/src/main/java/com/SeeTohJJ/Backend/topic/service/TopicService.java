@@ -3,7 +3,7 @@ package com.SeeTohJJ.Backend.topic.service;
 import com.SeeTohJJ.Backend.topic.model.Topic;
 import com.SeeTohJJ.Backend.topic.model.UserInterestedTopic;
 import com.SeeTohJJ.Backend.topic.repository.UserTopicRepository;
-import com.SeeTohJJ.Backend.user.model.User;
+import com.SeeTohJJ.Backend.auth.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.user.model;
+package com.SeeTohJJ.Backend.auth.model;
 
 import jakarta.persistence.*;
 
@@ -110,4 +110,5 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
 }

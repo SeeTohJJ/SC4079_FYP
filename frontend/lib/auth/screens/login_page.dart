@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/navigation/main_navigation_page.dart';
 import '../services/auth_services.dart';
 
 class LoginPage extends StatefulWidget {
@@ -56,7 +57,12 @@ class _LoginPageState extends State<LoginPage> {
                   _isLoading = false;
                 });
                 if (success) {
-                  Navigator.pushReplacementNamed(context, '/home');
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainNavigationPage(),
+                    ),
+                  );
                 } else {
                   setState(() {
                     _errorMessage = 'Login failed. Please check your credentials.';

@@ -1,5 +1,6 @@
 package com.SeeTohJJ.Backend.user.model;
 
+import com.SeeTohJJ.Backend.auth.model.User;
 import jakarta.persistence.*;
 
 @Entity

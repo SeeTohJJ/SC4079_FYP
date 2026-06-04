@@ -1,6 +1,6 @@
-package com.SeeTohJJ.Backend.user.repository;
+package com.SeeTohJJ.Backend.auth.repository;
 
-import com.SeeTohJJ.Backend.user.model.User;
+import com.SeeTohJJ.Backend.auth.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
