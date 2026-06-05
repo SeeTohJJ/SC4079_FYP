@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/features/study/models/study_node.dart';
+import 'package:frontend/features/study/screens/nodes/boss_node_page.dart';
+import 'package:frontend/features/study/screens/nodes/decision_node_page.dart';
+import 'package:frontend/features/study/screens/nodes/lesson_node_page.dart';
+import 'package:frontend/features/study/screens/nodes/quiz_node_page.dart';
+import 'package:frontend/features/study/screens/nodes/reward_node_page.dart';
 import 'package:frontend/features/study/widgets/study_line_painter.dart';
   
-class StudyPage extends StatelessWidget {
+class StudyPage extends StatefulWidget {
   const StudyPage({super.key});
 
   @override
+  State<StudyPage> createState() => _StudyPageState();
+}
+
+class _StudyPageState extends State<StudyPage> {
+
+  late List<StudyNode> nodes;
+  
+  @override
+  void initState() {
+    super.initState();
+    nodes = _mockNodes();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final nodes = _mockNodes();
 
     return Scaffold(
       appBar: AppBar(title: const Text("Study Path")),
@@ -54,7 +72,7 @@ class StudyPage extends StatelessWidget {
 
     const offsets = [0, 60, 90, 60, 0, -60, -90, -60];
 
-    return width / 2 + offsets[index % offsets.length];
+    return width / 2 - 35 + offsets[index % offsets.length];
   }
 
   double _getY(int index) {
@@ -69,14 +87,14 @@ class StudyPage extends StatelessWidget {
         title: 'What is budgeting?',
         type: NodeType.lesson,
         isUnlocked: true,
-        isCompleted: true,
+        isCompleted: false,
       ),
       StudyNode(
         id: '2',
         title: 'Budgeting Quiz',
         type: NodeType.quiz,
         isUnlocked: true,
-        isCompleted: true,
+        isCompleted: false,
       ),
       StudyNode(
         id: '3',
@@ -88,33 +106,33 @@ class StudyPage extends StatelessWidget {
       StudyNode(
         id: '4',
         title: 'Bonus Rewards',
-        type: NodeType.reward,
+        type: NodeType.lesson,
         isUnlocked: true,
         isCompleted: false,
       ),
-            StudyNode(
-        id: '1',
+      StudyNode(
+        id: '5',
         title: 'What is budgeting?',
         type: NodeType.lesson,
         isUnlocked: false,
         isCompleted: false,
       ),
       StudyNode(
-        id: '2',
+        id: '6',
         title: 'Budgeting Quiz',
         type: NodeType.quiz,
         isUnlocked: false,
         isCompleted: false,
       ),
       StudyNode(
-        id: '3',
+        id: '7',
         title: 'Spending Decision',
         type: NodeType.decision,
         isUnlocked: false,
         isCompleted: false,
       ),
       StudyNode(
-        id: '4',
+        id: '8',
         title: 'Bonus Rewards',
         type: NodeType.reward,
         isUnlocked: false,
@@ -123,26 +141,29 @@ class StudyPage extends StatelessWidget {
     ];
   }
 
-  // 🔵 NODE UI (circle)
   Widget _buildNode(StudyNode node) {
     late Color color;
 
-    switch (node.type) {
-      case NodeType.lesson:
-        color = Colors.blue;
-        break;
-      case NodeType.quiz:
-        color = Colors.orange;
-        break;
-      case NodeType.decision:
-        color = Colors.purple;
-        break;
-      case NodeType.reward:
-        color = Colors.green;
-        break;
-      case NodeType.boss:
-        color = Colors.red;
-        break;
+    if (node.isCompleted) {
+      color = Colors.green;
+    } else {
+      switch (node.type) {
+        case NodeType.lesson:
+          color = Colors.blue;
+          break;
+        case NodeType.quiz:
+          color = Colors.orange;
+          break;
+        case NodeType.decision:
+          color = Colors.purple;
+          break;
+        case NodeType.reward:
+          color = Colors.yellow;
+          break;
+        case NodeType.boss:
+          color = Colors.red;
+          break;
+      }
     }
 
     return Opacity(
@@ -161,23 +182,6 @@ class StudyPage extends StatelessWidget {
             color: node.isCompleted ? Colors.white : color,
           ),
         ),
-      ),
-    );
-  }
-
-  // 🔗 CONNECTOR LINE (fixed)
-  Widget _buildLine(int index, int length) {
-    if (index == length - 1) return const SizedBox();
-
-    final isLeft = index.isEven;
-
-    return Positioned(
-      left: isLeft ? 115 : 115,
-      top: index * 140.0 + 35,
-      child: Container(
-        width: 4,
-        height: 140,
-        color: Colors.grey.shade300,
       ),
     );
   }
@@ -202,7 +206,7 @@ class StudyPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  // TODO: navigate to lesson/quiz screen
+                  _openNode(context, node);
                 },
                 child: const Text("Start"),
               ),
@@ -213,7 +217,6 @@ class StudyPage extends StatelessWidget {
     );
   }
 
-  // 🎯 ICON MAPPING
   IconData _getIcon(NodeType type) {
     switch (type) {
       case NodeType.lesson:
@@ -227,5 +230,82 @@ class StudyPage extends StatelessWidget {
       case NodeType.boss:
         return Icons.emoji_events;
     }
+  }
+
+  Future<void> _openNode(BuildContext context, StudyNode node) async {
+    switch (node.type) {
+      case NodeType.lesson:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => LessonNodePage(
+              node: node,
+              onComplete: () {
+                _completeNode(node.id);
+              },
+            ),
+          ),
+        );
+        break;
+
+      case NodeType.quiz:
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => QuizNodePage(node: node),
+          ),
+        );
+
+        if (result == true) {
+          _completeNode(node.id);
+        }
+
+        break;
+
+      case NodeType.decision:
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => DecisionNodePage(node: node),
+          ),
+        );
+
+        if (result == true) {
+          _completeNode(node.id);
+        }
+
+        break;
+
+      case NodeType.reward:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => RewardNodePage(node: node),
+          ),
+        );
+        break;
+    case NodeType.boss:
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BossNodePage(node: node),
+        ),
+      );
+      break;
+    }
+  }
+
+  void _completeNode(String nodeId) {
+    final index = nodes.indexWhere((n) => n.id == nodeId);
+
+    if (index == -1) return;
+
+    setState(() {
+      nodes[index].isCompleted = true;
+
+      if (index + 1 < nodes.length) {
+        nodes[index + 1].isUnlocked = true;
+      }
+    });
   }
 }

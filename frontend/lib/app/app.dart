@@ -17,10 +17,11 @@ class MyApp extends StatelessWidget {
 
       title: 'Finance App',
 
-      theme: ThemeData(
-        colorSchemeSeed: Colors.blue,
-        useMaterial3: true,
-      ),
+      theme: ThemeData.light(),
+
+      darkTheme: ThemeData.dark(),
+
+      themeMode: ThemeMode.dark,
 
       home: const AuthWrapper(),
 

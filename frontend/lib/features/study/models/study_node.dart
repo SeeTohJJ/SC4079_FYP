@@ -10,8 +10,8 @@ class StudyNode {
   final String id;
   final String title;
   final NodeType type;
-  final bool isUnlocked;
-  final bool isCompleted;
+  bool isUnlocked;
+  bool isCompleted;
 
   StudyNode({
     required this.id,
