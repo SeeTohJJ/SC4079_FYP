@@ -1,10 +1,7 @@
 package com.SeeTohJJ.Backend.topic.model;
 
 import com.SeeTohJJ.Backend.auth.model.User;
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "user_interested_topics")
 public class UserInterestedTopic {
 
     public enum Status {
@@ -12,19 +9,9 @@ public class UserInterestedTopic {
         INACTIVE
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userTopicId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "topic_id")
     private Topic topic;
-
-    @Enumerated(EnumType.STRING)
     private Status status;
 
     public UserInterestedTopic() {

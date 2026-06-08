@@ -1,18 +1,11 @@
 package com.SeeTohJJ.Backend.character.model;
 
-import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "character_game_state")
 public class CharacterGameState {
-    @Id
-    private String characterId;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "character_id")
+    private String characterId;
     private Character character;
 
     private Integer dayNumber;

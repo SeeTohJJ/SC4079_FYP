@@ -1,10 +1,15 @@
 package com.SeeTohJJ.Backend.user.repository;
 
 import com.SeeTohJJ.Backend.user.model.UserProfile;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Optional;
 
-public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
-    Optional<UserProfile> findByUserId(String userId);
+public class UserProfileRepository {
+
+    private final JdbcTemplate jdbc;
+
+    public UserProfileRepository(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 }

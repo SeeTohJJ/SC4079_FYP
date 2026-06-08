@@ -2,7 +2,7 @@ package com.SeeTohJJ.Backend.auth.dto;
 
 import java.util.List;
 
-public class RegisterRequest {
+public class RegisterRequestDTO {
     private String email;
     private String password;
 

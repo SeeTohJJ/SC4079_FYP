@@ -1,38 +1,19 @@
 package com.SeeTohJJ.Backend.character.model;
 
 import com.SeeTohJJ.Backend.auth.model.User;
-import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "characters")
 public class Character {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String characterId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @Column(nullable = false)
     private String name;
-
     private String avatarId;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime lastPlayed;
-
     private boolean isActive;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "template_id")
     private CharacterTemplate template;
-
-    @OneToOne(mappedBy = "character", cascade = CascadeType.ALL)
     private CharacterGameState gameState;
 
     public String getCharacterId() {

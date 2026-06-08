@@ -14,25 +14,25 @@ public class TopicService {
 
     private static final Logger logger = LoggerFactory.getLogger(TopicService.class);
 
-    @Autowired
-    UserTopicRepository userTopicRepository;
-
-    public void setUserTopicInterest(User user, Topic topic) {
-        logger.info("Starting setUserTopicInterest");
-
-        if (userTopicRepository.existsByUserAndTopic(user, topic)) {
-            throw new RuntimeException("Topic already exists");
-        }
-
-        UserInterestedTopic userInterestedTopic =
-                new UserInterestedTopic();
-
-        userInterestedTopic.setUser(user);
-        userInterestedTopic.setTopic(topic);
-        userInterestedTopic.setStatus(UserInterestedTopic.Status.ACTIVE);
-
-        userTopicRepository.save(userInterestedTopic);
-    }
+//    @Autowired
+//    UserTopicRepository userTopicRepository;
+//
+//    public void setUserTopicInterest(User user, Topic topic) {
+//        logger.info("Starting setUserTopicInterest");
+//
+//        if (userTopicRepository.existsByUserAndTopic(user, topic)) {
+//            throw new RuntimeException("Topic already exists");
+//        }
+//
+//        UserInterestedTopic userInterestedTopic =
+//                new UserInterestedTopic();
+//
+//        userInterestedTopic.setUser(user);
+//        userInterestedTopic.setTopic(topic);
+//        userInterestedTopic.setStatus(UserInterestedTopic.Status.ACTIVE);
+//
+//        userTopicRepository.save(userInterestedTopic);
+//    }
 
 
 }

@@ -1,7 +1,13 @@
 package com.SeeTohJJ.Backend.topic.repository;
 
 import com.SeeTohJJ.Backend.topic.model.Topic;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-public interface TopicRepository extends JpaRepository<Topic, String> {
+public class TopicRepository {
+
+    private final JdbcTemplate jdbc;
+
+    public TopicRepository(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 }

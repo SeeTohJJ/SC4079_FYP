@@ -3,12 +3,13 @@ package com.SeeTohJJ.Backend.topic.repository;
 import com.SeeTohJJ.Backend.topic.model.Topic;
 import com.SeeTohJJ.Backend.topic.model.UserInterestedTopic;
 import com.SeeTohJJ.Backend.auth.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-public interface UserTopicRepository extends JpaRepository<UserInterestedTopic, String> {
+public class UserTopicRepository {
 
-    boolean existsByUserAndTopic(
-            User user,
-            Topic topic
-    );
+    private final JdbcTemplate jdbc;
+
+    public UserTopicRepository(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 }

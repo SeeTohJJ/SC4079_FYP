@@ -1,8 +1,8 @@
 package com.SeeTohJJ.Backend.auth.controller;
 
-import com.SeeTohJJ.Backend.auth.dto.LoginRequest;
-import com.SeeTohJJ.Backend.auth.dto.AuthResponse;
-import com.SeeTohJJ.Backend.auth.dto.RegisterRequest;
+import com.SeeTohJJ.Backend.auth.dto.LoginRequestDTO;
+import com.SeeTohJJ.Backend.auth.dto.AuthResponseDTO;
+import com.SeeTohJJ.Backend.auth.dto.RegisterRequestDTO;
 import com.SeeTohJJ.Backend.auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,36 +21,33 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
+    public String register(@RequestBody RegisterRequestDTO request) {
         logger.info("Starting Register");
 
         return authService.register(request);
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest req) {
+    public AuthResponseDTO login(@RequestBody LoginRequestDTO request) {
         logger.info("Starting Login");
 
-        return authService.login(
-                req.getEmail(),
-                req.getPassword()
-        );
+        return authService.login(request);
     }
 
-    @PostMapping("/forgot-password")
-    public String forgotPassword(@RequestParam String email) {
-        logger.info("Starting Forgot Password");
-
-        return authService.forgotPassword(email);
-    }
-
-    @PostMapping("/reset-password")
-    public String resetPassword(
-            @RequestParam String token,
-            @RequestParam String newPassword
-    ) {
-        logger.info("Starting Reset Password");
-
-        return authService.resetPassword(token, newPassword);
-    }
+//    @PostMapping("/forgot-password")
+//    public String forgotPassword(@RequestParam String email) {
+//        logger.info("Starting Forgot Password");
+//
+//        return authService.forgotPassword(email);
+//    }
+//
+//    @PostMapping("/reset-password")
+//    public String resetPassword(
+//            @RequestParam String token,
+//            @RequestParam String newPassword
+//    ) {
+//        logger.info("Starting Reset Password");
+//
+//        return authService.resetPassword(token, newPassword);
+//    }
 }

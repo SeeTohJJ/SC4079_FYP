@@ -1,20 +1,11 @@
 package com.SeeTohJJ.Backend.user.model;
 
 import com.SeeTohJJ.Backend.auth.model.User;
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "user_profiles")
 public class UserProfile {
 
-    @Id
     private int userId;
-
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
     private User user;
-
     private String username;
     private String gender;
     private int age;

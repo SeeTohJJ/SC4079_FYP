@@ -7,10 +7,6 @@ spring:
     username: postgres
     password: ElephantGod123
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
 
 jwt:
   secret: FMb1XgNf5fiqwVUxSe2qG55ZVeFzGamyMcMPFRxKJzQ=
