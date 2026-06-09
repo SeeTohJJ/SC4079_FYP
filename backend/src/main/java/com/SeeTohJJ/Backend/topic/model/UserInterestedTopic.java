@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.topic.model;
 
-import com.SeeTohJJ.Backend.auth.model.User;
+import java.time.LocalDateTime;
 
 public class UserInterestedTopic {
 
@@ -10,35 +10,34 @@ public class UserInterestedTopic {
     }
 
     private Long userTopicId;
-    private User user;
-    private Topic topic;
+    private String userId;
+    private String topicId;
     private Status status;
-
-    public UserInterestedTopic() {
-        this.status = Status.ACTIVE;
-    }
+    private LocalDateTime createdAt;
+    private LocalDateTime lastUpdated;
 
     public Long getUserTopicId() {
         return userTopicId;
     }
+
     public void setUserTopicId(Long userTopicId) {
         this.userTopicId = userTopicId;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public Topic getTopic() {
-        return topic;
+    public String getTopicId() {
+        return topicId;
     }
 
-    public void setTopic(Topic topic) {
-        this.topic = topic;
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
     }
 
     public Status getStatus() {
@@ -47,5 +46,21 @@ public class UserInterestedTopic {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

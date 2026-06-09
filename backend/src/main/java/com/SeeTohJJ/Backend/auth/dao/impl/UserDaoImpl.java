@@ -1,6 +1,5 @@
 package com.SeeTohJJ.Backend.auth.dao.impl;
 
-import com.SeeTohJJ.Backend.auth.controller.AuthController;
 import com.SeeTohJJ.Backend.auth.dao.UserDao;
 import com.SeeTohJJ.Backend.auth.mapper.UserRowMapper;
 import com.SeeTohJJ.Backend.auth.model.User;
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 
 import  com.SeeTohJJ.Backend.auth.constant.AuthConstant;
+
+import java.sql.Timestamp;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -28,6 +29,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean findEmailExist(String email) {
+        logger.info("Starting findEmailExist");
 
         Boolean exists = jdbcTemplate.queryForObject(
                 AuthConstant.FIND_EMAIL_EXIST,
@@ -39,19 +41,24 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void registerUser(User user){
-        jdbcTemplate.update(
+    public Long registerUser(User user){
+        logger.info("Starting registerUser");
+
+        return jdbcTemplate.queryForObject(
                 AuthConstant.INSERT_NEW_USER,
+                Long.class,
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole().name(),
                 user.getPublicUserId(),
-                user.getCreatedAt()
+                Timestamp.valueOf(user.getCreatedAt())
         );
     }
 
     @Override
     public User findUserByEmail(String email) {
+        logger.info("Starting findUserByEmail");
+
         return jdbcTemplate.queryForObject(
                 AuthConstant.FIND_USER_BY_EMAIL,
                 userRowMapper,

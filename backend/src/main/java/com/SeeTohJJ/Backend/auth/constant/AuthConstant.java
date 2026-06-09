@@ -13,6 +13,7 @@ public class AuthConstant {
     public static final String INSERT_NEW_USER = """
         INSERT INTO users (email, password, role, public_user_id, created_at)
         VALUES (?, ?, ?, ?, ?)
+        RETURNING user_id;
         """;
 
     public static final String FIND_USER_BY_EMAIL = """

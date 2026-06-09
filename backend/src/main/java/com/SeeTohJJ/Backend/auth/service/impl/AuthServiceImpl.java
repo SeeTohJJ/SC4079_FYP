@@ -11,6 +11,7 @@ import com.SeeTohJJ.Backend.auth.service.JwtService;
 import com.SeeTohJJ.Backend.topic.model.Topic;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import com.SeeTohJJ.Backend.user.model.UserProfile;
+import com.SeeTohJJ.Backend.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,15 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final TopicService topicService;
+    private final UserService userService;
 
     @Autowired
-    public AuthServiceImpl(UserDao userDao,  JwtService jwtService,  PasswordEncoder passwordEncoder,  TopicService topicService) {
+    public AuthServiceImpl(UserDao userDao,  JwtService jwtService,  PasswordEncoder passwordEncoder,  TopicService topicService,  UserService userService) {
         this.userDao = userDao;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.topicService = topicService;
+        this.userService = userService;
     }
 
     @Transactional
@@ -55,19 +58,13 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(User.Role.USER);
         user.setCreatedAt(LocalDateTime.now());
 
-        userDao.registerUser(user);
+        Long userId = userDao.registerUser(user);
 
-//        setUserProfile(user, request);
-//
-//        for (String topicId : request.getTopics()) {
-//
-//            Topic topic = topicService.findById(topicId)
-//                    .orElseThrow(() ->
-//                            new RuntimeException(
-//                                    "Topic not found: " + topicId));
-//
-//            topicService.setUserTopicInterest(user, topic);
-//        }
+        userService.setUserProfile(userId, request);
+
+        for (String topicId : request.getTopics()) {
+            topicService.setUserTopicInterest(userId, topicId);
+        }
 
         return "User registered";
     }
@@ -95,22 +92,6 @@ public class AuthServiceImpl implements AuthService {
         response.setRole(user.getRole().toString());
 
         return response;
-    }
-
-    public void setUserProfile(User user, RegisterRequestDTO request) {
-        logger.info("Starting Set User Profile");
-
-        UserProfile userProfile = new UserProfile();
-
-        userProfile.setUser(user);
-
-        userProfile.setUsername(request.getUsername());
-        userProfile.setGender(request.getGender());
-        userProfile.setAge(request.getAge());
-        userProfile.setEmploymentStatus(request.getEmploymentStatus());
-        userProfile.setIncome(request.getIncome());
-        userProfile.setCountry(request.getCountry());
-
     }
 
 }

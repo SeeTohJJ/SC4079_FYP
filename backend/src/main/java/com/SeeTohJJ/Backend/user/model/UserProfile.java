@@ -4,8 +4,7 @@ import com.SeeTohJJ.Backend.auth.model.User;
 
 public class UserProfile {
 
-    private int userId;
-    private User user;
+    private Long userId;
     private String username;
     private String gender;
     private int age;
@@ -15,30 +14,12 @@ public class UserProfile {
 
     public UserProfile() {}
 
-    public UserProfile(User user, String username, String gender, int age, String employmentStatus, int income, String country) {
-        this.user = user;
-        this.username = username;
-        this.gender = gender;
-        this.age = age;
-        this.employmentStatus = employmentStatus;
-        this.income = income;
-        this.country = country;
-    }
-
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getUsername() {

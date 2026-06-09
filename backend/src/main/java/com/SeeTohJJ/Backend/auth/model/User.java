@@ -11,7 +11,7 @@ public class User {
     }
 
     // I have reserved UserId 1 - 100 for other purposes
-    private String userId;
+    private Long userId;
 
     private UUID publicUserId;
     private String email;
@@ -20,11 +20,11 @@ public class User {
     private String resetToken;
     private LocalDateTime createdAt;
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String UserId) {
+    public void setUserId(Long UserId) {
         this.userId = UserId;
     }
 
