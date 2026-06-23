@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 
+import static java.lang.Boolean.FALSE;
+
 @Repository
 public class UserTopicMasteryDaoImpl implements UserTopicMasteryDao {
 
@@ -30,6 +32,11 @@ public class UserTopicMasteryDaoImpl implements UserTopicMasteryDao {
                 userId,
                 topicId,
                 50,
+                1000,
+                0,
+                FALSE,
+                "NULL",
+                0,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
