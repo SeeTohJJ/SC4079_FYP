@@ -2,7 +2,7 @@ package com.SeeTohJJ.Backend.study.dto;
 
 import java.time.LocalDateTime;
 
-public abstract class NodeResponseDTO {
+public abstract class StudyNodeDTO {
 
     public enum NodeType {
         LESSON,
@@ -16,21 +16,15 @@ public abstract class NodeResponseDTO {
         UNLOCKED,
         COMPLETED
     }
+
     private String nodeId;
     private String topicId;
-
     private String isTutorial;
-
     private String title;
-
     private NodeType type;
-
     private NodeStatus status;
-
     private int masteryReward;
-
     private String isCompleted;
-
     private LocalDateTime unlockedAt;
 
     public String getNodeId() {

@@ -16,7 +16,7 @@ class SecureStorageService {
 
   Future<String?> getToken() async {
     final token = await storage.read(key: jwtKey);
-    print('[SecureStorageService] Read token: \\${token}');
+    print('[SecureStorageService] Read token: \\$token');
     return token;
   }
 

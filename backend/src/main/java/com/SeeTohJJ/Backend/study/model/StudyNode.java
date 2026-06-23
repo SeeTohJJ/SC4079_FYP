@@ -2,62 +2,53 @@ package com.SeeTohJJ.Backend.study.model;
 
 import java.time.LocalDateTime;
 
-public class Node {
+public class StudyNode {
 
-    private enum NodeType {
+    public enum NodeType {
         LESSON,
         QUIZ,
         DECISION,
         TEST
     }
 
-    private String NodeId;
-    private String TopicId;
-    private NodeType Type;
-    private String Title;
-    private String Content;
+    private String nodeId;
+    private String topicId;
+    private NodeType nodeType;
+    private String title;
     private int orderIndex;
     private int requiredMastery;
     private LocalDateTime lastUpdated;
 
     public String getNodeId() {
-        return NodeId;
+        return nodeId;
     }
 
     public void setNodeId(String nodeId) {
-        NodeId = nodeId;
+        this.nodeId = nodeId;
     }
 
     public String getTopicId() {
-        return TopicId;
+        return topicId;
     }
 
     public void setTopicId(String topicId) {
-        TopicId = topicId;
+        this.topicId = topicId;
     }
 
     public NodeType getType() {
-        return Type;
+        return nodeType;
     }
 
-    public void setType(NodeType type) {
-        Type = type;
+    public void setType(NodeType nodeType) {
+        this.nodeType = nodeType;
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
-    }
-
-    public String getContent() {
-        return Content;
-    }
-
-    public void setContent(String content) {
-        Content = content;
+        this.title = title;
     }
 
     public int getOrderIndex() {

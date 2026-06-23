@@ -2,7 +2,15 @@ package com.SeeTohJJ.Backend.study.dto;
 
 import java.util.List;
 
-public class TestDTO extends StudyNodeDTO {
+public class TestNodeDTO extends StudyNodeDTO {
 
-    private List<QuizDTO> questions;
+    private List<QuizNodeDTO> questions;
+
+    public List<QuizNodeDTO> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<QuizNodeDTO> questions) {
+        this.questions = questions;
+    }
 }

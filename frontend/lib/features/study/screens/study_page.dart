@@ -6,6 +6,8 @@ import 'package:frontend/features/study/screens/nodes/lesson_node_page.dart';
 import 'package:frontend/features/study/screens/nodes/quiz_node_page.dart';
 import 'package:frontend/features/study/screens/nodes/reward_node_page.dart';
 import 'package:frontend/features/study/widgets/study_line_painter.dart';
+import 'package:frontend/features/study/services/study_service.dart';
+import 'package:frontend/auth/services/auth_services.dart';
   
 class StudyPage extends StatefulWidget {
   const StudyPage({super.key});
@@ -16,12 +18,17 @@ class StudyPage extends StatefulWidget {
 
 class _StudyPageState extends State<StudyPage> {
 
+  final authService = AuthService();
+  final studyService = StudyService();
+
+  late Future<String?> token;
   late List<StudyNode> nodes;
-  
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    nodes = _mockNodes();
+    loadNodes();
   }
 
   @override
@@ -79,66 +86,23 @@ class _StudyPageState extends State<StudyPage> {
     return index * 120.0;
   }
 
-  // 🧪 Mock data (replace later with backend/service)
-  List<StudyNode> _mockNodes() {
-    return [
-      StudyNode(
-        id: '1',
-        title: 'What is budgeting?',
-        type: NodeType.lesson,
-        isUnlocked: true,
-        isCompleted: false,
-      ),
-      StudyNode(
-        id: '2',
-        title: 'Budgeting Quiz',
-        type: NodeType.quiz,
-        isUnlocked: true,
-        isCompleted: false,
-      ),
-      StudyNode(
-        id: '3',
-        title: 'Spending Decision',
-        type: NodeType.decision,
-        isUnlocked: true,
-        isCompleted: false,
-      ),
-      StudyNode(
-        id: '4',
-        title: 'Bonus Rewards',
-        type: NodeType.lesson,
-        isUnlocked: true,
-        isCompleted: false,
-      ),
-      StudyNode(
-        id: '5',
-        title: 'What is budgeting?',
-        type: NodeType.lesson,
-        isUnlocked: false,
-        isCompleted: false,
-      ),
-      StudyNode(
-        id: '6',
-        title: 'Budgeting Quiz',
-        type: NodeType.quiz,
-        isUnlocked: false,
-        isCompleted: false,
-      ),
-      StudyNode(
-        id: '7',
-        title: 'Spending Decision',
-        type: NodeType.decision,
-        isUnlocked: false,
-        isCompleted: false,
-      ),
-      StudyNode(
-        id: '8',
-        title: 'Bonus Rewards',
-        type: NodeType.reward,
-        isUnlocked: false,
-        isCompleted: false,
-      ),
-    ];
+  Future<void> loadNodes() async {
+    final token = await authService.getToken();
+
+    if (token == null) {
+      throw Exception("User not logged in");
+    }
+
+    final result = await studyService.getStudyPathNodes(token);
+
+    final mapped = result
+    .map((json) => StudyNode.fromJson(json))
+    .toList();
+
+    setState(() {
+      nodes = mapped;
+      isLoading = false;
+    });
   }
 
   Widget _buildNode(StudyNode node) {
@@ -186,7 +150,6 @@ class _StudyPageState extends State<StudyPage> {
     );
   }
 
-  // 🎮 TAP HANDLER
   void _onNodeTap(BuildContext context, StudyNode node) {
     showModalBottomSheet(
       context: context,
@@ -235,11 +198,15 @@ class _StudyPageState extends State<StudyPage> {
   Future<void> _openNode(BuildContext context, StudyNode node) async {
     switch (node.type) {
       case NodeType.lesson:
+
+      final lesson = await studyService.getLessonContent(node.id); 
+      
+      if (!context.mounted) return;
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => LessonNodePage(
-              node: node,
+              lesson: lesson,
               onComplete: () {
                 _completeNode(node.id);
               },

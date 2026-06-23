@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.study.dto;
 
-public class LessonDTO extends StudyNodeDTO {
+public class LessonNodeDTO extends StudyNodeDTO {
 
     private String content;
 

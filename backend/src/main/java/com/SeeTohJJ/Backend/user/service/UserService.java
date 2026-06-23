@@ -4,6 +4,8 @@ import com.SeeTohJJ.Backend.auth.dto.RegisterRequestDTO;
 import com.SeeTohJJ.Backend.auth.model.User;
 import com.SeeTohJJ.Backend.user.model.UserProfile;
 
+import java.util.List;
+
 public interface UserService {
 
     void setUserProfile(Long userId, RegisterRequestDTO request);

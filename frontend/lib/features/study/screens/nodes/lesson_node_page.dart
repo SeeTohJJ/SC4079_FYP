@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/features/study/models/study_node.dart';
+import 'package:frontend/features/study/models/lesson_content.dart';
 
 class LessonNodePage extends StatelessWidget {
-
-  final StudyNode node;
+  final LessonContent lesson;
   final VoidCallback? onComplete;
 
-  const LessonNodePage({super.key, required this.node, this.onComplete});
+  const LessonNodePage({
+    super.key,
+    required this.lesson,
+    this.onComplete,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(node.title),
+        title: Text(lesson.title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -20,22 +23,14 @@ class LessonNodePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              node.title,
+              lesson.title,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
 
             const SizedBox(height: 24),
 
-            const Text(
-                            '''
-              Budgeting is the process of planning how you will spend your income.
-
-              A budget helps you:
-              • Control spending
-              • Save money
-              • Reach financial goals
-              • Avoid unnecessary debt
-              ''',
+            Text(
+              lesson.content ?? "No lesson content available",
             ),
 
             const Spacer(),
@@ -45,7 +40,6 @@ class LessonNodePage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   onComplete?.call();
-
                   Navigator.pop(context);
                 },
                 child: const Text("Complete Lesson"),

@@ -1,10 +1,12 @@
 package com.SeeTohJJ.Backend.topic.dao;
 
 
-import com.SeeTohJJ.Backend.auth.model.User;
+import java.util.List;
 
-public interface UserTopicMasteryDao {
+public interface UserTopicProgressDao {
 
-    void insertInitialTopicMastery(Long userId, String topicId);
+    void insertInitialTopicProgress(Long userId, String topicId);
+    boolean isTutorialCompleted(Long userId, String topicId);
+    String getTopUserUncompletedTopic(Long userId);
 
 }

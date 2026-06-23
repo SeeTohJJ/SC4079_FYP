@@ -10,7 +10,7 @@ public class UserInterestedTopic {
     }
 
     private Long userTopicId;
-    private String userId;
+    private Long userId;
     private String topicId;
     private Status status;
     private LocalDateTime createdAt;
@@ -24,11 +24,11 @@ public class UserInterestedTopic {
         this.userTopicId = userTopicId;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

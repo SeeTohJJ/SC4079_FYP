@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import com.SeeTohJJ.Backend.topic.constant.TopicConstant;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Repository
@@ -26,8 +27,10 @@ public class UserTopicDaoImpl implements UserTopicDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    @Override
     public void insertUserInterestedTopic(Long userId, String topicId){
         logger.info("Starting insertUserInterestedTopic");
+
         jdbcTemplate.update(
                 TopicConstant.INSERT_USER_INTERESTED_TOPIC,
                 userId,
@@ -35,6 +38,17 @@ public class UserTopicDaoImpl implements UserTopicDao {
                 UserInterestedTopic.Status.ACTIVE.name(),
                 LocalDateTime.now(),
                 LocalDateTime.now()
+        );
+    }
+
+    @Override
+    public List<String> getUserTopicFromUserId(Long userId) {
+        logger.info("Starting getUserTopicFromUserId");
+
+        return jdbcTemplate.queryForList(
+                TopicConstant.GET_USER_TOPIC_FROM_USERID,
+                String.class,
+                userId
         );
     }
 }
