@@ -132,4 +132,25 @@ public class StudyServiceImpl implements StudyService {
 
         return studyDao.getLessonNodeContent(nodeId);
     }
+
+    @Override
+    public QuizNodeDTO getQuizContent(String nodeId){
+        logger.info("Starting getQuizContent");
+
+        return studyDao.getQuizNodeContent(nodeId);
+    }
+
+    @Override
+    public DecisionNodeDTO getDecisionNodeContent(String nodeId){
+        logger.info("Starting getDecisionNodeContent");
+
+        return studyDao.getDecisionNodeContent(nodeId);
+    }
+
+    @Override
+    public EventNodeDTO getEventNodeContent(String nodeId){
+        logger.info("Starting getEventNodeContent");
+
+        return studyDao.getEventNodeContent(nodeId);
+    }
 }

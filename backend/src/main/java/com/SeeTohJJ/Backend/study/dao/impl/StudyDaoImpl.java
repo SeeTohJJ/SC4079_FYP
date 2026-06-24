@@ -2,8 +2,10 @@ package com.SeeTohJJ.Backend.study.dao.impl;
 
 import com.SeeTohJJ.Backend.study.constant.StudyConstant;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
+import com.SeeTohJJ.Backend.study.dto.DecisionNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.EventNodeDTO;
 import com.SeeTohJJ.Backend.study.dto.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.StudyNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.mapper.StudyNodeRowMapper;
 import com.SeeTohJJ.Backend.study.mapper.StudyPathRowMapper;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
@@ -42,7 +44,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting getTutorialNodes");
 
         return jdbcTemplate.query(
-                StudyConstant.FIND_TUTORIAL_NODES,
+                StudyConstant.GET_TUTORIAL_NODES,
                 studyNodeRowMapper,
                 topicId
         );
@@ -53,7 +55,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting generateAdaptiveNodes");
 
         return jdbcTemplate.query(
-                StudyConstant.FIND_TUTORIAL_NODES,
+                StudyConstant.GET_TUTORIAL_NODES,
                 studyNodeRowMapper,
                 topicId
         );
@@ -64,7 +66,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting getExistingNodePath");
 
         return jdbcTemplate.query(
-                StudyConstant.FIND_EXISTING_NODE_PATH,
+                StudyConstant.GET_EXISTING_NODE_PATH,
                 studyPathRowMapper,
                 userId
         );
@@ -110,12 +112,72 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting getLessonNodeContent");
 
         return jdbcTemplate.queryForObject(
-                StudyConstant.FIND_LESSON_NODE_CONTENT,
+                StudyConstant.GET_LESSON_NODE_CONTENT,
                 (rs, rowNum) -> {
                     LessonNodeDTO dto = new LessonNodeDTO();
                     dto.setNodeId(rs.getString("node_id"));
                     dto.setTitle(rs.getString("title"));
                     dto.setContent(rs.getString("content"));
+                    return dto;
+                },
+                nodeId
+        );
+    }
+
+
+    @Override
+    public QuizNodeDTO getQuizNodeContent(String nodeId){
+        logger.info("Starting getQuizNodeContent");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_QUIZ_NODE_CONTENT,
+                (rs, rowNum) -> {
+                    QuizNodeDTO dto = new QuizNodeDTO();
+                    dto.setNodeId(rs.getString("node_id"));
+                    dto.setTitle(rs.getString("title"));
+                    dto.setQuestion(rs.getString("content"));
+                    dto.setOption_A(rs.getString("option_a"));
+                    dto.setOption_B(rs.getString("option_b"));
+                    dto.setOption_C(rs.getString("option_c"));
+                    dto.setOption_D(rs.getString("option_d"));
+                    dto.setCorrectAnswer(rs.getString("correct_answer"));
+                    return dto;
+                },
+                nodeId
+        );
+    }
+
+    @Override
+    public DecisionNodeDTO getDecisionNodeContent(String nodeId){
+        logger.info("Starting getDecisionNodeContent");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_DECISION_NODE_CONTENT,
+                (rs, rowNum) -> {
+                    DecisionNodeDTO dto = new DecisionNodeDTO();
+                    dto.setNodeId(rs.getString("node_id"));
+                    dto.setTitle(rs.getString("title"));
+                    dto.setContent(rs.getString("content"));
+                    dto.setChoice_A(rs.getString("choice_a"));
+                    dto.setChoice_B(rs.getString("choice_b"));
+                    dto.setResult_A(rs.getString("result_a"));
+                    dto.setResult_B(rs.getString("result_b"));
+                    return dto;
+                },
+                nodeId
+        );
+    }
+
+    @Override
+    public EventNodeDTO getEventNodeContent(String nodeId){
+        logger.info("Starting getEventNodeContent");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_EVENT_NODE_CONTENT,
+                (rs, rowNum) -> {
+                    EventNodeDTO dto = new EventNodeDTO();
+                    dto.setContent(rs.getString("content"));
+                    dto.setResult(rs.getString("result"));
                     return dto;
                 },
                 nodeId

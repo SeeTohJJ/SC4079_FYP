@@ -1,6 +1,9 @@
 package com.SeeTohJJ.Backend.study.dao;
 
+import com.SeeTohJJ.Backend.study.dto.DecisionNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.EventNodeDTO;
 import com.SeeTohJJ.Backend.study.dto.LessonNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.model.UserNodeProgress;
 
@@ -14,5 +17,8 @@ public interface StudyDao {
     boolean hasActiveNodes(Long userId);
     void insertNodeIntoUserProgress(Long userId, String nodeId, String nodeType, int positionIndex, boolean isUnlocked, boolean isCompleted);
     LessonNodeDTO getLessonNodeContent(String nodeId);
+    QuizNodeDTO getQuizNodeContent(String nodeId);
+    DecisionNodeDTO getDecisionNodeContent(String nodeId);
+    EventNodeDTO getEventNodeContent(String nodeId);
 }
 

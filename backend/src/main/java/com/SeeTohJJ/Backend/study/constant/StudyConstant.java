@@ -2,14 +2,14 @@ package com.SeeTohJJ.Backend.study.constant;
 
 public class StudyConstant {
 
-    public static final String FIND_TUTORIAL_NODES = """
+    public static final String GET_TUTORIAL_NODES = """
         SELECT node_id, type, order_index
         FROM study_nodes
         WHERE topic_id = ? AND is_tutorial = true AND is_active = true
         ORDER BY order_index
         """;
 
-    public static final String FIND_EXISTING_NODE_PATH = """
+    public static final String GET_EXISTING_NODE_PATH = """
         SELECT node_id, node_type, position_index, is_unlocked, is_completed
         FROM user_node_progress
         WHERE user_id = ?
@@ -29,10 +29,27 @@ public class StudyConstant {
         VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
-
-    public static final String FIND_LESSON_NODE_CONTENT = """
+    public static final String GET_LESSON_NODE_CONTENT = """
         SELECT node_id, title, content
         FROM node_lesson_content
+        WHERE node_id = ?
+        """;
+
+    public static final String GET_QUIZ_NODE_CONTENT = """
+        SELECT node_id, title, content, option_a, option_b, option_c, option_d, correct_answer
+        FROM node_quiz_content
+        WHERE node_id = ?
+        """;
+
+    public static final String GET_DECISION_NODE_CONTENT = """
+        SELECT node_id, title, content, option_a, option_b, result_a, result_b
+        FROM node_decision_content
+        WHERE node_id = ?
+        """;
+
+    public static final String GET_EVENT_NODE_CONTENT = """
+        SELECT node_id, title, content, result
+        FROM event_node_content
         WHERE node_id = ?
         """;
 }

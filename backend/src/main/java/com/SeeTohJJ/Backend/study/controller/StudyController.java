@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.Node;
 
 import java.util.List;
 
@@ -40,5 +39,26 @@ public class StudyController {
         logger.info("Starting getLessonContent");
 
         return studyService.getLessonNodeContent(request.getNodeId());
+    }
+
+    @PostMapping("GetQuizContent")
+    public QuizNodeDTO getQuizContent(@RequestBody NodeRequestDTO request) {
+        logger.info("Starting getQuizContent");
+
+        return studyService.getQuizContent(request.getNodeId());
+    }
+
+    @PostMapping("GetDecisionContent")
+    public DecisionNodeDTO getDecisionContent(@RequestBody NodeRequestDTO request) {
+        logger.info("Starting getDecisionContent");
+
+        return studyService.getDecisionNodeContent(request.getNodeId());
+    }
+
+    @PostMapping("GetEventContent")
+    public EventNodeDTO getEventContent(@RequestBody NodeRequestDTO request) {
+        logger.info("Starting getEventContent");
+
+        return studyService.getEventNodeContent(request.getNodeId());
     }
 }
