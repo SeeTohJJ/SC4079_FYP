@@ -1,9 +1,9 @@
 package com.SeeTohJJ.Backend.study.dao;
 
-import com.SeeTohJJ.Backend.study.dto.DecisionNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.EventNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.QuizNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.model.UserNodeProgress;
 
@@ -20,5 +20,17 @@ public interface StudyDao {
     QuizNodeDTO getQuizNodeContent(String nodeId);
     DecisionNodeDTO getDecisionNodeContent(String nodeId);
     EventNodeDTO getEventNodeContent(String nodeId);
+    void completeNode(Long userId, String nodeId);
+    String getCorrectAnswer(String nodeId);
+    void saveUserQuestionAttempt(Long userId, String nodeId, boolean isCorrectAnswer, int timeTaken);
+    double getQuestionRating(String nodeId);
+    int getNodePositionalIndex(Long userId, String nodeId);
+    void unlockNextNode(Long userId, int nodePosIndex);
+    boolean checkIfNextNodeExist(Long userId, int nodePosIndex);
+    String getCurrentSubtopic(Long userId);
+    String getLowestPKnowSubtopic(Long userId);
+    String getLowestPKnowSubtopicNotMastered(Long userId);
+    int getCurrentChain(Long userId, String subtopicId);
+    int getUserLastPositionIndex(Long userId);
 }
 

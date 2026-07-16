@@ -1,0 +1,90 @@
+package com.SeeTohJJ.Backend.study.service.adaptive.impl;
+
+import com.SeeTohJJ.Backend.study.dao.StudyDao;
+import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
+import com.SeeTohJJ.Backend.topic.model.BktParameters;
+import com.SeeTohJJ.Backend.topic.service.SubTopicService;
+import com.SeeTohJJ.Backend.topic.service.TopicService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BktServiceImpl implements BktService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BktServiceImpl.class);
+
+    private final StudyDao studyDao;
+    private final TopicService topicService;
+    private final SubTopicService subTopicService;
+
+    public BktServiceImpl(StudyDao studyDao, TopicService topicService, SubTopicService subTopicService) {
+        this.studyDao = studyDao;
+        this.topicService = topicService;
+        this.subTopicService = subTopicService;
+    }
+
+    @Override
+    public void updateUserKnowledge(Long userId, String subtopicId, boolean isCorrectAnswer, int timeTaken){
+        logger.info("Starting updateUserKnowledge");
+
+        updateUserBkt(userId, subtopicId, isCorrectAnswer, timeTaken);
+    }
+
+    @Override
+    public void updateUserBkt(Long userId, String subtopicId, boolean isCorrectAnswer, int timeTaken){
+        logger.info("Starting updateUserBkt");
+
+        BktParameters bktParameters = subTopicService.getBktParameters(subtopicId); // BKT parameters for the subtopic
+        double pKnow = subTopicService.getUserPKnow(userId, subtopicId);
+
+        double posterior;
+        if(isCorrectAnswer){
+            posterior = calculatePosteriorCorrect(pKnow, bktParameters.getP_slip(), bktParameters.getP_guess());
+        }
+        else{
+            posterior = calculatePosteriorIncorrect(pKnow, bktParameters.getP_slip(), bktParameters.getP_guess());
+        }
+
+        double updatedPKnow = applyLearning(posterior, bktParameters.getP_transit());
+        updatedPKnow = Math.clamp(updatedPKnow, 0, 1);
+
+        subTopicService.updatePKnow(userId, subtopicId, updatedPKnow);
+        subTopicService.updateAttemptStatistics(userId, subtopicId, isCorrectAnswer);
+    }
+
+    private double calculatePosteriorCorrect(double pKnow, double pSlip, double pGuess){
+        logger.info("Starting calculatePosteriorCorrect");
+
+        double numerator = pKnow * (1 - pSlip);
+        double denominator = numerator + (1 - pKnow) * pGuess;
+
+        return numerator / denominator;
+    }
+
+    private double calculatePosteriorIncorrect(double pKnow, double pSlip, double pGuess) {
+        logger.info("Starting calculatePosteriorIncorrect");
+
+        double numerator = pKnow * pSlip;
+        double denominator = numerator + (1 - pKnow) * (1 - pGuess);
+
+        return numerator / denominator;
+    }
+
+    private double applyLearning(double posterior, double pTransition){
+        logger.info("Starting applyLearning");
+
+        return posterior + (1 - posterior) * pTransition;
+    }
+
+    @Override
+    public void updateSubTopicMastery(Long userId, String subtopicId){
+        logger.info("Starting updateSubTopicMastery");
+
+        if(subTopicService.pKnowGreaterThanRating(userId, subtopicId)){
+            subTopicService.updateSubTopicMastery(userId, subtopicId);
+        }
+    }
+
+
+}

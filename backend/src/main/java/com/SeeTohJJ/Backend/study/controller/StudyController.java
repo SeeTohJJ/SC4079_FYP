@@ -1,8 +1,13 @@
 package com.SeeTohJJ.Backend.study.controller;
 
 import com.SeeTohJJ.Backend.auth.service.JwtService;
+import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.result.LessonResultDTO;
 import com.SeeTohJJ.Backend.study.dto.*;
-import com.SeeTohJJ.Backend.study.service.StudyService;
+import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,49 +21,76 @@ public class StudyController {
 
     private static final Logger logger = LoggerFactory.getLogger(StudyController.class);
 
-    private final StudyService studyService;
+    private final NodeGenerationService nodeGenerationService;
     private final JwtService jwtService;
 
     @Autowired
-    public StudyController(StudyService studyService, JwtService jwtService) {
-        this.studyService = studyService;
+    public StudyController(NodeGenerationService nodeGenerationService, JwtService jwtService) {
+        this.nodeGenerationService = nodeGenerationService;
         this.jwtService = jwtService;
     }
 
     @PostMapping("/GetStudyPathNodes")
-    public List<StudyNodePathDTO> GetStudyPathNodes(@RequestBody StudyRequestDTO request) {
-        logger.info("Starting GetStudyPathNodes");
+    public List<StudyNodePathDTO> getStudyPathNodes(@RequestBody StudyRequestDTO request) {
+        logger.info("Starting getStudyPathNodes");
 
         Long userId = jwtService.extractUserId(request.getToken());
 
-        return studyService.getStudyPathNodes(userId);
+        return nodeGenerationService.getStudyPathNodes(userId);
     }
 
     @PostMapping("/GetLessonContent")
     public LessonNodeDTO getLessonContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getLessonContent");
 
-        return studyService.getLessonNodeContent(request.getNodeId());
+        return nodeGenerationService.getLessonNodeContent(request.getNodeId());
     }
 
     @PostMapping("GetQuizContent")
     public QuizNodeDTO getQuizContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getQuizContent");
 
-        return studyService.getQuizContent(request.getNodeId());
+        return nodeGenerationService.getQuizContent(request.getNodeId());
     }
 
     @PostMapping("GetDecisionContent")
     public DecisionNodeDTO getDecisionContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getDecisionContent");
 
-        return studyService.getDecisionNodeContent(request.getNodeId());
+        return nodeGenerationService.getDecisionNodeContent(request.getNodeId());
     }
 
     @PostMapping("GetEventContent")
     public EventNodeDTO getEventContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getEventContent");
 
-        return studyService.getEventNodeContent(request.getNodeId());
+        return nodeGenerationService.getEventNodeContent(request.getNodeId());
+    }
+
+    @PostMapping("/LessonResult")
+    public void lessonResult(@RequestBody LessonResultDTO request){
+        logger.info("Starting lessonResult");
+
+        nodeGenerationService.completeNode(request.getUserId(), request.getNodeId());
+    }
+
+//    @PostMapping("/QuizResult")
+//    public void quizResult(@RequestBody QuizResultDTO request){
+//        logger.info("Starting quizResult");
+//
+//        studyService.completeNode(request.getUserId(), request.getNodeId());
+//        scoringService.completeQuiz(request.getUserId(), request.getNodeId(), request.getIsCorrect(), request.getTimeTaken());
+//    }
+
+    @PostMapping("/DecisionResult")
+    public void decisionResult(){
+        logger.info("Starting decisionResult");
+
+    }
+
+    @PostMapping("/UpdateEventResult")
+    public void eventResult(){
+        logger.info("Starting eventResult");
+
     }
 }

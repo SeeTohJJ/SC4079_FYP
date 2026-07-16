@@ -1,16 +1,30 @@
-package com.SeeTohJJ.Backend.study.dto;
+package com.SeeTohJJ.Backend.study.dto.node;
 
-import com.SeeTohJJ.Backend.study.dto.option.DecisionOptionDTO;
+public class DecisionNodeDTO {
 
-import java.util.List;
-
-public class DecisionNodeDTO extends StudyNodeDTO {
-
+    private String nodeId;
+    private String title;
     private String content;
     private String choice_A;
     private String choice_B;
     private String result_A;
     private String result_B;
+
+    public String getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(String nodeId) {
+        this.nodeId = nodeId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getContent() {
         return content;

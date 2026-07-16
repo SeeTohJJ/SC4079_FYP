@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.study.dto;
+package com.SeeTohJJ.Backend.study.dto.node;
 
 import java.time.LocalDateTime;
 

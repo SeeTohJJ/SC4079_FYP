@@ -1,4 +1,6 @@
-package com.SeeTohJJ.Backend.study.model;
+package com.SeeTohJJ.Backend.study.model.content;
+
+import com.SeeTohJJ.Backend.study.model.StudyNode;
 
 import java.time.LocalDateTime;
 

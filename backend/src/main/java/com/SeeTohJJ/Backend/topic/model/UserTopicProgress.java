@@ -8,7 +8,7 @@ public class UserTopicProgress {
     private String topicId;
     private int masteryScore; // 1 - 100
     private int eloRating;
-    private float knowledgeProbability;
+    private double knowledgeProbability;
     private boolean tutorialCompleted;
     private String currentNodeId;
     private int nodesCompleted;
@@ -47,11 +47,11 @@ public class UserTopicProgress {
         this.eloRating = eloRating;
     }
 
-    public float getKnowledgeProbability() {
+    public double getKnowledgeProbability() {
         return knowledgeProbability;
     }
 
-    public void setKnowledgeProbability(float knowledgeProbability) {
+    public void setKnowledgeProbability(double knowledgeProbability) {
         this.knowledgeProbability = knowledgeProbability;
     }
 

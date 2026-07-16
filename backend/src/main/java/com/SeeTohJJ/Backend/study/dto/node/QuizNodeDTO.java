@@ -1,17 +1,30 @@
-package com.SeeTohJJ.Backend.study.dto;
+package com.SeeTohJJ.Backend.study.dto.node;
 
-import com.SeeTohJJ.Backend.study.dto.option.QuizOptionDTO;
+public class QuizNodeDTO {
 
-import java.util.List;
-
-public class QuizNodeDTO extends StudyNodeDTO {
-
+    private String nodeId;
+    private String title;
     private String question;
     private String option_A;
     private String option_B;
     private String option_C;
     private String option_D;
-    private String correctAnswer;
+
+    public String getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(String nodeId) {
+        this.nodeId = nodeId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getQuestion() {
         return question;
@@ -53,11 +66,4 @@ public class QuizNodeDTO extends StudyNodeDTO {
         this.option_D = option_D;
     }
 
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
 }

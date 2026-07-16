@@ -1,4 +1,6 @@
-package com.SeeTohJJ.Backend.study.model;
+package com.SeeTohJJ.Backend.study.model.content;
+
+import com.SeeTohJJ.Backend.study.model.StudyNode;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +13,7 @@ public class QuizContent extends StudyNode {
     private String option_B;
     private String option_C;
     private String option_D;
-    private String correctAnswer;
+    private int difficultyRating;
     private LocalDateTime lastUpdated;
 
     public String getNodeId() {
@@ -70,12 +72,12 @@ public class QuizContent extends StudyNode {
         this.option_D = option_D;
     }
 
-    public String getCorrectAnswer() {
-        return correctAnswer;
+    public int getDifficultyRating() {
+        return difficultyRating;
     }
 
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
+    public void setDifficultyRating(int difficultyRating) {
+        this.difficultyRating = difficultyRating;
     }
 
     public LocalDateTime getLastUpdated() {

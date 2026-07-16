@@ -2,10 +2,10 @@ package com.SeeTohJJ.Backend.study.dao.impl;
 
 import com.SeeTohJJ.Backend.study.constant.StudyConstant;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
-import com.SeeTohJJ.Backend.study.dto.DecisionNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.EventNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.QuizNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.mapper.StudyNodeRowMapper;
 import com.SeeTohJJ.Backend.study.mapper.StudyPathRowMapper;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
@@ -101,8 +101,7 @@ public class StudyDaoImpl implements StudyDao {
                 nodeType,
                 positionIndex,
                 isUnlocked,
-                isCompleted,
-                LocalDateTime.now()
+                isCompleted
         );
 
     }
@@ -127,7 +126,7 @@ public class StudyDaoImpl implements StudyDao {
 
     @Override
     public QuizNodeDTO getQuizNodeContent(String nodeId){
-        logger.info("Starting getQuizNodeContent");
+        logger.info("Starting getQuizNodeContent {}", nodeId);
 
         return jdbcTemplate.queryForObject(
                 StudyConstant.GET_QUIZ_NODE_CONTENT,
@@ -140,7 +139,6 @@ public class StudyDaoImpl implements StudyDao {
                     dto.setOption_B(rs.getString("option_b"));
                     dto.setOption_C(rs.getString("option_c"));
                     dto.setOption_D(rs.getString("option_d"));
-                    dto.setCorrectAnswer(rs.getString("correct_answer"));
                     return dto;
                 },
                 nodeId
@@ -183,5 +181,145 @@ public class StudyDaoImpl implements StudyDao {
                 nodeId
         );
     }
+
+    @Override
+    public void completeNode(Long userId, String nodeId){
+        logger.info("Starting completeNode");
+
+        jdbcTemplate.update(
+                StudyConstant.COMPLETE_NODE_WITH_USER_ID,
+                userId,
+                nodeId
+        );
+    }
+
+    @Override
+    public String getCorrectAnswer(String nodeId){
+        logger.info("Starting getCorrectAnswer");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_CORRECT_ANSWER,
+                (rs, rowNum) -> rs.getString("correct_answer"),
+                nodeId
+        );
+    }
+
+    @Override
+    public void saveUserQuestionAttempt(Long userId, String nodeId, boolean isCorrectAnswer, int timeTaken){
+        logger.info("Starting saveUserQuestionAttempt");
+
+        jdbcTemplate.update(
+                StudyConstant.SAVE_USER_QUESTION_ATTEMPT,
+                userId,
+                nodeId,
+                isCorrectAnswer,
+                timeTaken
+        );
+    }
+
+    @Override
+    public double getQuestionRating(String nodeId){
+        logger.info("Starting getQuestionRating");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_QUESTION_RATING,
+                (rs, rowNum) -> rs.getDouble("difficulty_rating"),
+                nodeId
+        );
+    }
+
+    @Override
+    public int getNodePositionalIndex(Long userId, String nodeId){
+        logger.info("Starting getNodePositionalIndex");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_NODE_POSITIONAL_INDEX,
+                (rs, rowNum) -> rs.getInt("position_index"),
+                userId,
+                nodeId
+        );
+    }
+
+    @Override
+    public void unlockNextNode(Long userId, int nodePosIndex) {
+        logger.info("Starting unlockNextNode");
+
+        jdbcTemplate.update(
+                StudyConstant.UNLOCK_NEXT_NODE,
+                userId,
+                nodePosIndex
+        );
+    }
+
+    @Override
+    public boolean checkIfNextNodeExist(Long userId, int nodePosIndex) {
+        logger.info("Starting checkIfNextNodeExist");
+
+        Integer count = jdbcTemplate.queryForObject(
+                StudyConstant.CHECK_NEXT_NODE_EXIST,
+                Integer.class,
+                userId,
+                nodePosIndex
+        );
+
+        return count != null && count > 0;
+    }
+
+    @Override
+    public String getCurrentSubtopic(Long userId){
+        logger.info("Starting getCurrentSubtopic");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_CURRENT_SUBTOPIC,
+                (rs, rowNum) -> rs.getString("subtopic_id"),
+                userId
+        );
+    }
+
+    @Override
+    public String getLowestPKnowSubtopic(Long userId){
+        logger.info("Starting getLowestPKnowSubtopic");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_LOWEST_P_KNOW_SUBTOPIC,
+                (rs, rowNum) -> rs.getString("subtopic_id"),
+                userId
+        );
+    }
+
+    @Override
+    public String getLowestPKnowSubtopicNotMastered(Long userId){
+        logger.info("Starting getLowestPKnowSubtopicNotMastered");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_LOWEST_P_KNOW_SUBTOPIC_NOT_MASTERED,
+                (rs, rowNum) -> rs.getString("subtopic_id"),
+                userId
+        );
+    }
+
+    @Override
+    public int getCurrentChain(Long userId, String subtopicId){
+        logger.info("Starting getCurrentChain");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_USER_SUBTOPIC_CURRENT_CHAIN,
+                (rs, rowNum) -> rs.getInt("current_chain"),
+                userId,
+                subtopicId
+        );
+    }
+
+    @Override
+    public int getUserLastPositionIndex(Long userId){
+        logger.info("Starting getLastPositionIndex");
+
+        return jdbcTemplate.queryForObject(
+                StudyConstant.GET_NODE_PATH_LAST_POS_INDEX,
+                (rs, rowNum) -> rs.getInt("position_index"),
+                userId
+        );
+    }
+
 
 }
