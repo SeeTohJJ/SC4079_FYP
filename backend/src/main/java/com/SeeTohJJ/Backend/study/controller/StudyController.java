@@ -8,9 +8,11 @@ import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.dto.result.LessonResultDTO;
 import com.SeeTohJJ.Backend.study.dto.*;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
+import com.SeeTohJJ.Backend.study.service.submission.NodeSubmissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +25,13 @@ public class StudyController {
 
     private final NodeGenerationService nodeGenerationService;
     private final JwtService jwtService;
+    private final NodeSubmissionService nodeSubmissionService;
 
     @Autowired
-    public StudyController(NodeGenerationService nodeGenerationService, JwtService jwtService) {
+    public StudyController(NodeGenerationService nodeGenerationService, JwtService jwtService, NodeSubmissionService nodeSubmissionService) {
         this.nodeGenerationService = nodeGenerationService;
         this.jwtService = jwtService;
+        this.nodeSubmissionService = nodeSubmissionService;
     }
 
     @PostMapping("/GetStudyPathNodes")
@@ -67,12 +71,18 @@ public class StudyController {
         return nodeGenerationService.getEventNodeContent(request.getNodeId());
     }
 
-//    @PostMapping("/LessonResult")
-//    public void lessonResult(@RequestBody LessonResultDTO request){
-//        logger.info("Starting lessonResult");
-//
-//        nodeGenerationService.completeNode(request.getUserId(), request.getNodeId());
-//    }
+    @PostMapping("/SubmitLesson")
+    public ResponseEntity<Void> lessonResult(@RequestHeader("Authorization") String authHeader,
+                                             @RequestBody LessonResultDTO request){
+        logger.info("Starting lessonResult");
+
+        nodeSubmissionService.completeLesson(
+                jwtService.extractUserId(authHeader.substring(7)),
+                request.getNodeId()
+        );
+
+        return ResponseEntity.ok().build();
+    }
 
 //    @PostMapping("/QuizResult")
 //    public void quizResult(@RequestBody QuizResultDTO request){

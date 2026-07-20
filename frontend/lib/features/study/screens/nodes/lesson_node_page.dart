@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/features/study/models/lesson_content.dart';
+import 'package:frontend/features/study/services/study_service.dart';
+
+final studyService = StudyService();
 
 class LessonNodePage extends StatelessWidget {
   final LessonContent lesson;
-  final Future<void> Function()? onComplete;
+  final String nodeId;
+  
 
   const LessonNodePage({
     super.key,
     required this.lesson,
-    this.onComplete,
+    required this.nodeId,
   });
 
   @override
@@ -38,11 +42,16 @@ class LessonNodePage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, true);
-                },
-                child: const Text("Complete Lesson"),
-              )
+              onPressed: () async {
+
+                await studyService.submitLesson(nodeId);
+
+                if (!context.mounted) return;
+
+                Navigator.pop(context, true);
+              },
+              child: const Text("Complete Lesson"),
+            )
             ),
           ],
         ),

@@ -209,12 +209,15 @@ class _StudyPageState extends State<StudyPage> {
           MaterialPageRoute(
             builder: (_) => LessonNodePage(
               lesson: lesson,
+              nodeId: node.id,
             ),
           ),
         );
 
+        if (!mounted) return;
+
         if (result == true) {
-          await _completeNode(node.id);
+          await loadNodes();
         }
 
         break;

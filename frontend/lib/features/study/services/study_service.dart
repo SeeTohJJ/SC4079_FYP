@@ -75,4 +75,27 @@ class StudyService {
       throw Exception("Failed to complete node");
     }
   }
+
+  Future<void> submitLesson(String nodeId) async {
+    final token = await authService.getToken();
+
+    if (token == null) {
+      throw Exception("Not logged in");
+    }
+
+    final response = await http.post(
+      Uri.parse("$baseUrl/SubmitLesson"),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({
+        "nodeId": nodeId,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to submit lesson");
+    }
+  }
 }
