@@ -5,10 +5,10 @@ public class QuizNodeDTO {
     private String nodeId;
     private String title;
     private String question;
-    private String option_A;
-    private String option_B;
-    private String option_C;
-    private String option_D;
+    private String optionA;
+    private String optionB;
+    private String optionC;
+    private String optionD;
 
     public String getNodeId() {
         return nodeId;
@@ -34,36 +34,36 @@ public class QuizNodeDTO {
         this.question = question;
     }
 
-    public String getOption_A() {
-        return option_A;
+    public String getOptionA() {
+        return optionA;
     }
 
-    public void setOption_A(String option_A) {
-        this.option_A = option_A;
+    public void setOptionA(String optionA) {
+        this.optionA = optionA;
     }
 
-    public String getOption_B() {
-        return option_B;
+    public String getOptionB() {
+        return optionB;
     }
 
-    public void setOption_B(String option_B) {
-        this.option_B = option_B;
+    public void setOptionB(String optionB) {
+        this.optionB = optionB;
     }
 
-    public String getOption_C() {
-        return option_C;
+    public String getOptionC() {
+        return optionC;
     }
 
-    public void setOption_C(String option_C) {
-        this.option_C = option_C;
+    public void setOptionC(String optionC) {
+        this.optionC = optionC;
     }
 
-    public String getOption_D() {
-        return option_D;
+    public String getOptionD() {
+        return optionD;
     }
 
-    public void setOption_D(String option_D) {
-        this.option_D = option_D;
+    public void setOptionD(String optionD) {
+        this.optionD = optionD;
     }
 
 }

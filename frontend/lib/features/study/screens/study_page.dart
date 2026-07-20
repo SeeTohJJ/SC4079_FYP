@@ -153,8 +153,12 @@ class _StudyPageState extends State<StudyPage> {
   void _onNodeTap(BuildContext context, StudyNode node) {
     showModalBottomSheet(
       context: context,
-      builder: (_) {
-        return Padding(
+      constraints: const BoxConstraints(
+        maxWidth: double.infinity,
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          width: double.infinity, 
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -164,7 +168,7 @@ class _StudyPageState extends State<StudyPage> {
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 10),
-              Text("Type: ${node.type}"),
+              Text("Type: ${node.type.toString().split('.').last.toUpperCase()}"),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
@@ -223,15 +227,24 @@ class _StudyPageState extends State<StudyPage> {
         break;
 
       case NodeType.quiz:
+        final quiz = await studyService.getQuizContent(node.id);
+
+        if (!mounted) return;
+
         final result = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => QuizNodePage(node: node),
+            builder: (_) => QuizNodePage(
+              nodeId: node.id,
+              quiz: quiz,
+            ),
           ),
         );
 
+        if (!mounted) return;
+
         if (result == true) {
-          _completeNode(node.id);
+          await loadNodes();
         }
 
         break;

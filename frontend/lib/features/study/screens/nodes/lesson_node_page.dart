@@ -8,7 +8,6 @@ class LessonNodePage extends StatelessWidget {
   final LessonContent lesson;
   final String nodeId;
   
-
   const LessonNodePage({
     super.key,
     required this.lesson,

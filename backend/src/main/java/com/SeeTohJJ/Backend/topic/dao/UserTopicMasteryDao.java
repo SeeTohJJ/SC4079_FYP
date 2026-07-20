@@ -10,7 +10,7 @@ public interface UserTopicMasteryDao {
     boolean isTutorialCompleted(Long userId, String topicId);
     String getTopUserUncompletedTopic(Long userId);
 
-    BktParameters getBktParameters(String nodeId);
+    BktParameters getBktParameters(String subtopicId);
     double getUserPKnow(Long userId, String subTopicId);
     void updatePKnow(Long userId, String subTopicId, double updatedPKnow);
     UserSubTopicMastery getUserAttemptHistory(Long userId, String subTopicId);

@@ -20,10 +20,9 @@ public class EloServiceImpl implements EloService {
     }
 
     @Override
-    public void updateUserElo(Long userId, String nodeId, boolean isCorrectAnswer){
+    public void updateUserElo(Long userId, String subtopicId, String nodeId, boolean isCorrectAnswer){
         logger.info("Starting updateUserElo");
 
-        String subtopicId = subTopicService.getSubTopicId(nodeId);
         double questionRating = studyDao.getQuestionRating(nodeId);
         double userElo = subTopicService.getUserElo(userId, subtopicId);
 

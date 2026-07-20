@@ -7,5 +7,5 @@ public interface QuizSubmissionService {
     boolean gradeAnswer(String nodeId, String optionSelected);
     void saveQuestionAttemptHistory(Long userId, String nodeId, boolean isCorrectAnswer, int timeTaken);
 
-    void completeLesson(Long userId, QuizResultDTO quizResult);
+    void completeQuiz(Long userId, QuizResultDTO quizResult);
 }

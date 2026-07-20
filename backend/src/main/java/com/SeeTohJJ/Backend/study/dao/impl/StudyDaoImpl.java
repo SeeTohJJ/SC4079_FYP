@@ -18,7 +18,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -136,10 +135,10 @@ public class StudyDaoImpl implements StudyDao {
                     dto.setNodeId(rs.getString("node_id"));
                     dto.setTitle(rs.getString("title"));
                     dto.setQuestion(rs.getString("content"));
-                    dto.setOption_A(rs.getString("option_a"));
-                    dto.setOption_B(rs.getString("option_b"));
-                    dto.setOption_C(rs.getString("option_c"));
-                    dto.setOption_D(rs.getString("option_d"));
+                    dto.setOptionA(rs.getString("option_a"));
+                    dto.setOptionB(rs.getString("option_b"));
+                    dto.setOptionC(rs.getString("option_c"));
+                    dto.setOptionD(rs.getString("option_d"));
                     return dto;
                 },
                 nodeId
@@ -208,6 +207,8 @@ public class StudyDaoImpl implements StudyDao {
     @Override
     public void saveUserQuestionAttempt(Long userId, String nodeId, boolean isCorrectAnswer, int timeTaken){
         logger.info("Starting saveUserQuestionAttempt");
+
+        logger.info(userId  + " " + nodeId + " " + isCorrectAnswer + " " + timeTaken);
 
         jdbcTemplate.update(
                 StudyConstant.SAVE_USER_QUESTION_ATTEMPT,

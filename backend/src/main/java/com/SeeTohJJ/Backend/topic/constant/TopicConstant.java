@@ -33,14 +33,14 @@ public class TopicConstant {
 
     public static final String GET_SUBTOPIC_ID = """
             SELECT subtopic_id
-            FROM subtopics
-            WHERE topic_id = ? AND is_active = true
+            FROM study_nodes
+            WHERE node_id = ? AND is_active = true
             """;
 
     public static final String GET_BKT_PARAMETERS = """
-            SELECT subtopic_id, p_init, p_transit, p_slip, p_guess
+            SELECT p_init, p_transit, p_slip, p_guess
             FROM subtopics
-            WHERE topic_id = ? AND is_active = true
+            WHERE subtopic_id = ? AND is_active = true
             """;
 
     public static final String GET_USER_P_KNOW = """

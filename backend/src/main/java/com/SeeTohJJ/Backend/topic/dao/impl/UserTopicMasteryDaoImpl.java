@@ -59,21 +59,21 @@ public class UserTopicMasteryDaoImpl implements UserTopicMasteryDao {
     }
 
     @Override
-    public BktParameters getBktParameters(String nodeId){
+    public BktParameters getBktParameters(String subtopicId){
         logger.info("Starting getBktParameters");
 
         return jdbcTemplate.queryForObject(
                 TopicConstant.GET_BKT_PARAMETERS,
                 (rs, rowNum) -> {
                     BktParameters bkt = new BktParameters();
-                    bkt.setSubTopic_id(rs.getString("subtopic_id"));
+                    bkt.setSubTopic_id(subtopicId);
                     bkt.setP_init(rs.getDouble("p_init"));
                     bkt.setP_transit(rs.getDouble("p_transit"));
                     bkt.setP_slip(rs.getDouble("p_slip"));
                     bkt.setP_guess(rs.getDouble("p_guess"));
                     return bkt;
                 },
-                nodeId
+                subtopicId
         );
     }
 
@@ -92,7 +92,7 @@ public class UserTopicMasteryDaoImpl implements UserTopicMasteryDao {
 
     @Override
     public void updatePKnow(Long userId, String subTopicId, double updatedPKnow){
-        logger.info("Starting  updatePKnow");
+        logger.info("Starting updatePKnow");
 
         jdbcTemplate.update(
                 TopicConstant.UPDATE_USER_P_KNOW,

@@ -46,6 +46,6 @@ public class QuizController {
                            @RequestBody QuizResultDTO request){
         logger.info("Starting submitQuiz");
 
-        quizSubmissionService.completeLesson(jwtService.extractUserId(authHeader.substring(7)), request);
+        quizSubmissionService.completeQuiz(jwtService.extractUserId(authHeader.substring(7)), request);
     }
 }

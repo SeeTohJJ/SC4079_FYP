@@ -54,8 +54,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     }
 
     @Override
-    public void completeLesson(Long userId, QuizResultDTO quizResult){
-        logger.info("Starting completeLesson");
+    public void completeQuiz(Long userId, QuizResultDTO quizResult){
+        logger.info("Starting completeQuiz");
 
         String nodeId = quizResult.getNodeId();
         int timeTaken = quizResult.getTimeTaken();
@@ -64,7 +64,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
 
         saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken);
         bktService.updateUserKnowledge(userId, subtopicId, isCorrectAnswer, timeTaken);
-        eloService.updateUserElo(userId, subtopicId, isCorrectAnswer);
+        eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
         bktService.updateSubTopicMastery(userId, subtopicId);
         processQuizCompletion(userId, nodeId);
     }
@@ -78,7 +78,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         if(progressService.checkIfNextNodeExist(userId, nodePosIndex + 1)) {
             progressService.unlockNextNode(userId, nodePosIndex + 1);
         }
-        else if(nodeId.contains("MRQ")){
+
+        else {
             nodeGenerationService.generateNewChain(userId);
             progressService.unlockNextNode(userId, nodePosIndex + 1);
         }

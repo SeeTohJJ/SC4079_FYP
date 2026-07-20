@@ -1,75 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/features/study/models/study_node.dart';
-import 'package:frontend/features/study/models/quiz_question.dart';
+import 'package:frontend/features/study/models/quiz_content.dart';
+import 'package:frontend/features/study/models/quiz_option.dart';
+import 'package:frontend/features/study/services/study_service.dart';
 
 class QuizNodePage extends StatefulWidget {
-  final StudyNode node;
+  final String nodeId;
+  final QuizContent quiz;
 
-  const QuizNodePage({super.key, required this.node});
+  const QuizNodePage({
+    super.key,
+    required this.nodeId,
+    required this.quiz,
+  });
 
   @override
   State<QuizNodePage> createState() => _QuizNodePageState();
 }
 
 class _QuizNodePageState extends State<QuizNodePage> {
-  int? selectedIndex;
+  final studyService = StudyService();
 
-  final question = QuizQuestion(
-    question: "What is budgeting?",
-    options: [
-      "Spending all your money",
-      "Planning how to use your money",
-      "Borrowing money",
-      "Ignoring expenses",
-    ],
-    correctIndex: 1,
-  );
 
-  void submit() {
-    final isCorrect = selectedIndex == question.correctIndex;
+  String? selectedOptionId;
+  late final Stopwatch stopwatch;
+  late List<QuizOption> options;
 
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(isCorrect ? "Correct 🎉" : "Wrong ❌"),
-        content: Text(isCorrect
-            ? "You earned rewards!"
-            : "Try again next time."),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context, isCorrect); // return result
-            },
-            child: const Text("Continue"),
-          )
-        ],
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    stopwatch = Stopwatch()..start();
+
+    options = List<QuizOption>.from(widget.quiz.options);
+    options.shuffle();
+  }
+
+  Future<void> submit() async {
+    if (selectedOptionId == null) return;
+
+    stopwatch.stop();
+
+    try {
+      await studyService.submitQuiz(
+        nodeId: widget.nodeId,
+        optionSelected: selectedOptionId!,
+        timeTaken: stopwatch.elapsed.inSeconds,
+      );
+
+      if (!mounted) return;
+
+      Navigator.pop(context, true);
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to submit quiz: $e"),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final quiz = widget.quiz;
+
     return Scaffold(
-      appBar: AppBar(title: Text(widget.node.title)),
+      appBar: AppBar(
+        title: Text(quiz.title),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              question.question,
-              style: const TextStyle(fontSize: 20),
+              quiz.question,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(height: 20),
 
-            ...List.generate(question.options.length, (i) {
-              return RadioListTile(
-                title: Text(question.options[i]),
-                value: i,
-                groupValue: selectedIndex,
+            const SizedBox(height: 24),
+
+            ...List.generate(options.length, (index) {
+              final option = options[index];
+
+              return RadioListTile<String>(
+                title: Text(option.text),
+                value: option.id,
+                groupValue: selectedOptionId,
                 onChanged: (value) {
                   setState(() {
-                    selectedIndex = value;
+                    selectedOptionId = value;
                   });
                 },
               );
@@ -77,9 +97,12 @@ class _QuizNodePageState extends State<QuizNodePage> {
 
             const Spacer(),
 
-            ElevatedButton(
-              onPressed: selectedIndex == null ? null : submit,
-              child: const Text("Submit"),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: selectedOptionId == null ? null : submit,
+                child: const Text("Submit Quiz"),
+              ),
             ),
           ],
         ),

@@ -61,14 +61,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         }
 
         String uncompletedTopicId = topicService.getUncompletedTutorialTopic(userId);
-        String uncompletedSubtopicId = uncompletedTopicId.concat("S001");
-
-        // Generate study nodes based on user topic interest
-//        if(uncompletedTopicId == null) {
-//            insertAdaptiveNodesForUser(userId);
-//
-//            return getExistingNodePath(userId);
-//        }
+        String uncompletedSubtopicId = uncompletedTopicId.concat("S001"); // tutorial always the first subtopic of each topic
 
         // Generate tutorial nodes if user has interest in topic and tutorial not completed
         insertNewSubtopicMastery(userId, uncompletedSubtopicId);
