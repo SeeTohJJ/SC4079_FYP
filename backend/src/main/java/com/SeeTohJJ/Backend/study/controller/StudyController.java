@@ -7,6 +7,7 @@ import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
 import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.dto.result.LessonResultDTO;
 import com.SeeTohJJ.Backend.study.dto.*;
+import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.submission.NodeSubmissionService;
 import org.slf4j.Logger;
@@ -26,12 +27,18 @@ public class StudyController {
     private final NodeGenerationService nodeGenerationService;
     private final JwtService jwtService;
     private final NodeSubmissionService nodeSubmissionService;
+    private final ContentRetrievalService contentRetrievalService;
 
     @Autowired
-    public StudyController(NodeGenerationService nodeGenerationService, JwtService jwtService, NodeSubmissionService nodeSubmissionService) {
+    public StudyController(NodeGenerationService nodeGenerationService,
+                           JwtService jwtService,
+                           NodeSubmissionService nodeSubmissionService,
+                           ContentRetrievalService contentRetrievalService
+    ) {
         this.nodeGenerationService = nodeGenerationService;
         this.jwtService = jwtService;
         this.nodeSubmissionService = nodeSubmissionService;
+        this.contentRetrievalService = contentRetrievalService;
     }
 
     @PostMapping("/GetStudyPathNodes")
@@ -42,31 +49,25 @@ public class StudyController {
     }
 
     @PostMapping("/GetLessonContent")
-    public LessonNodeDTO getLessonContent(@RequestBody NodeRequestDTO request) {
+    public LessonNodeDTO getLessonContent(@RequestHeader("Authorization") String authHeader,
+                                          @RequestBody NodeRequestDTO request) {
         logger.info("Starting getLessonContent");
 
-        return nodeGenerationService.getLessonNodeContent(request.getNodeId());
-    }
-
-    @PostMapping("/GetQuizContent")
-    public QuizNodeDTO getQuizContent(@RequestBody NodeRequestDTO request) {
-        logger.info("Starting getQuizContent");
-
-        return nodeGenerationService.getQuizContent(request.getNodeId());
+        return contentRetrievalService.getLessonNodeContent(request.getNodeId());
     }
 
     @PostMapping("/GetDecisionContent")
     public DecisionNodeDTO getDecisionContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getDecisionContent");
 
-        return nodeGenerationService.getDecisionNodeContent(request.getNodeId());
+        return contentRetrievalService.getDecisionNodeContent(request.getNodeId());
     }
 
     @PostMapping("/GetEventContent")
     public EventNodeDTO getEventContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getEventContent");
 
-        return nodeGenerationService.getEventNodeContent(request.getNodeId());
+        return contentRetrievalService.getEventNodeContent(request.getNodeId());
     }
 
     @PostMapping("/SubmitLesson")
@@ -81,14 +82,6 @@ public class StudyController {
 
         return ResponseEntity.ok().build();
     }
-
-//    @PostMapping("/QuizResult")
-//    public void quizResult(@RequestBody QuizResultDTO request){
-//        logger.info("Starting quizResult");
-//
-//        studyService.completeNode(request.getUserId(), request.getNodeId());
-//        scoringService.completeQuiz(request.getUserId(), request.getNodeId(), request.getIsCorrect(), request.getTimeTaken());
-//    }
 
     @PostMapping("/DecisionResult")
     public void decisionResult(){

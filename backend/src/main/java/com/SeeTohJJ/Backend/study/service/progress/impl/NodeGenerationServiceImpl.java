@@ -3,10 +3,6 @@ package com.SeeTohJJ.Backend.study.service.progress.impl;
 import com.SeeTohJJ.Backend.study.dao.ChainTemplateDao;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.dto.*;
-import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.model.UserNodeProgress;
 import com.SeeTohJJ.Backend.study.model.chain.ChainTemplate;
@@ -32,8 +28,6 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
     private final StudyDao studyDao;
     private final TopicService topicService;
-    private final BktService bktService;
-    private final EloService eloService;
     private final ProgressService progressService;
     private final SubTopicService subTopicService;
     private final ChainTemplateDao chainTemplateDao;
@@ -41,15 +35,11 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
     @Autowired
     public NodeGenerationServiceImpl(StudyDao studyDao,
                                      TopicService topicService,
-                                     BktService bktService,
-                                     EloService eloService,
                                      ProgressService progressService,
                                      SubTopicService subTopicService,
                                      ChainTemplateDao chainTemplateDao) {
         this.studyDao = studyDao;
         this.topicService = topicService;
-        this.bktService = bktService;
-        this.eloService = eloService;
         this.progressService = progressService;
         this.subTopicService = subTopicService;
         this.chainTemplateDao = chainTemplateDao;
@@ -160,34 +150,6 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
             position++;
         }
-    }
-
-    @Override
-    public LessonNodeDTO getLessonNodeContent(String nodeId){
-        logger.info("Starting getLessonNodeContent");
-
-        return studyDao.getLessonNodeContent(nodeId);
-    }
-
-    @Override
-    public QuizNodeDTO getQuizContent(String nodeId){
-        logger.info("Starting getQuizContent");
-
-        return studyDao.getQuizNodeContent(nodeId);
-    }
-
-    @Override
-    public DecisionNodeDTO getDecisionNodeContent(String nodeId){
-        logger.info("Starting getDecisionNodeContent");
-
-        return studyDao.getDecisionNodeContent(nodeId);
-    }
-
-    @Override
-    public EventNodeDTO getEventNodeContent(String nodeId){
-        logger.info("Starting getEventNodeContent");
-
-        return studyDao.getEventNodeContent(nodeId);
     }
 
     @Override

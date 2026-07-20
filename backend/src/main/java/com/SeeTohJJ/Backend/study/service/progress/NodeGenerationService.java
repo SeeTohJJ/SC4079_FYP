@@ -13,11 +13,6 @@ public interface NodeGenerationService {
     List<StudyNodePathDTO> getStudyPathNodes(Long userId);
     List<StudyNodePathDTO> getExistingNodePath(Long userId);
 
-    LessonNodeDTO getLessonNodeContent(String nodeId);
-    QuizNodeDTO getQuizContent(String nodeId);
-    DecisionNodeDTO getDecisionNodeContent(String nodeId);
-    EventNodeDTO getEventNodeContent(String nodeId);
-
     void generateNewChain(Long userId);
 
 }
