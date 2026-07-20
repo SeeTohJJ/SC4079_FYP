@@ -17,6 +17,14 @@ public class ChainTemplate {
         return orderInChain;
     }
 
+    public ChainType getChainType() {
+        return chainType;
+    }
+
+    public void setChainType(ChainType chainType) {
+        this.chainType = chainType;
+    }
+
     public void setOrderInChain(int orderInChain) {
         this.orderInChain = orderInChain;
     }

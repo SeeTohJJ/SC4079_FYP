@@ -24,4 +24,5 @@ public interface UserTopicMasteryDao {
     String getTopicIdFromSubtopicId(String subtopicId);
     boolean checkSubtopicExist(String subtopicId);
     String getRandomUninterestedTopic(Long userId);
+    void insertNewSubtopicMastery(Long userId, String subtopicId, float p_know);
 }

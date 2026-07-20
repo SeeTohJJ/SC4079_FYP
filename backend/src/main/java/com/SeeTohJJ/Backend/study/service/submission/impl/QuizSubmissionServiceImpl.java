@@ -19,7 +19,6 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private static final Logger logger = LoggerFactory.getLogger(QuizSubmissionServiceImpl.class);
 
     private final NodeGenerationService nodeGenerationService;
-    private final QuizSubmissionService quizSubmissionService;
     private final BktService bktService;
     private final EloService eloService;
     private final SubTopicService subTopicService;
@@ -28,13 +27,11 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
 
     @Autowired
     public QuizSubmissionServiceImpl(NodeGenerationService nodeGenerationService,
-                                     QuizSubmissionService quizSubmissionService,
                                      BktService bktService,
                                      EloService eloService,
                                      SubTopicService subTopicService,
                                      StudyDao studyDao, ProgressService progressService) {
         this.nodeGenerationService = nodeGenerationService;
-        this.quizSubmissionService = quizSubmissionService;
         this.bktService = bktService;
         this.eloService = eloService;
         this.subTopicService = subTopicService;
@@ -63,14 +60,30 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         Long userId = quizResult.getUserId();
         String nodeId = quizResult.getNodeId();
         int timeTaken = quizResult.getTimeTaken();
-        boolean isCorrectAnswer = quizSubmissionService.gradeAnswer(quizResult.getNodeId(), quizResult.getOptionSelected());
+        boolean isCorrectAnswer = gradeAnswer(quizResult.getNodeId(), quizResult.getOptionSelected());
         String subtopicId = subTopicService.getSubTopicId(nodeId);
 
-        quizSubmissionService.saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken);
+        saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken);
         bktService.updateUserKnowledge(userId, subtopicId, isCorrectAnswer, timeTaken);
         eloService.updateUserElo(userId, subtopicId, isCorrectAnswer);
         bktService.updateSubTopicMastery(userId, subtopicId);
-        progressService.processQuizCompletion(userId, nodeId);
+        processQuizCompletion(userId, nodeId);
+    }
+
+    public void processQuizCompletion(Long userId, String nodeId){
+        logger.info("Starting processQuizCompletion");
+
+        progressService.completeNode(userId, nodeId);
+        int nodePosIndex = progressService.getNodePositionIndexInPath(userId, nodeId);
+
+        if(progressService.checkIfNextNodeExist(userId, nodePosIndex + 1)) {
+            progressService.unlockNextNode(userId, nodePosIndex + 1);
+        }
+        else if(nodeId.contains("MRQ")){
+            nodeGenerationService.generateNewChain(userId);
+            progressService.unlockNextNode(userId, nodePosIndex + 1);
+        }
+
     }
 
 

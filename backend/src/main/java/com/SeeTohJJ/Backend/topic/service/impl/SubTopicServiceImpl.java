@@ -26,7 +26,8 @@ public class SubTopicServiceImpl implements SubTopicService {
     @Autowired
     public SubTopicServiceImpl(TopicDao topicDao,
                                UserTopicMasteryDao userTopicMasteryDao,
-                               UserTopicDao userTopicDao, ProgressService progressService) {
+                               UserTopicDao userTopicDao,
+                               ProgressService progressService) {
         this.topicDao = topicDao;
         this.userTopicMasteryDao = userTopicMasteryDao;
         this.userTopicDao = userTopicDao;
@@ -187,8 +188,27 @@ public class SubTopicServiceImpl implements SubTopicService {
         logger.info("Starting getNodeId");
 
         int nextChain = currentChain + 1;
-        int targetOrderIndex = (contentSequence - 1) + (nextChain * 3); // 3 standard lesson per chain
+        int targetOrderIndex;
+
+        // Tutorial currentChain == 1
+        if (currentChain == 1){
+            targetOrderIndex = contentSequence;
+        }
+        else{
+            targetOrderIndex = (contentSequence - 1) + (nextChain * 3); // 3 standard lesson per chain
+        }
 
         return topicDao.getNodeId(subtopicId, nodeType, targetOrderIndex);
     }
+
+    @Override
+    public void insertNewSubtopicMastery(Long userId, String subtopicId){
+        logger.info("Starting insertNewSubtopicMastery");
+
+        float p_know = topicDao.getInitialPKnow(subtopicId);
+
+        userTopicMasteryDao.insertNewSubtopicMastery(userId, subtopicId, p_know);
+
+    }
+
 }

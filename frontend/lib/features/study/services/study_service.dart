@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:frontend/features/study/models/lesson_content.dart';
 import 'package:http/http.dart' as http;
+import 'package:frontend/auth/services/auth_services.dart';
 
 class StudyService {
   static const String baseUrl = "http://10.0.2.2:8080/api/study";
+
+  final authService = AuthService();
 
     Future<List<dynamic>> getStudyPathNodes(String token,) async {
     // print("Fetching study path with token: $token");
@@ -48,5 +51,28 @@ class StudyService {
     }
 
     throw Exception('Failed to load lesson content');
+  }
+
+  Future<void> completeNode(String nodeId) async {
+    final token = await authService.getToken();
+
+    if (token == null) {
+      throw Exception("Not logged in");
+    }
+
+    final response = await http.post(
+      Uri.parse("$baseUrl/api/study/completeNode"),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({
+        "nodeId": nodeId,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to complete node");
+    }
   }
 }

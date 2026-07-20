@@ -197,22 +197,26 @@ class _StudyPageState extends State<StudyPage> {
 
   Future<void> _openNode(BuildContext context, StudyNode node) async {
     switch (node.type) {
+
       case NodeType.lesson:
 
-      final lesson = await studyService.getLessonContent(node.id); 
-      
-      if (!context.mounted) return;
-        Navigator.push(
+        final lesson = await studyService.getLessonContent(node.id);
+
+        if (!mounted) return;
+
+        final result = await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => LessonNodePage(
               lesson: lesson,
-              onComplete: () {
-                _completeNode(node.id);
-              },
             ),
           ),
         );
+
+        if (result == true) {
+          await _completeNode(node.id);
+        }
+
         break;
 
       case NodeType.quiz:
@@ -262,17 +266,15 @@ class _StudyPageState extends State<StudyPage> {
     }
   }
 
-  void _completeNode(String nodeId) {
-    final index = nodes.indexWhere((n) => n.id == nodeId);
+  Future<void> _completeNode(String nodeId) async {
+    try {
+      await studyService.completeNode(nodeId);
 
-    if (index == -1) return;
+      // Reload from backend so UI stays in sync
+      await loadNodes();
 
-    setState(() {
-      nodes[index].isCompleted = true;
-
-      if (index + 1 < nodes.length) {
-        nodes[index + 1].isUnlocked = true;
-      }
-    });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }

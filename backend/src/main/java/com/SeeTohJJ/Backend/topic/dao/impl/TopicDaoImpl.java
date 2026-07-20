@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 @Repository
 public class TopicDaoImpl implements TopicDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(TopicDaoImpl.class);
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -50,6 +50,8 @@ public class TopicDaoImpl implements TopicDao {
     public String getNodeId(String subtopicId, String nodeType, int targetOrderIndex) {
         logger.info("Starting getNodeId");
 
+        logger.info("subtopicId: " + subtopicId + ", nodeType: " + nodeType + ", targetOrderIndex: " + targetOrderIndex);
+
         return jdbcTemplate.queryForObject(
                 TopicConstant.GET_NODE_ID_BY_ORDER_INDEX,
                 String.class,
@@ -58,5 +60,19 @@ public class TopicDaoImpl implements TopicDao {
                 nodeType
         );
     }
+
+    @Override
+    public float getInitialPKnow(String subtopicId){
+        logger.info("Starting getInitialPKnow");
+
+        Float result = jdbcTemplate.queryForObject(
+                TopicConstant.GET_INITIAL_PKNOW,
+                Float.class,
+                subtopicId
+        );
+
+        return result != null ? result : 0.0f;
+    }
+
 
 }

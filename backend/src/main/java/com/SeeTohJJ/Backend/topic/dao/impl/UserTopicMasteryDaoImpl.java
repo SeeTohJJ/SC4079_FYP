@@ -235,4 +235,19 @@ public class UserTopicMasteryDaoImpl implements UserTopicMasteryDao {
         );
     }
 
+    @Override
+    public void insertNewSubtopicMastery(Long userId, String subtopicId, float p_know){
+        logger.info("Starting insertNewSubtopicMastery");
+
+        logger.info(userId + "-" + subtopicId + "-" + p_know);
+
+        jdbcTemplate.update(
+                TopicConstant.INSERT_NEW_SUBTOPIC_MASTERY,
+                userId,
+                subtopicId,
+                p_know
+        );
+    }
+
+
 }

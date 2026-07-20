@@ -71,6 +71,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         }
 
         String uncompletedTopicId = topicService.getUncompletedTutorialTopic(userId);
+        String uncompletedSubtopicId = uncompletedTopicId.concat("S001");
 
         // Generate study nodes based on user topic interest
 //        if(uncompletedTopicId == null) {
@@ -80,7 +81,8 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 //        }
 
         // Generate tutorial nodes if user has interest in topic and tutorial not completed
-        insertTutorialNodesForUser(userId, uncompletedTopicId);
+        insertNewSubtopicMastery(userId, uncompletedSubtopicId);
+        insertTutorialNodesForUser(userId, uncompletedSubtopicId);
 
         return getExistingNodePath(userId);
     }
@@ -117,13 +119,19 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
     }
 
-
-    // Take tutorial node from study_node and insert it into user_node_progress
     private void insertTutorialNodesForUser(Long userId, String TopicId) {
         logger.info("Starting insertTutorialNodesForUser");
 
-        List<StudyNode> nodes = fetchTutorialNodes(TopicId);
-        insertNodesIntoNodeProgress(nodes, userId);
+//        List<StudyNode> nodes = fetchTutorialNodes(TopicId);
+//        insertNodesIntoNodeProgress(nodes, userId);
+
+        generateChain(userId, TopicId, ChainType.TUTORIAL);
+    }
+
+    private void insertNewSubtopicMastery(Long userId, String subtopicId) {
+        logger.info("Starting insertNewSubtopicMastery");
+
+        subTopicService.insertNewSubtopicMastery(userId, subtopicId);
     }
 
     private List<StudyNode> fetchTutorialNodes(String TopicId) {

@@ -13,6 +13,7 @@ import com.SeeTohJJ.Backend.study.model.UserNodeProgress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -302,6 +303,8 @@ public class StudyDaoImpl implements StudyDao {
     public int getCurrentChain(Long userId, String subtopicId){
         logger.info("Starting getCurrentChain");
 
+        logger.info(userId+":"+subtopicId);
+
         return jdbcTemplate.queryForObject(
                 StudyConstant.GET_USER_SUBTOPIC_CURRENT_CHAIN,
                 (rs, rowNum) -> rs.getInt("current_chain"),
@@ -312,13 +315,18 @@ public class StudyDaoImpl implements StudyDao {
 
     @Override
     public int getUserLastPositionIndex(Long userId){
-        logger.info("Starting getLastPositionIndex");
+        logger.info("Starting getUserLastPositionIndex");
 
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_NODE_PATH_LAST_POS_INDEX,
-                (rs, rowNum) -> rs.getInt("position_index"),
-                userId
-        );
+        try {
+            Integer result = jdbcTemplate.queryForObject(
+                    StudyConstant.GET_NODE_PATH_LAST_POS_INDEX,
+                    (rs, rowNum) -> rs.getInt("current_chain"),
+                    userId
+            );
+            return result != null ? result : 1;
+        } catch (EmptyResultDataAccessException e) {
+            return 1;
+        }
     }
 
 

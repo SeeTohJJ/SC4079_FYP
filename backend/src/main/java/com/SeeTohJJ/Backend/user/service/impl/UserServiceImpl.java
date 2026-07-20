@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setUserProfile(Long userId, RegisterRequestDTO request) {
-        logger.info("Starting Set User Profile");
+        logger.info("Starting setUserProfile");
 
         UserProfile userProfile = new UserProfile();
 

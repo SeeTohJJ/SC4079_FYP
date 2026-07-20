@@ -28,7 +28,9 @@ public class ChainTemplateDaoImpl implements ChainTemplateDao {
 
     @Override
     public List<ChainTemplate> getChainTemplate(NodeGenerationServiceImpl.ChainType chainType){
-        logger.info("Getting Chain Template");
+        logger.info("Starting getChainTemplate");
+
+        logger.info("chain name " + chainType.name());
 
         return jdbcTemplate.query(
                 ChainTemplateConstant.GET_CHAIN_TEMPLATE,

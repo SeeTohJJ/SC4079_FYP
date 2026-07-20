@@ -3,7 +3,7 @@ import 'package:frontend/features/study/models/lesson_content.dart';
 
 class LessonNodePage extends StatelessWidget {
   final LessonContent lesson;
-  final VoidCallback? onComplete;
+  final Future<void> Function()? onComplete;
 
   const LessonNodePage({
     super.key,
@@ -30,7 +30,7 @@ class LessonNodePage extends StatelessWidget {
             const SizedBox(height: 24),
 
             Text(
-              lesson.content ?? "No lesson content available",
+              lesson.content,
             ),
 
             const Spacer(),
@@ -39,11 +39,10 @@ class LessonNodePage extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  onComplete?.call();
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
                 },
                 child: const Text("Complete Lesson"),
-              ),
+              )
             ),
           ],
         ),

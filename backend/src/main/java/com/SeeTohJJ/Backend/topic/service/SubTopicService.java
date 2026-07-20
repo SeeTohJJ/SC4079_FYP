@@ -19,4 +19,5 @@ public interface SubTopicService {
     boolean moreLessonExists(Long userId, String subtopicId);
 
     String getNodeId(String subtopicId, String nodeType, int contentSequence, int currentChain);
+    void insertNewSubtopicMastery(Long userId, String subtopicId);
 }

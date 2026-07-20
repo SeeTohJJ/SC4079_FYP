@@ -134,6 +134,17 @@ public class TopicConstant {
     public static final String GET_NODE_ID_BY_ORDER_INDEX = """
             SELECT node_id
             FROM study_nodes
-            WHERE topic_id = ? AND order_index = ? AND type = ?
+            WHERE subtopic_id = ? AND order_index = ? AND type = ?
+            """;
+
+    public static final String GET_INITIAL_PKNOW = """
+            SELECT p_init
+            FROM subtopics
+            WHERE subtopic_id = ?
+            """;
+
+    public static final String INSERT_NEW_SUBTOPIC_MASTERY = """
+            INSERT INTO user_subtopic_mastery (user_id, subtopic_id, p_know, is_mastered, last_updated)
+            VALUES (?, ?, ?, false, CURRENT_TIMESTAMP)
             """;
 }

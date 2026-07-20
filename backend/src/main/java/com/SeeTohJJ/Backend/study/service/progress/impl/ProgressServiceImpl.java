@@ -14,12 +14,10 @@ public class ProgressServiceImpl implements ProgressService {
     private static final Logger logger = LoggerFactory.getLogger(ProgressServiceImpl.class);
 
     private final StudyDao studyDao;
-    private final NodeGenerationService nodeGenerationService;
 
     @Autowired
-    public ProgressServiceImpl(StudyDao studyDao,  NodeGenerationService nodeGenerationService) {
+    public ProgressServiceImpl(StudyDao studyDao) {
         this.studyDao = studyDao;
-        this.nodeGenerationService = nodeGenerationService;
     }
 
     @Override
@@ -27,23 +25,6 @@ public class ProgressServiceImpl implements ProgressService {
         logger.info("Starting completeNode");
 
         studyDao.completeNode(userId, nodeId);
-    }
-
-    @Override
-    public void processQuizCompletion(Long userId, String nodeId){
-        logger.info("Starting processQuizCompletion");
-
-        completeNode(userId, nodeId);
-        int nodePosIndex = getNodePositionIndexInPath(userId, nodeId);
-
-        if(checkIfNextNodeExist(userId, nodePosIndex + 1)) {
-            unlockNextNode(userId, nodePosIndex + 1);
-        }
-        else if(nodeId.contains("MRQ")){
-            nodeGenerationService.generateNewChain(userId);
-            unlockNextNode(userId, nodePosIndex + 1);
-        }
-
     }
 
     @Override
@@ -60,6 +41,7 @@ public class ProgressServiceImpl implements ProgressService {
         return studyDao.getNodePositionalIndex(userId, nodeId);
     }
 
+    @Override
     public boolean checkIfNextNodeExist(Long userId, int nodePosIndex) {
         logger.info("Starting checkIfNextNodeExist");
 

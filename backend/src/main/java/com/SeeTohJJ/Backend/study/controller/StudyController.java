@@ -67,12 +67,12 @@ public class StudyController {
         return nodeGenerationService.getEventNodeContent(request.getNodeId());
     }
 
-    @PostMapping("/LessonResult")
-    public void lessonResult(@RequestBody LessonResultDTO request){
-        logger.info("Starting lessonResult");
-
-        nodeGenerationService.completeNode(request.getUserId(), request.getNodeId());
-    }
+//    @PostMapping("/LessonResult")
+//    public void lessonResult(@RequestBody LessonResultDTO request){
+//        logger.info("Starting lessonResult");
+//
+//        nodeGenerationService.completeNode(request.getUserId(), request.getNodeId());
+//    }
 
 //    @PostMapping("/QuizResult")
 //    public void quizResult(@RequestBody QuizResultDTO request){

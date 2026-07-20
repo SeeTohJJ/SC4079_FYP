@@ -7,5 +7,6 @@ public interface TopicDao {
     String getSubTopicId(String topicId);
     boolean existsByNodeIndex(String subtopicId, int targetNodeIndex, String nodeType);
     String getNodeId(String subtopicId, String nodeType, int targetOrderIndex);
+    float getInitialPKnow(String subtopicId);
 
     }
