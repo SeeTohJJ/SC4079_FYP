@@ -2,7 +2,6 @@ package com.SeeTohJJ.Backend.study.dto.result;
 
 public class QuizResultDTO {
 
-    private Long userId;
     private String nodeId;
     private String optionSelected;
     private int timeTaken;
@@ -13,13 +12,6 @@ public class QuizResultDTO {
 
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getOptionSelected() {

@@ -54,10 +54,9 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     }
 
     @Override
-    public void submitReviewQuiz(QuizResultDTO quizResult){
-        logger.info("Starting submitReviewQuiz");
+    public void completeLesson(Long userId, QuizResultDTO quizResult){
+        logger.info("Starting completeLesson");
 
-        Long userId = quizResult.getUserId();
         String nodeId = quizResult.getNodeId();
         int timeTaken = quizResult.getTimeTaken();
         boolean isCorrectAnswer = gradeAnswer(quizResult.getNodeId(), quizResult.getOptionSelected());

@@ -8,9 +8,8 @@ class StudyService {
 
   final authService = AuthService();
 
-    Future<List<dynamic>> getStudyPathNodes(String token,) async {
-    // print("Fetching study path with token: $token");
-    // print("API URL: $baseUrl/GetStudyPathNodes");
+  Future<List<dynamic>> getStudyPathNodes(String token) async {
+
     final response = await http.post(
       Uri.parse(
         '$baseUrl/GetStudyPathNodes',
@@ -19,14 +18,7 @@ class StudyService {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({
-        'token': token,
-      }),
-      
     );
-
-    // print(response.statusCode);
-    // print(response.body);
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);

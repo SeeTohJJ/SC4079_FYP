@@ -35,12 +35,10 @@ public class StudyController {
     }
 
     @PostMapping("/GetStudyPathNodes")
-    public List<StudyNodePathDTO> getStudyPathNodes(@RequestBody StudyRequestDTO request) {
+    public List<StudyNodePathDTO> getStudyPathNodes(@RequestHeader("Authorization") String authHeader) {
         logger.info("Starting getStudyPathNodes");
 
-        Long userId = jwtService.extractUserId(request.getToken());
-
-        return nodeGenerationService.getStudyPathNodes(userId);
+        return nodeGenerationService.getStudyPathNodes(jwtService.extractUserId(authHeader.substring(7)));
     }
 
     @PostMapping("/GetLessonContent")
@@ -50,21 +48,21 @@ public class StudyController {
         return nodeGenerationService.getLessonNodeContent(request.getNodeId());
     }
 
-    @PostMapping("GetQuizContent")
+    @PostMapping("/GetQuizContent")
     public QuizNodeDTO getQuizContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getQuizContent");
 
         return nodeGenerationService.getQuizContent(request.getNodeId());
     }
 
-    @PostMapping("GetDecisionContent")
+    @PostMapping("/GetDecisionContent")
     public DecisionNodeDTO getDecisionContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getDecisionContent");
 
         return nodeGenerationService.getDecisionNodeContent(request.getNodeId());
     }
 
-    @PostMapping("GetEventContent")
+    @PostMapping("/GetEventContent")
     public EventNodeDTO getEventContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getEventContent");
 
