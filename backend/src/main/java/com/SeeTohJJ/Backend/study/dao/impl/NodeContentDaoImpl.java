@@ -66,6 +66,8 @@ public class NodeContentDaoImpl implements NodeContentDao {
                         dto.setOptionB(rs.getString("option_b"));
                         dto.setOptionC(rs.getString("option_c"));
                         dto.setOptionD(rs.getString("option_d"));
+                        dto.setHint(rs.getString("hint"));
+                        dto.setExplanation(rs.getString("explanation"));
                         return dto;
                     },
                     nodeId

@@ -20,33 +20,16 @@ public class BktServiceImpl implements BktService {
 
     private final SubTopicService subTopicService;
     private final UserSubtopicService userSubtopicService;
-    private final ForgettingService forgettingService;
 
     public BktServiceImpl(SubTopicService subTopicService,
-                          UserSubtopicService userSubtopicService,
-                          ForgettingService forgettingService) {
+                          UserSubtopicService userSubtopicService) {
         this.subTopicService = subTopicService;
         this.userSubtopicService = userSubtopicService;
-        this.forgettingService = forgettingService;
     }
 
     @Override
     public void updateUserKnowledge(Long userId, String subtopicId, boolean isCorrectAnswer, int timeTaken){
         logger.info("Starting updateUserKnowledge");
-
-        // Forgetting algo
-        LocalDateTime lastUpdated = userSubtopicService.getLastUpdated(userId, subtopicId);
-        userSubtopicService.setUserSubtopicPKnow(userId, subtopicId, forgettingService.applyForgetting(userId, lastUpdated));
-
-        // BKT algo
-        updateUserBkt(userId, subtopicId, isCorrectAnswer, timeTaken);
-
-        // Confidence algo
-    }
-
-    @Override
-    public void updateUserBkt(Long userId, String subtopicId, boolean isCorrectAnswer, int timeTaken){
-        logger.info("Starting updateUserBkt");
 
         BktParameters bktParameters = subTopicService.getBktParameters(subtopicId); // BKT parameters for the subtopic
         double pKnow = userSubtopicService.getUserPKnow(userId, subtopicId);

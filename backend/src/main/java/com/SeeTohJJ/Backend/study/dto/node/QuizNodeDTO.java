@@ -9,6 +9,8 @@ public class QuizNodeDTO {
     private String optionB;
     private String optionC;
     private String optionD;
+    private String hint;
+    private String explanation;
 
     public String getNodeId() {
         return nodeId;
@@ -64,6 +66,22 @@ public class QuizNodeDTO {
 
     public void setOptionD(String optionD) {
         this.optionD = optionD;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
     }
 
 }

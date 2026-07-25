@@ -4,6 +4,7 @@ import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultDTO;
 import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
 import com.SeeTohJJ.Backend.study.service.adaptive.EloService;
+import com.SeeTohJJ.Backend.study.service.adaptive.ForgettingService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
 import com.SeeTohJJ.Backend.study.service.submission.QuizSubmissionService;
@@ -26,6 +27,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private final StudyDao studyDao;
     private final ProgressService progressService;
     private final TopicService topicService;
+    private final ForgettingService forgettingService;
 
     @Autowired
     public QuizSubmissionServiceImpl(NodeGenerationService nodeGenerationService,
@@ -34,7 +36,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                                      SubTopicService subTopicService,
                                      StudyDao studyDao,
                                      ProgressService progressService,
-                                     TopicService topicService) {
+                                     TopicService topicService,
+                                     ForgettingService forgettingService) {
         this.nodeGenerationService = nodeGenerationService;
         this.bktService = bktService;
         this.eloService = eloService;
@@ -42,6 +45,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         this.studyDao = studyDao;
         this.progressService = progressService;
         this.topicService = topicService;
+        this.forgettingService = forgettingService;
     }
 
     @Override
@@ -68,6 +72,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         String subtopicId = subTopicService.getSubTopicId(nodeId);
 
         saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken);
+        forgettingService.updateForgettingDecay(userId, subtopicId);
         bktService.updateUserKnowledge(userId, subtopicId, isCorrectAnswer, timeTaken);
         eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
         bktService.updateSubTopicMastery(userId, subtopicId);
