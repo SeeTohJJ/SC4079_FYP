@@ -125,21 +125,6 @@ public class StudyDaoImpl implements StudyDao {
     }
 
     @Override
-    public void saveUserQuestionAttempt(Long userId, String nodeId, boolean isCorrectAnswer, int timeTaken){
-        logger.info("Starting saveUserQuestionAttempt");
-
-        logger.info(userId  + " " + nodeId + " " + isCorrectAnswer + " " + timeTaken);
-
-        jdbcTemplate.update(
-                StudyConstant.SAVE_USER_QUESTION_ATTEMPT,
-                userId,
-                nodeId,
-                isCorrectAnswer,
-                timeTaken
-        );
-    }
-
-    @Override
     public int getNodePositionalIndex(Long userId, String nodeId){
         logger.info("Starting getNodePositionalIndex");
 

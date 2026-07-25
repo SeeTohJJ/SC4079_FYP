@@ -41,10 +41,10 @@ public class StudyConstant {
         WHERE node_id = ?
         """;
 
-    public static final String SAVE_USER_QUESTION_ATTEMPT = """
-        INSERT INTO user_question_attempts (user_id, node_id, is_correct, time_taken, answered_at)
-        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-        """;
+//    public static final String SAVE_USER_QUESTION_ATTEMPT = """
+//        INSERT INTO user_question_attempts (user_id, node_id, is_correct, time_taken, answered_at)
+//        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+//        """;
 
     public static final String GET_NODE_POSITIONAL_INDEX = """
         SELECT position_index

@@ -10,5 +10,5 @@ public interface SubTopicService {
     BktParameters getBktParameters(String subtopicId);
     double getPInit(String subtopicId);
     String getNextSubtopic(String currentSubtopic);
-
+    int getNodeDifficulty(String nodeId);
 }

@@ -14,7 +14,6 @@ public interface StudyDao {
     void insertNodeIntoUserProgress(Long userId, String nodeId, String nodeType, int positionIndex, boolean isUnlocked, boolean isCompleted);
     void completeNode(Long userId, String nodeId);
     String getCorrectAnswer(String nodeId);
-    void saveUserQuestionAttempt(Long userId, String nodeId, boolean isCorrectAnswer, int timeTaken);
     int getNodePositionalIndex(Long userId, String nodeId);
     void unlockNextNode(Long userId, int nodePosIndex);
     boolean checkIfNodeExistInProgress(Long userId, int nodePosIndex);

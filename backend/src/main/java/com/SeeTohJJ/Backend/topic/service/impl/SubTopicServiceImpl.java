@@ -123,5 +123,12 @@ public class SubTopicServiceImpl implements SubTopicService {
         return null;
     }
 
+    @Override
+    public int getNodeDifficulty(String nodeId) {
+        logger.info("Starting getNodeDifficulty");
+
+        return topicDao.getNodeDifficulty(nodeId);
+    }
+
 
 }

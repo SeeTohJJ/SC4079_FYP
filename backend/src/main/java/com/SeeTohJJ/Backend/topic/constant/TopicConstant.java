@@ -76,4 +76,10 @@ public class TopicConstant {
             FROM study_nodes
             WHERE node_id = ?
             """;
+
+    public static final String GET_NODE_DIFFICULTY = """
+            SELECT required_mastery
+            FROM study_nodes
+            WHERE node_id = ?
+            """;
 }

@@ -13,4 +13,5 @@ public interface TopicDao {
     String getTopicIdFromSubtopicId(String subtopicId);
     boolean checkSubtopicExist(String subtopicId);
     String getRandomUninterestedTopic(Long userId);
+    int getNodeDifficulty(String nodeId);
 }

@@ -139,4 +139,17 @@ public class TopicDaoImpl implements TopicDao {
         );
     }
 
+    @Override
+    public int getNodeDifficulty(String nodeId){
+        logger.info("Starting getNodeDifficulty");
+
+        Integer result = jdbcTemplate.queryForObject(
+                TopicConstant.GET_NODE_DIFFICULTY,
+                Integer.class,
+                nodeId
+        );
+        return result != null ? result : 0;
+    }
+
+
 }

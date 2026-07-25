@@ -2,10 +2,7 @@ package com.SeeTohJJ.Backend.study.service.submission.impl;
 
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultDTO;
-import com.SeeTohJJ.Backend.study.service.adaptive.AttemptHistoryService;
-import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
-import com.SeeTohJJ.Backend.study.service.adaptive.EloService;
-import com.SeeTohJJ.Backend.study.service.adaptive.ForgettingService;
+import com.SeeTohJJ.Backend.study.service.adaptive.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
@@ -32,6 +29,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private final ForgettingService forgettingService;
     private final ContentRetrievalService contentRetrievalService;
     private final AttemptHistoryService attemptHistoryService;
+    private final ConfidenceService confidenceService;
 
     @Autowired
     public QuizSubmissionServiceImpl(NodeGenerationService nodeGenerationService,
@@ -43,7 +41,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                                      TopicService topicService,
                                      ForgettingService forgettingService,
                                      ContentRetrievalService contentRetrievalService,
-                                     AttemptHistoryService attemptHistoryService) {
+                                     AttemptHistoryService attemptHistoryService, ConfidenceService confidenceService) {
         this.nodeGenerationService = nodeGenerationService;
         this.bktService = bktService;
         this.eloService = eloService;
@@ -54,6 +52,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         this.forgettingService = forgettingService;
         this.contentRetrievalService = contentRetrievalService;
         this.attemptHistoryService = attemptHistoryService;
+        this.confidenceService = confidenceService;
     }
 
     @Override
@@ -64,13 +63,6 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     }
 
     @Override
-    public void saveQuestionAttemptHistory(Long userId, String nodeId, boolean isCorrectAnswer, int timeTaken){
-        logger.info("Starting saveQuestionAttemptHistory");
-
-        studyDao.saveUserQuestionAttempt(userId, nodeId, isCorrectAnswer, timeTaken);
-    }
-
-    @Override
     public void completeQuiz(Long userId, QuizResultDTO quizResult){
         logger.info("Starting completeQuiz");
 
@@ -78,10 +70,17 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         int timeTaken = quizResult.getTimeTaken();
         boolean isCorrectAnswer = gradeAnswer(quizResult.getNodeId(), quizResult.getOptionSelected());
         String subtopicId = subTopicService.getSubTopicId(nodeId);
+        boolean hintUsed = quizResult.isHintUsed();
 
-        saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken);
+        attemptHistoryService.saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken, hintUsed);
         forgettingService.updateForgettingDecay(userId, subtopicId);
-        bktService.updateUserKnowledge(userId, subtopicId, isCorrectAnswer, timeTaken);
+        bktService.updateUserKnowledge(
+                userId,
+                subtopicId,
+                isCorrectAnswer,
+                timeTaken,
+                confidenceService.getConfidence(userId, nodeId, timeTaken,  hintUsed)
+        );
         eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
         bktService.updateSubTopicMastery(userId, subtopicId);
         processQuizCompletion(userId, nodeId);

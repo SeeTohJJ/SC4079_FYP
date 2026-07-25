@@ -5,6 +5,7 @@ public class QuizResultDTO {
     private String nodeId;
     private String optionSelected;
     private int timeTaken;
+    private boolean hintUsed;
 
     public String getNodeId() {
         return nodeId;
@@ -28,5 +29,13 @@ public class QuizResultDTO {
 
     public void setTimeTaken(int timeTaken) {
         this.timeTaken = timeTaken;
+    }
+
+    public boolean isHintUsed() {
+        return hintUsed;
+    }
+
+    public void setHintUsed(boolean hintUsed) {
+        this.hintUsed = hintUsed;
     }
 }

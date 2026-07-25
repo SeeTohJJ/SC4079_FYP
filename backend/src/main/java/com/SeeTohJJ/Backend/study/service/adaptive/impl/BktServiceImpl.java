@@ -2,6 +2,7 @@ package com.SeeTohJJ.Backend.study.service.adaptive.impl;
 
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
+import com.SeeTohJJ.Backend.study.service.adaptive.ConfidenceService;
 import com.SeeTohJJ.Backend.study.service.adaptive.ForgettingService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
@@ -28,24 +29,26 @@ public class BktServiceImpl implements BktService {
     }
 
     @Override
-    public void updateUserKnowledge(Long userId, String subtopicId, boolean isCorrectAnswer, int timeTaken){
+    public void updateUserKnowledge(Long userId, String subtopicId, boolean isCorrectAnswer, int timeTaken, double confidence){
         logger.info("Starting updateUserKnowledge");
 
         BktParameters bktParameters = subTopicService.getBktParameters(subtopicId); // BKT parameters for the subtopic
-        double pKnow = userSubtopicService.getUserPKnow(userId, subtopicId);
+        double oldPKnow = userSubtopicService.getUserPKnow(userId, subtopicId);
 
         double posterior;
         if(isCorrectAnswer){
-            posterior = calculatePosteriorCorrect(pKnow, bktParameters.getP_slip(), bktParameters.getP_guess());
+            posterior = calculatePosteriorCorrect(oldPKnow, bktParameters.getP_slip(), bktParameters.getP_guess());
         }
         else{
-            posterior = calculatePosteriorIncorrect(pKnow, bktParameters.getP_slip(), bktParameters.getP_guess());
+            posterior = calculatePosteriorIncorrect(oldPKnow, bktParameters.getP_slip(), bktParameters.getP_guess());
         }
 
-        double updatedPKnow = applyLearning(posterior, bktParameters.getP_transit());
-        updatedPKnow = Math.clamp(updatedPKnow, 0, 1);
+        double newPKnow = applyLearning(posterior, bktParameters.getP_transit());
+        newPKnow = Math.clamp(newPKnow, 0, 1);
 
-        userSubtopicService.saveUserPKnow(userId, subtopicId, updatedPKnow);
+        double finalPKnow = scaleBktWithConfidence(oldPKnow, newPKnow, confidence);
+
+        userSubtopicService.saveUserPKnow(userId, subtopicId, finalPKnow);
         userSubtopicService.updateAttemptStatistics(userId, subtopicId, isCorrectAnswer);
     }
 
@@ -82,5 +85,11 @@ public class BktServiceImpl implements BktService {
         }
     }
 
+    private double scaleBktWithConfidence(double oldPKnow, double newPKnow, double confidence){
+        logger.info("Starting scaleBktWithConfidence");
+
+        double scaledPKnow = oldPKnow + (newPKnow - oldPKnow) * confidence;
+        return Math.clamp(scaledPKnow, 0, 1);
+    }
 
 }
