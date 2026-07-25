@@ -6,10 +6,9 @@ import com.SeeTohJJ.Backend.study.dto.*;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.model.UserNodeProgress;
 import com.SeeTohJJ.Backend.study.model.chain.ChainTemplate;
-import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
-import com.SeeTohJJ.Backend.study.service.adaptive.EloService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
+import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 
@@ -31,18 +30,20 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
     private final ProgressService progressService;
     private final SubTopicService subTopicService;
     private final ChainTemplateDao chainTemplateDao;
+    private final UserSubtopicService userSubtopicService;
 
     @Autowired
     public NodeGenerationServiceImpl(StudyDao studyDao,
                                      TopicService topicService,
                                      ProgressService progressService,
                                      SubTopicService subTopicService,
-                                     ChainTemplateDao chainTemplateDao) {
+                                     ChainTemplateDao chainTemplateDao, UserSubtopicService userSubtopicService) {
         this.studyDao = studyDao;
         this.topicService = topicService;
         this.progressService = progressService;
         this.subTopicService = subTopicService;
         this.chainTemplateDao = chainTemplateDao;
+        this.userSubtopicService = userSubtopicService;
     }
 
     public enum ChainType {
@@ -60,12 +61,20 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
             return getExistingNodePath(userId);
         }
 
-        String uncompletedTopicId = topicService.getUncompletedTutorialTopic(userId);
-        String uncompletedSubtopicId = uncompletedTopicId.concat("S001"); // tutorial always the first subtopic of each topic
+        // Need to find if there is an user interested topic with uncompleted tutorial
+        // Need to complete tutorial once the last quiz node in tutorial is completed
+        // If no user interested topic with uncompleted tutorial, generate a special interest decision node
+        // for user to add a topic to their interest (choose between 2 option)
 
-        // Generate tutorial nodes if user has interest in topic and tutorial not completed
-        insertNewSubtopicMastery(userId, uncompletedSubtopicId);
-        insertTutorialNodesForUser(userId, uncompletedSubtopicId);
+        String topicId = topicService.getUncompletedTutorialTopic(userId);
+
+        if (topicId != null) {
+            // Generate tutorial nodes if user has interest in topic and tutorial not completed
+            generateNewTopicTutorial(userId, topicId);
+        }
+        else {
+            generateInterestDecisionNode(userId);
+        }
 
         return getExistingNodePath(userId);
     }
@@ -102,19 +111,14 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
     }
 
-    private void insertTutorialNodesForUser(Long userId, String TopicId) {
-        logger.info("Starting insertTutorialNodesForUser");
+    private void generateNewTopicTutorial(Long userId, String topicId) {
+        logger.info("Starting generateNewTopicTutorial");
 
-//        List<StudyNode> nodes = fetchTutorialNodes(TopicId);
-//        insertNodesIntoNodeProgress(nodes, userId);
+        String subtopicId = topicId.concat("S001");
 
-        generateChain(userId, TopicId, ChainType.TUTORIAL);
-    }
-
-    private void insertNewSubtopicMastery(Long userId, String subtopicId) {
-        logger.info("Starting insertNewSubtopicMastery");
-
-        subTopicService.insertNewSubtopicMastery(userId, subtopicId);
+        double p_know = subTopicService.getPInit(subtopicId);
+        userSubtopicService.insertNewSubtopicMastery(userId, subtopicId, p_know);
+        generateChain(userId, subtopicId, ChainType.TUTORIAL);
     }
 
     private List<StudyNode> fetchTutorialNodes(String TopicId) {
@@ -151,15 +155,20 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
         String currentSubtopic = progressService.getCurrentSubtopic(userId);
 
-        if (subTopicService.isSubtopicMastered(userId, currentSubtopic)){
-            String nextSubtopic = progressService.getUserLowestPKnowSubtopicNotMastered(userId);
+        if (userSubtopicService.isSubtopicMastered(userId, currentSubtopic)){
+            String nextSubtopic = subTopicService.getNextSubtopic(currentSubtopic);
 
             if(nextSubtopic != null) {
                 generateStandardChain(userId, nextSubtopic);
             }
             else {
-                nextSubtopic = subTopicService.createNewUserInterestedSubtopic(userId, currentSubtopic);
-                generateStandardChain(userId, nextSubtopic);
+                nextSubtopic = userSubtopicService.getUserLowestPKnowSubtopicNotMastered(userId);
+                if(nextSubtopic != null) {
+                    generateStandardChain(userId, nextSubtopic);
+                }
+                else {
+                    generateInterestDecisionNode(userId);
+                }
             }
         }
         else if (subTopicService.moreLessonExists(userId, currentSubtopic)){
@@ -187,7 +196,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         logger.info("Starting generateChain");
 
         List<ChainTemplate> template = chainTemplateDao.getChainTemplate(chainType);
-        int currentChain = progressService.getCurrentChain(userId, subtopicId);
+        int currentChain = userSubtopicService.getCurrentChain(userId, subtopicId);
 
         if (template.isEmpty()) {
             throw new RuntimeException("No chain template found for " + chainType);
@@ -225,5 +234,23 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
             unlock = false;
         }
 
+    }
+
+    // NodeId S-T000-S000-TI-001
+    private void generateInterestDecisionNode(Long userId){
+        logger.info("Starting generateInterestDecisionNode");
+
+        String nodeId = "S-T000-S000-TI-001";
+        int currentPathPositionIndex = studyDao.getUserLastPositionIndex(userId) + 1;
+        boolean unlock = true;
+        String nodeType = "TOPIC_INTEREST";
+
+        progressService.insertNodeIntoUserProgress(
+                userId,
+                nodeId,
+                currentPathPositionIndex,
+                unlock,
+                nodeType
+        );
     }
 }

@@ -25,13 +25,13 @@ public class NodeSubmissionServiceImpl implements NodeSubmissionService {
 
         progressService.completeNode(userId, nodeId);
 
-        int nextNodeIndex = progressService.getNodePositionIndexInPath(userId, nodeId) + 1;
+        int currentIndex = progressService.getNodePositionIndexInPath(userId, nodeId);
 
-        if (progressService.checkIfNextNodeExist(
+        if (progressService.checkIfNextNodePosExist(
                 userId,
-                nextNodeIndex
+                currentIndex
         )) {
-            progressService.unlockNextNode(userId, nextNodeIndex);
+            progressService.unlockNextNode(userId, currentIndex);
         }
         else {
             nodeGenerationService.generateNewChain(userId);

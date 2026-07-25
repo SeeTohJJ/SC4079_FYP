@@ -29,30 +29,6 @@ public class StudyConstant {
         VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
         """;
 
-    public static final String GET_LESSON_NODE_CONTENT = """
-        SELECT node_id, title, content
-        FROM node_lesson_content
-        WHERE node_id = ?
-        """;
-
-    public static final String GET_QUIZ_NODE_CONTENT = """
-        SELECT node_id, title, content, option_a, option_b, option_c, option_d
-        FROM node_quiz_content
-        WHERE node_id = ?
-        """;
-
-    public static final String GET_DECISION_NODE_CONTENT = """
-        SELECT node_id, title, content, option_a, option_b, result_a, result_b
-        FROM node_decision_content
-        WHERE node_id = ?
-        """;
-
-    public static final String GET_EVENT_NODE_CONTENT = """
-        SELECT node_id, title, content, result
-        FROM event_node_content
-        WHERE node_id = ?
-        """;
-
     public static final String COMPLETE_NODE_WITH_USER_ID = """
         UPDATE user_node_progress
         SET is_completed = true, last_updated = CURRENT_TIMESTAMP
@@ -70,12 +46,6 @@ public class StudyConstant {
         VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
         """;
 
-    public static final String GET_QUESTION_RATING = """
-        SELECT difficulty_rating
-        FROM node_quiz_content
-        WHERE node_id = ?
-        """;
-
     public static final String GET_NODE_POSITIONAL_INDEX = """
         SELECT position_index
         FROM user_node_progress
@@ -88,7 +58,7 @@ public class StudyConstant {
         WHERE user_id = ? AND position_index = ?
         """;
 
-    public static final String CHECK_NEXT_NODE_EXIST = """
+    public static final String CHECK_IF_NODE_POS_EXIST_IN_PROGRESS = """
         SELECT COUNT(*)
         FROM user_node_progress
         WHERE user_id = ? AND position_index = ?
@@ -101,33 +71,17 @@ public class StudyConstant {
         ORDER BY last_updated
         """;
 
-    public static final String GET_LOWEST_P_KNOW_SUBTOPIC = """
-        SELECT subtopic_id
-        FROM user_subtopic_mastery
-        WHERE user_id = ?
-        ORDER BY p_know ASC
-        LIMIT 1
-        """;
-
-    public static final String GET_LOWEST_P_KNOW_SUBTOPIC_NOT_MASTERED = """
-        SELECT subtopic_id
-        FROM user_subtopic_mastery
-        WHERE user_id = ? AND is_mastered = false
-        ORDER BY p_know ASC
-        LIMIT 1
-        """;
-
-    public static final String GET_USER_SUBTOPIC_CURRENT_CHAIN = """
-        SELECT current_chain
-        FROM user_subtopic_mastery
-        WHERE user_id = ? AND subtopic_id = ?
-        """;
-
     public static final String GET_NODE_PATH_LAST_POS_INDEX = """
         SELECT position_index
         FROM user_node_progress
         WHERE user_id = ?
         ORDER BY position_index DESC
         LIMIT 1
+        """;
+
+    public static final String COMPLETE_TUTORIAL_FOR_INTERESTED_TOPIC = """
+        UPDATE user_interested_topics
+        SET tutorial_completed = true, last_updated = CURRENT_TIMESTAMP
+        WHERE user_id = ? AND topic_id = ?
         """;
 }

@@ -30,19 +30,23 @@ public class ChainTemplateDaoImpl implements ChainTemplateDao {
     public List<ChainTemplate> getChainTemplate(NodeGenerationServiceImpl.ChainType chainType){
         logger.info("Starting getChainTemplate");
 
-        logger.info("chain name " + chainType.name());
-
-        return jdbcTemplate.query(
-                ChainTemplateConstant.GET_CHAIN_TEMPLATE,
-                (rs, rowNum) -> {
-                    ChainTemplate chainTemplate = new ChainTemplate();
-                    chainTemplate.setOrderInChain(rs.getInt("order_in_chain"));
-                    chainTemplate.setNodeType(rs.getString("node_type"));
-                    chainTemplate.setContentSequence(rs.getInt("content_sequence"));
-                    return chainTemplate;
-                },
-                chainType.name()
-        );
+        try {
+            return jdbcTemplate.query(
+                    ChainTemplateConstant.GET_CHAIN_TEMPLATE,
+                    (rs, rowNum) -> {
+                        ChainTemplate chainTemplate = new ChainTemplate();
+                        chainTemplate.setOrderInChain(rs.getInt("order_in_chain"));
+                        chainTemplate.setNodeType(rs.getString("node_type"));
+                        chainTemplate.setContentSequence(rs.getInt("content_sequence"));
+                        return chainTemplate;
+                    },
+                    chainType.name()
+            );
+        }
+        catch (Exception e) {
+            logger.error("Error fetching chain template for chain type {}: {}", chainType, e.getMessage());
+            return Collections.emptyList();
+        }
     }
 
 

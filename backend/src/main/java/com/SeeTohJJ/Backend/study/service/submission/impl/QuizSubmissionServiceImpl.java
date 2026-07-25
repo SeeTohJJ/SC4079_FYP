@@ -8,6 +8,7 @@ import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
 import com.SeeTohJJ.Backend.study.service.submission.QuizSubmissionService;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
+import com.SeeTohJJ.Backend.topic.service.TopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +25,23 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private final SubTopicService subTopicService;
     private final StudyDao studyDao;
     private final ProgressService progressService;
+    private final TopicService topicService;
 
     @Autowired
     public QuizSubmissionServiceImpl(NodeGenerationService nodeGenerationService,
                                      BktService bktService,
                                      EloService eloService,
                                      SubTopicService subTopicService,
-                                     StudyDao studyDao, ProgressService progressService) {
+                                     StudyDao studyDao,
+                                     ProgressService progressService,
+                                     TopicService topicService) {
         this.nodeGenerationService = nodeGenerationService;
         this.bktService = bktService;
         this.eloService = eloService;
         this.subTopicService = subTopicService;
         this.studyDao = studyDao;
         this.progressService = progressService;
+        this.topicService = topicService;
     }
 
     @Override
@@ -73,15 +78,21 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         logger.info("Starting processQuizCompletion");
 
         progressService.completeNode(userId, nodeId);
-        int nodePosIndex = progressService.getNodePositionIndexInPath(userId, nodeId);
+        int currentNodePosIndex = progressService.getNodePositionIndexInPath(userId, nodeId);
 
-        if(progressService.checkIfNextNodeExist(userId, nodePosIndex + 1)) {
-            progressService.unlockNextNode(userId, nodePosIndex + 1);
+        if (nodeId.contains("S001-Q-003")){
+            progressService.completeTutorialForInterestedTopic(userId, topicService.getTopicId(nodeId));
         }
 
+        // Unlock next node if it exists
+        if(progressService.checkIfNextNodePosExist(userId, currentNodePosIndex)) {
+            progressService.unlockNextNode(userId, currentNodePosIndex);
+        }
+
+        // Generate new chain if there is no next node in progress
         else {
             nodeGenerationService.generateNewChain(userId);
-            progressService.unlockNextNode(userId, nodePosIndex + 1);
+            progressService.unlockNextNode(userId, currentNodePosIndex);
         }
 
     }

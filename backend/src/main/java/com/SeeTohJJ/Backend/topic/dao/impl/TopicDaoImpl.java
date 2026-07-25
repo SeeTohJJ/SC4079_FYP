@@ -62,17 +62,81 @@ public class TopicDaoImpl implements TopicDao {
     }
 
     @Override
-    public float getInitialPKnow(String subtopicId){
-        logger.info("Starting getInitialPKnow");
+    public double getPInit(String subtopicId){
+        logger.info("Starting getPInit");
 
-        Float result = jdbcTemplate.queryForObject(
-                TopicConstant.GET_INITIAL_PKNOW,
-                Float.class,
+        Double result = jdbcTemplate.queryForObject(
+                TopicConstant.GET_P_INIT,
+                Double.class,
                 subtopicId
         );
 
         return result != null ? result : 0.0f;
     }
 
+    @Override
+    public String getTopicId(String nodeId){
+        logger.info("Starting getTopicId");
+
+        return jdbcTemplate.queryForObject(
+                TopicConstant.GET_TOPIC_ID,
+                String.class,
+                nodeId
+        );
+    }
+
+    @Override
+    public BktParameters getBktParameters(String subtopicId){
+        logger.info("Starting getBktParameters");
+
+        return jdbcTemplate.queryForObject(
+                TopicConstant.GET_BKT_PARAMETERS,
+                (rs, rowNum) -> {
+                    BktParameters bkt = new BktParameters();
+                    bkt.setSubTopic_id(subtopicId);
+                    bkt.setP_init(rs.getDouble("p_init"));
+                    bkt.setP_transit(rs.getDouble("p_transit"));
+                    bkt.setP_slip(rs.getDouble("p_slip"));
+                    bkt.setP_guess(rs.getDouble("p_guess"));
+                    return bkt;
+                },
+                subtopicId
+        );
+    }
+
+    @Override
+    public String getTopicIdFromSubtopicId(String subtopicId){
+        logger.info("Starting getTopicIdFromSubtopicId");
+
+        return jdbcTemplate.queryForObject(
+                TopicConstant.GET_TOPIC_ID_FROM_SUBTOPIC_ID,
+                String.class,
+                subtopicId
+        );
+    }
+
+    @Override
+    public boolean checkSubtopicExist(String subtopicId){
+        logger.info("Starting checkSubtopicExist");
+
+        Boolean result = jdbcTemplate.queryForObject(
+                TopicConstant.CHECK_SUBTOPIC_EXIST,
+                boolean.class,
+                subtopicId
+        );
+
+        return Boolean.TRUE.equals(result);
+    }
+
+    @Override
+    public String getRandomUninterestedTopic(Long userId){
+        logger.info("Starting getRandomUninterestedTopic");
+
+        return jdbcTemplate.queryForObject(
+                TopicConstant.GET_RANDOM_UNINTERESTED_TOPIC,
+                String.class,
+                userId
+        );
+    }
 
 }

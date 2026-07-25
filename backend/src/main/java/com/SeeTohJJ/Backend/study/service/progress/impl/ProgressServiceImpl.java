@@ -28,10 +28,10 @@ public class ProgressServiceImpl implements ProgressService {
     }
 
     @Override
-    public void unlockNextNode(Long userId, int nodePosIndex) {
+    public void unlockNextNode(Long userId, int currentNodePosIndex) {
         logger.info("Starting unlockNextNode");
 
-        studyDao.unlockNextNode(userId, nodePosIndex);
+        studyDao.unlockNextNode(userId, currentNodePosIndex + 1);
     }
 
     @Override
@@ -42,10 +42,10 @@ public class ProgressServiceImpl implements ProgressService {
     }
 
     @Override
-    public boolean checkIfNextNodeExist(Long userId, int nodePosIndex) {
-        logger.info("Starting checkIfNextNodeExist");
+    public boolean checkIfNextNodePosExist(Long userId, int nodePosIndex) {
+        logger.info("Starting checkIfNextNodePosExist");
 
-        return studyDao.checkIfNextNodeExist(userId, nodePosIndex);
+        return studyDao.checkIfNodeExistInProgress(userId, nodePosIndex + 1);
     }
 
     @Override
@@ -55,26 +55,12 @@ public class ProgressServiceImpl implements ProgressService {
         return studyDao.getCurrentSubtopic(userId);
     }
 
-    @Override
-    public String getUserLowestPKnowSubtopic(Long userId){
-        logger.info("Starting getUserLowestPKnowSubtopic");
-
-        return studyDao.getLowestPKnowSubtopic(userId);
-    }
-
-    @Override
-    public String getUserLowestPKnowSubtopicNotMastered(Long userId){
-        logger.info("Starting getUserLowestPKnowSubtopicNotMastered");
-
-        return studyDao.getLowestPKnowSubtopicNotMastered(userId);
-    }
-
-    @Override
-    public int getCurrentChain(Long userId, String subtopicId) {
-        logger.info("Starting getCurrentChain");
-
-        return studyDao.getCurrentChain(userId, subtopicId);
-    }
+//    @Override
+//    public int getCurrentChain(Long userId, String subtopicId) {
+//        logger.info("Starting getCurrentChain");
+//
+//        return studyDao.getCurrentChain(userId, subtopicId);
+//    }
 
     @Override
     public void insertNodeIntoUserProgress(Long userId, String nodeId, int currentPathPositionIndex, boolean unlock, String nodeType){
@@ -82,6 +68,14 @@ public class ProgressServiceImpl implements ProgressService {
 
         studyDao.insertNodeIntoUserProgress(userId, nodeId, nodeType, currentPathPositionIndex, unlock, false);
     }
+
+    @Override
+    public void completeTutorialForInterestedTopic(Long userId, String subtopicId) {
+        logger.info("Starting completeTutorialForInterestedTopic");
+
+        studyDao.completeTutorialForInterestedTopic(userId, subtopicId);
+    }
+
 
 
 }

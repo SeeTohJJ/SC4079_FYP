@@ -1,4 +1,4 @@
 package com.SeeTohJJ.Backend.study.service.adaptive;
 
-public interface LearningService {
+public interface LearningEngineService {
 }

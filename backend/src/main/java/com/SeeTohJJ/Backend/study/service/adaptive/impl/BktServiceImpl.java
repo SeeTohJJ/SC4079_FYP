@@ -2,6 +2,8 @@ package com.SeeTohJJ.Backend.study.service.adaptive.impl;
 
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
+import com.SeeTohJJ.Backend.study.service.adaptive.ForgettingService;
+import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
@@ -9,26 +11,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class BktServiceImpl implements BktService {
 
     private static final Logger logger = LoggerFactory.getLogger(BktServiceImpl.class);
 
-    private final StudyDao studyDao;
-    private final TopicService topicService;
     private final SubTopicService subTopicService;
+    private final UserSubtopicService userSubtopicService;
+    private final ForgettingService forgettingService;
 
-    public BktServiceImpl(StudyDao studyDao, TopicService topicService, SubTopicService subTopicService) {
-        this.studyDao = studyDao;
-        this.topicService = topicService;
+    public BktServiceImpl(SubTopicService subTopicService,
+                          UserSubtopicService userSubtopicService,
+                          ForgettingService forgettingService) {
         this.subTopicService = subTopicService;
+        this.userSubtopicService = userSubtopicService;
+        this.forgettingService = forgettingService;
     }
 
     @Override
     public void updateUserKnowledge(Long userId, String subtopicId, boolean isCorrectAnswer, int timeTaken){
         logger.info("Starting updateUserKnowledge");
 
+        // Forgetting algo
+        LocalDateTime lastUpdated = userSubtopicService.getLastUpdated(userId, subtopicId);
+        userSubtopicService.setUserSubtopicPKnow(userId, subtopicId, forgettingService.applyForgetting(userId, lastUpdated));
+
+        // BKT algo
         updateUserBkt(userId, subtopicId, isCorrectAnswer, timeTaken);
+
+        // Confidence algo
     }
 
     @Override
@@ -36,7 +49,7 @@ public class BktServiceImpl implements BktService {
         logger.info("Starting updateUserBkt");
 
         BktParameters bktParameters = subTopicService.getBktParameters(subtopicId); // BKT parameters for the subtopic
-        double pKnow = subTopicService.getUserPKnow(userId, subtopicId);
+        double pKnow = userSubtopicService.getUserPKnow(userId, subtopicId);
 
         double posterior;
         if(isCorrectAnswer){
@@ -49,8 +62,8 @@ public class BktServiceImpl implements BktService {
         double updatedPKnow = applyLearning(posterior, bktParameters.getP_transit());
         updatedPKnow = Math.clamp(updatedPKnow, 0, 1);
 
-        subTopicService.updatePKnow(userId, subtopicId, updatedPKnow);
-        subTopicService.updateAttemptStatistics(userId, subtopicId, isCorrectAnswer);
+        userSubtopicService.saveUserPKnow(userId, subtopicId, updatedPKnow);
+        userSubtopicService.updateAttemptStatistics(userId, subtopicId, isCorrectAnswer);
     }
 
     private double calculatePosteriorCorrect(double pKnow, double pSlip, double pGuess){
@@ -81,8 +94,8 @@ public class BktServiceImpl implements BktService {
     public void updateSubTopicMastery(Long userId, String subtopicId){
         logger.info("Starting updateSubTopicMastery");
 
-        if(subTopicService.pKnowGreaterThanRating(userId, subtopicId)){
-            subTopicService.updateSubTopicMastery(userId, subtopicId);
+        if(userSubtopicService.pKnowGreaterThanRating(userId, subtopicId)){
+            userSubtopicService.setSubtopicIsMasteredToTrue(userId, subtopicId);
         }
     }
 

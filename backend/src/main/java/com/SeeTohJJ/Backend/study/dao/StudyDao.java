@@ -16,21 +16,14 @@ public interface StudyDao {
     List<UserNodeProgress> getExistingNodePath(Long userId);
     boolean hasActiveNodes(Long userId);
     void insertNodeIntoUserProgress(Long userId, String nodeId, String nodeType, int positionIndex, boolean isUnlocked, boolean isCompleted);
-    LessonNodeDTO getLessonNodeContent(String nodeId);
-    QuizNodeDTO getQuizNodeContent(String nodeId);
-    DecisionNodeDTO getDecisionNodeContent(String nodeId);
-    EventNodeDTO getEventNodeContent(String nodeId);
     void completeNode(Long userId, String nodeId);
     String getCorrectAnswer(String nodeId);
     void saveUserQuestionAttempt(Long userId, String nodeId, boolean isCorrectAnswer, int timeTaken);
-    double getQuestionRating(String nodeId);
     int getNodePositionalIndex(Long userId, String nodeId);
     void unlockNextNode(Long userId, int nodePosIndex);
-    boolean checkIfNextNodeExist(Long userId, int nodePosIndex);
+    boolean checkIfNodeExistInProgress(Long userId, int nodePosIndex);
     String getCurrentSubtopic(Long userId);
-    String getLowestPKnowSubtopic(Long userId);
-    String getLowestPKnowSubtopicNotMastered(Long userId);
-    int getCurrentChain(Long userId, String subtopicId);
     int getUserLastPositionIndex(Long userId);
+    void completeTutorialForInterestedTopic(Long userId, String subtopicId);
 }
 

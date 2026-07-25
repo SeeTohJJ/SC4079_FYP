@@ -1,7 +1,8 @@
 package com.SeeTohJJ.Backend.topic.service.impl;
 
+import com.SeeTohJJ.Backend.topic.dao.TopicDao;
 import com.SeeTohJJ.Backend.topic.dao.UserTopicDao;
-import com.SeeTohJJ.Backend.topic.dao.UserTopicMasteryDao;
+import com.SeeTohJJ.Backend.study.dao.UserTopicMasteryDao;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +18,15 @@ public class TopicServiceImpl implements TopicService {
 
     private final UserTopicDao userTopicDao;
     private final UserTopicMasteryDao userTopicMasteryDao;
+    private final TopicDao topicDao;
 
     @Autowired
     public TopicServiceImpl(UserTopicDao userTopicDao,
                             UserTopicMasteryDao userTopicMasteryDao,
-                            UserTopicMasteryDao userTopicProgressDao) {
+                            TopicDao topicDao) {
         this.userTopicDao = userTopicDao;
         this.userTopicMasteryDao = userTopicMasteryDao;
+        this.topicDao = topicDao;
     }
 
     @Override
@@ -34,12 +37,12 @@ public class TopicServiceImpl implements TopicService {
         userTopicMasteryDao.insertInitialTopicProgress(userId, topicId);
     }
 
-    @Override
-    public boolean isTutorialCompleted(Long userId, String topicId){
-        logger.info("Starting isTutorialCompleted");
-
-        return userTopicMasteryDao.isTutorialCompleted(userId, topicId);
-    }
+//    @Override
+//    public boolean isTutorialCompleted(Long userId, String topicId){
+//        logger.info("Starting isTutorialCompleted");
+//
+//        return userTopicMasteryDao.isTutorialCompleted(userId, topicId);
+//    }
 
     @Override
     public List<String> getUserTopicFromUserId(Long userId) {
@@ -53,6 +56,13 @@ public class TopicServiceImpl implements TopicService {
         logger.info("Starting getUncompletedTutorial");
 
         return userTopicMasteryDao.getTopUserUncompletedTopic(userId);
+    }
+
+    @Override
+    public String getTopicId(String nodeId) {
+        logger.info("Starting getTopicId");
+
+        return topicDao.getTopicId(nodeId);
     }
 
 

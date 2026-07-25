@@ -1,5 +1,6 @@
 package com.SeeTohJJ.Backend.study.dao.impl;
 
+import com.SeeTohJJ.Backend.study.constant.NodeContentConstant;
 import com.SeeTohJJ.Backend.study.constant.StudyConstant;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
@@ -107,82 +108,6 @@ public class StudyDaoImpl implements StudyDao {
     }
 
     @Override
-    public LessonNodeDTO getLessonNodeContent(String nodeId){
-        logger.info("Starting getLessonNodeContent");
-
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_LESSON_NODE_CONTENT,
-                (rs, rowNum) -> {
-                    LessonNodeDTO dto = new LessonNodeDTO();
-                    dto.setNodeId(rs.getString("node_id"));
-                    dto.setTitle(rs.getString("title"));
-                    dto.setContent(rs.getString("content"));
-                    return dto;
-                },
-                nodeId
-        );
-    }
-
-
-    @Override
-    public QuizNodeDTO getQuizNodeContent(String nodeId){
-        logger.info("Starting getQuizNodeContent {}", nodeId);
-
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_QUIZ_NODE_CONTENT,
-                (rs, rowNum) -> {
-                    QuizNodeDTO dto = new QuizNodeDTO();
-                    dto.setNodeId(rs.getString("node_id"));
-                    dto.setTitle(rs.getString("title"));
-                    dto.setQuestion(rs.getString("content"));
-                    dto.setOptionA(rs.getString("option_a"));
-                    dto.setOptionB(rs.getString("option_b"));
-                    dto.setOptionC(rs.getString("option_c"));
-                    dto.setOptionD(rs.getString("option_d"));
-                    return dto;
-                },
-                nodeId
-        );
-    }
-
-    @Override
-    public DecisionNodeDTO getDecisionNodeContent(String nodeId){
-        logger.info("Starting getDecisionNodeContent");
-
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_DECISION_NODE_CONTENT,
-                (rs, rowNum) -> {
-                    DecisionNodeDTO dto = new DecisionNodeDTO();
-                    dto.setNodeId(rs.getString("node_id"));
-                    dto.setTitle(rs.getString("title"));
-                    dto.setContent(rs.getString("content"));
-                    dto.setChoice_A(rs.getString("choice_a"));
-                    dto.setChoice_B(rs.getString("choice_b"));
-                    dto.setResult_A(rs.getString("result_a"));
-                    dto.setResult_B(rs.getString("result_b"));
-                    return dto;
-                },
-                nodeId
-        );
-    }
-
-    @Override
-    public EventNodeDTO getEventNodeContent(String nodeId){
-        logger.info("Starting getEventNodeContent");
-
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_EVENT_NODE_CONTENT,
-                (rs, rowNum) -> {
-                    EventNodeDTO dto = new EventNodeDTO();
-                    dto.setContent(rs.getString("content"));
-                    dto.setResult(rs.getString("result"));
-                    return dto;
-                },
-                nodeId
-        );
-    }
-
-    @Override
     public void completeNode(Long userId, String nodeId){
         logger.info("Starting completeNode");
 
@@ -220,17 +145,6 @@ public class StudyDaoImpl implements StudyDao {
     }
 
     @Override
-    public double getQuestionRating(String nodeId){
-        logger.info("Starting getQuestionRating");
-
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_QUESTION_RATING,
-                (rs, rowNum) -> rs.getDouble("difficulty_rating"),
-                nodeId
-        );
-    }
-
-    @Override
     public int getNodePositionalIndex(Long userId, String nodeId){
         logger.info("Starting getNodePositionalIndex");
 
@@ -254,11 +168,11 @@ public class StudyDaoImpl implements StudyDao {
     }
 
     @Override
-    public boolean checkIfNextNodeExist(Long userId, int nodePosIndex) {
-        logger.info("Starting checkIfNextNodeExist");
+    public boolean checkIfNodeExistInProgress(Long userId, int nodePosIndex) {
+        logger.info("Starting checkIfNodeExistInProgress");
 
         Integer count = jdbcTemplate.queryForObject(
-                StudyConstant.CHECK_NEXT_NODE_EXIST,
+                StudyConstant.CHECK_IF_NODE_POS_EXIST_IN_PROGRESS,
                 Integer.class,
                 userId,
                 nodePosIndex
@@ -279,42 +193,6 @@ public class StudyDaoImpl implements StudyDao {
     }
 
     @Override
-    public String getLowestPKnowSubtopic(Long userId){
-        logger.info("Starting getLowestPKnowSubtopic");
-
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_LOWEST_P_KNOW_SUBTOPIC,
-                (rs, rowNum) -> rs.getString("subtopic_id"),
-                userId
-        );
-    }
-
-    @Override
-    public String getLowestPKnowSubtopicNotMastered(Long userId){
-        logger.info("Starting getLowestPKnowSubtopicNotMastered");
-
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_LOWEST_P_KNOW_SUBTOPIC_NOT_MASTERED,
-                (rs, rowNum) -> rs.getString("subtopic_id"),
-                userId
-        );
-    }
-
-    @Override
-    public int getCurrentChain(Long userId, String subtopicId){
-        logger.info("Starting getCurrentChain");
-
-        logger.info(userId+":"+subtopicId);
-
-        return jdbcTemplate.queryForObject(
-                StudyConstant.GET_USER_SUBTOPIC_CURRENT_CHAIN,
-                (rs, rowNum) -> rs.getInt("current_chain"),
-                userId,
-                subtopicId
-        );
-    }
-
-    @Override
     public int getUserLastPositionIndex(Long userId){
         logger.info("Starting getUserLastPositionIndex");
 
@@ -328,6 +206,17 @@ public class StudyDaoImpl implements StudyDao {
         } catch (EmptyResultDataAccessException e) {
             return 1;
         }
+    }
+
+    @Override
+    public void completeTutorialForInterestedTopic(Long userId, String subtopicId){
+        logger.info("Starting completeTutorialForInterestedTopic");
+
+        jdbcTemplate.update(
+                StudyConstant.COMPLETE_TUTORIAL_FOR_INTERESTED_TOPIC,
+                userId,
+                subtopicId
+        );
     }
 
 
