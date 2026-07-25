@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.study.dto.node;
 
-public class LessonNodeDTO {
+public class LessonContentDTO {
 
     private String nodeId;
     private String title;

@@ -312,5 +312,21 @@ public class UserSubtopicMasteryDaoImpl implements UserSubtopicMasteryDao {
         }
     }
 
+    @Override
+    public void incrementHintUsage(Long userId, String subtopicId){
+        logger.info("Starting incrementHintUsage");
+
+        try {
+            jdbcTemplate.update(
+                    UserSubtopicMasteryConstant.INCREMENT_HINT_USAGE,
+                    userId,
+                    subtopicId
+            );
+        }
+        catch (EmptyResultDataAccessException e) {
+            logger.warn("No result found for userId: {} and subtopicId: {}.", userId, subtopicId);
+        }
+    }
+
 
 }

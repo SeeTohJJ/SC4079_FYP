@@ -1,12 +1,7 @@
 package com.SeeTohJJ.Backend.study.dao.impl;
 
-import com.SeeTohJJ.Backend.study.constant.NodeContentConstant;
 import com.SeeTohJJ.Backend.study.constant.StudyConstant;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
-import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.mapper.StudyNodeRowMapper;
 import com.SeeTohJJ.Backend.study.mapper.StudyPathRowMapper;
 import com.SeeTohJJ.Backend.study.model.StudyNode;

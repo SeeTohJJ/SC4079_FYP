@@ -100,4 +100,10 @@ public class UserSubtopicMasteryConstant {
             SET p_know = ?, last_updated = CURRENT_TIMESTAMP
             WHERE user_id = ? AND subtopic_id = ?
             """;
+
+    public static final String INCREMENT_HINT_USAGE = """
+            UPDATE user_subtopic_mastery
+            SET hint_used = hint_used + 1, last_updated = CURRENT_TIMESTAMP
+            WHERE user_id = ? AND subtopic_id = ?
+            """;
 }

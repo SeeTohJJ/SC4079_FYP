@@ -156,6 +156,13 @@ public class UserSubtopicServiceImpl implements UserSubtopicService {
         userSubtopicMasteryDao.setUserSubtopicPKnow(userId, subtopicId, PKnow);
     }
 
+    @Override
+    public void incrementHintUsage(Long userId, String subtopicId){
+        logger.info("Starting incrementHintUsage");
+
+        userSubtopicMasteryDao.incrementHintUsage(userId, subtopicId);
+    }
+
 
 
 }

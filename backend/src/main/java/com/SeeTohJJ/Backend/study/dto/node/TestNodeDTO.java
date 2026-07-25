@@ -4,13 +4,13 @@ import java.util.List;
 
 public class TestNodeDTO extends StudyNodeDTO {
 
-    private List<QuizNodeDTO> questions;
+    private List<QuizContentDTO> questions;
 
-    public List<QuizNodeDTO> getQuestions() {
+    public List<QuizContentDTO> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<QuizNodeDTO> questions) {
+    public void setQuestions(List<QuizContentDTO> questions) {
         this.questions = questions;
     }
 }

@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.study.dto.node;
 
-public class DecisionNodeDTO {
+public class DecisionContentDTO {
 
     private String nodeId;
     private String title;

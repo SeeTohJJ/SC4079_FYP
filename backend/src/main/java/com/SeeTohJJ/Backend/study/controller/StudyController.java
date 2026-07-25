@@ -1,10 +1,9 @@
 package com.SeeTohJJ.Backend.study.controller;
 
 import com.SeeTohJJ.Backend.auth.service.JwtService;
-import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
+import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
+import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
 import com.SeeTohJJ.Backend.study.dto.result.LessonResultDTO;
 import com.SeeTohJJ.Backend.study.dto.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
@@ -49,22 +48,22 @@ public class StudyController {
     }
 
     @PostMapping("/GetLessonContent")
-    public LessonNodeDTO getLessonContent(@RequestHeader("Authorization") String authHeader,
-                                          @RequestBody NodeRequestDTO request) {
+    public LessonContentDTO getLessonContent(@RequestHeader("Authorization") String authHeader,
+                                             @RequestBody NodeRequestDTO request) {
         logger.info("Starting getLessonContent");
 
         return contentRetrievalService.getLessonNodeContent(request.getNodeId());
     }
 
     @PostMapping("/GetDecisionContent")
-    public DecisionNodeDTO getDecisionContent(@RequestBody NodeRequestDTO request) {
+    public DecisionContentDTO getDecisionContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getDecisionContent");
 
         return contentRetrievalService.getDecisionNodeContent(request.getNodeId());
     }
 
     @PostMapping("/GetEventContent")
-    public EventNodeDTO getEventContent(@RequestBody NodeRequestDTO request) {
+    public EventContentDTO getEventContent(@RequestBody NodeRequestDTO request) {
         logger.info("Starting getEventContent");
 
         return contentRetrievalService.getEventNodeContent(request.getNodeId());

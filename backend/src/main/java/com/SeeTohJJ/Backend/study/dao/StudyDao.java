@@ -1,9 +1,5 @@
 package com.SeeTohJJ.Backend.study.dao;
 
-import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.model.UserNodeProgress;
 

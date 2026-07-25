@@ -1,13 +1,11 @@
 package com.SeeTohJJ.Backend.study.service.content.impl;
 
 import com.SeeTohJJ.Backend.study.dao.NodeContentDao;
-import com.SeeTohJJ.Backend.study.dao.StudyDao;
-import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
+import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
+import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
+import com.SeeTohJJ.Backend.study.dto.node.QuizContentDTO;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
-import com.SeeTohJJ.Backend.study.service.progress.impl.NodeGenerationServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,28 +23,28 @@ public class ContentRetrievalServiceImpl implements ContentRetrievalService {
     }
 
     @Override
-    public LessonNodeDTO getLessonNodeContent(String nodeId){
+    public LessonContentDTO getLessonNodeContent(String nodeId){
         logger.info("Starting getLessonNodeContent");
 
         return nodeContentDao.getLessonNodeContent(nodeId);
     }
 
     @Override
-    public QuizNodeDTO getQuizContent(String nodeId){
+    public QuizContentDTO getQuizContent(String nodeId){
         logger.info("Starting getQuizContent");
 
         return nodeContentDao.getQuizNodeContent(nodeId);
     }
 
     @Override
-    public DecisionNodeDTO getDecisionNodeContent(String nodeId){
+    public DecisionContentDTO getDecisionNodeContent(String nodeId){
         logger.info("Starting getDecisionNodeContent");
 
         return nodeContentDao.getDecisionNodeContent(nodeId);
     }
 
     @Override
-    public EventNodeDTO getEventNodeContent(String nodeId){
+    public EventContentDTO getEventNodeContent(String nodeId){
         logger.info("Starting getEventNodeContent");
 
         return nodeContentDao.getEventNodeContent(nodeId);
@@ -57,6 +55,20 @@ public class ContentRetrievalServiceImpl implements ContentRetrievalService {
         logger.info("Starting getQuestionRating");
 
         return nodeContentDao.getQuestionRating(nodeId);
+    }
+
+    @Override
+    public String getHint(String nodeId){
+        logger.info("Starting getHint");
+
+        return nodeContentDao.getQuizHint(nodeId);
+    }
+
+    @Override
+    public String getExplanation(String nodeId){
+        logger.info("Starting getExplanation");
+
+        return nodeContentDao.getQuizExplanation(nodeId);
     }
 
 }

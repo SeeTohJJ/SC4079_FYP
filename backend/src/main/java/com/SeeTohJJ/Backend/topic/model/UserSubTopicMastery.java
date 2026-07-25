@@ -14,6 +14,7 @@ public class UserSubTopicMastery {
     private int reviewCount;
     private LocalDateTime lastUpdated;
     private int currentChain;
+    private int hintUsed;
 
     public Long getUserId() {
         return userId;
@@ -93,5 +94,13 @@ public class UserSubTopicMastery {
 
     public void setCurrentChain(int currentChain) {
         this.currentChain = currentChain;
+    }
+
+    public int getHintUsed() {
+        return hintUsed;
+    }
+
+    public void setHintUsed(int hintUsed) {
+        this.hintUsed = hintUsed;
     }
 }

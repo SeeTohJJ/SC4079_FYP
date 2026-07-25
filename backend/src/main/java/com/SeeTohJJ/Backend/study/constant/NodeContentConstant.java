@@ -31,4 +31,16 @@ public class NodeContentConstant {
         FROM node_quiz_content
         WHERE node_id = ?
         """;
+
+    public static final String GET_QUIZ_HINT = """
+        SELECT hint
+        FROM node_quiz_content
+        WHERE node_id = ?
+        """;
+
+    public static final String GET_QUIZ_EXPLANATION = """
+        SELECT explanation
+        FROM node_quiz_content
+        WHERE node_id = ?
+        """;
 }

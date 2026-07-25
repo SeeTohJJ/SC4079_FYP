@@ -2,10 +2,10 @@ package com.SeeTohJJ.Backend.study.dao.impl;
 
 import com.SeeTohJJ.Backend.study.constant.NodeContentConstant;
 import com.SeeTohJJ.Backend.study.dao.NodeContentDao;
-import com.SeeTohJJ.Backend.study.dto.node.DecisionNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.EventNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.LessonNodeDTO;
-import com.SeeTohJJ.Backend.study.dto.node.QuizNodeDTO;
+import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
+import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
+import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
+import com.SeeTohJJ.Backend.study.dto.node.QuizContentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +28,14 @@ public class NodeContentDaoImpl implements NodeContentDao {
     }
 
     @Override
-    public LessonNodeDTO getLessonNodeContent(String nodeId){
+    public LessonContentDTO getLessonNodeContent(String nodeId){
         logger.info("Starting getLessonNodeContent");
 
         try {
             return jdbcTemplate.queryForObject(
                     NodeContentConstant.GET_LESSON_NODE_CONTENT,
                     (rs, rowNum) -> {
-                        LessonNodeDTO dto = new LessonNodeDTO();
+                        LessonContentDTO dto = new LessonContentDTO();
                         dto.setNodeId(rs.getString("node_id"));
                         dto.setTitle(rs.getString("title"));
                         dto.setContent(rs.getString("content"));
@@ -51,14 +51,14 @@ public class NodeContentDaoImpl implements NodeContentDao {
 
 
     @Override
-    public QuizNodeDTO getQuizNodeContent(String nodeId){
+    public QuizContentDTO getQuizNodeContent(String nodeId){
         logger.info("Starting getQuizNodeContent {}", nodeId);
 
         try {
             return jdbcTemplate.queryForObject(
                     NodeContentConstant.GET_QUIZ_NODE_CONTENT,
                     (rs, rowNum) -> {
-                        QuizNodeDTO dto = new QuizNodeDTO();
+                        QuizContentDTO dto = new QuizContentDTO();
                         dto.setNodeId(rs.getString("node_id"));
                         dto.setTitle(rs.getString("title"));
                         dto.setQuestion(rs.getString("content"));
@@ -66,8 +66,6 @@ public class NodeContentDaoImpl implements NodeContentDao {
                         dto.setOptionB(rs.getString("option_b"));
                         dto.setOptionC(rs.getString("option_c"));
                         dto.setOptionD(rs.getString("option_d"));
-                        dto.setHint(rs.getString("hint"));
-                        dto.setExplanation(rs.getString("explanation"));
                         return dto;
                     },
                     nodeId
@@ -79,14 +77,14 @@ public class NodeContentDaoImpl implements NodeContentDao {
     }
 
     @Override
-    public DecisionNodeDTO getDecisionNodeContent(String nodeId){
+    public DecisionContentDTO getDecisionNodeContent(String nodeId){
         logger.info("Starting getDecisionNodeContent");
 
         try {
             return jdbcTemplate.queryForObject(
                     NodeContentConstant.GET_DECISION_NODE_CONTENT,
                     (rs, rowNum) -> {
-                        DecisionNodeDTO dto = new DecisionNodeDTO();
+                        DecisionContentDTO dto = new DecisionContentDTO();
                         dto.setNodeId(rs.getString("node_id"));
                         dto.setTitle(rs.getString("title"));
                         dto.setContent(rs.getString("content"));
@@ -105,14 +103,14 @@ public class NodeContentDaoImpl implements NodeContentDao {
     }
 
     @Override
-    public EventNodeDTO getEventNodeContent(String nodeId){
+    public EventContentDTO getEventNodeContent(String nodeId){
         logger.info("Starting getEventNodeContent");
 
         try {
             return jdbcTemplate.queryForObject(
                     NodeContentConstant.GET_EVENT_NODE_CONTENT,
                     (rs, rowNum) -> {
-                        EventNodeDTO dto = new EventNodeDTO();
+                        EventContentDTO dto = new EventContentDTO();
                         dto.setContent(rs.getString("content"));
                         dto.setResult(rs.getString("result"));
                         return dto;
@@ -138,6 +136,38 @@ public class NodeContentDaoImpl implements NodeContentDao {
         } catch (EmptyResultDataAccessException e) {
             logger.error("No question rating found for: {}", nodeId);
             return 0.0;
+        }
+    }
+
+    @Override
+    public String getQuizHint(String nodeId){
+        logger.info("Starting getQuizHint");
+
+        try {
+            return jdbcTemplate.queryForObject(
+                    NodeContentConstant.GET_QUIZ_HINT,
+                    (rs, rowNum) -> rs.getString("hint"),
+                    nodeId
+            );
+        } catch (EmptyResultDataAccessException e) {
+            logger.error("No quiz hint found for: {}", nodeId);
+            return null;
+        }
+    }
+
+    @Override
+    public String getQuizExplanation(String nodeId){
+        logger.info("Starting getQuizExplanation");
+
+        try{
+            return jdbcTemplate.queryForObject(
+                    NodeContentConstant.GET_QUIZ_EXPLANATION,
+                    (rs, rowNum) -> rs.getString("explanation"),
+                    nodeId
+            );
+        } catch (EmptyResultDataAccessException e) {
+            logger.error("No quiz explanation found for: {}", nodeId);
+            return null;
         }
     }
 }

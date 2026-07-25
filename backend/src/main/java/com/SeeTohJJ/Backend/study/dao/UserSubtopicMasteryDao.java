@@ -23,4 +23,5 @@ public interface UserSubtopicMasteryDao {
     int getCurrentChain(Long userId, String subtopicId);
     LocalDateTime getLastUpdated(Long userId, String subtopicId);
     void setUserSubtopicPKnow(Long userId, String subtopicId, double PKnow);
+    void incrementHintUsage(Long userId, String subtopicId);
 }
