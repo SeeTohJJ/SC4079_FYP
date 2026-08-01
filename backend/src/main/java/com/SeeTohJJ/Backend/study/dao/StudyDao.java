@@ -20,5 +20,6 @@ public interface StudyDao {
     String getCurrentSubtopic(Long userId);
     int getUserLastPositionIndex(Long userId);
     void completeTutorialForInterestedTopic(Long userId, String subtopicId);
+    List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount);
 }
 

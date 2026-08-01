@@ -8,7 +8,8 @@ public class StudyNode {
         LESSON,
         QUIZ,
         DECISION,
-        TEST
+        TEST,
+        REVIEW
     }
 
     private String nodeId;

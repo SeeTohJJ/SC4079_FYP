@@ -11,4 +11,5 @@ public interface SubTopicService {
     double getPInit(String subtopicId);
     String getNextSubtopic(String currentSubtopic);
     int getNodeDifficulty(String nodeId);
+    String getTopicIdFromSubtopicId(String subtopicId);
 }

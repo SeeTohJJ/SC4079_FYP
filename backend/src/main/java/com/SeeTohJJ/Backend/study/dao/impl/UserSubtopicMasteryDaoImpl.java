@@ -2,6 +2,7 @@ package com.SeeTohJJ.Backend.study.dao.impl;
 
 import com.SeeTohJJ.Backend.study.constant.StudyConstant;
 import com.SeeTohJJ.Backend.study.constant.UserSubtopicMasteryConstant;
+import com.SeeTohJJ.Backend.study.constant.UserTopicMasteryConstant;
 import com.SeeTohJJ.Backend.study.dao.UserSubtopicMasteryDao;
 import com.SeeTohJJ.Backend.topic.constant.TopicConstant;
 import com.SeeTohJJ.Backend.topic.model.UserSubTopicMastery;
@@ -325,6 +326,64 @@ public class UserSubtopicMasteryDaoImpl implements UserSubtopicMasteryDao {
         }
         catch (EmptyResultDataAccessException e) {
             logger.warn("No result found for userId: {} and subtopicId: {}.", userId, subtopicId);
+        }
+    }
+
+    @Override
+    public boolean isTutorialCompleted(Long userId, String subtopicId) {
+        logger.info("Starting isTutorialCompleted");
+
+        try {
+            return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
+                    UserSubtopicMasteryConstant.CHECK_TUTORIAL_COMPLETED,
+                    boolean.class,
+                    userId,
+                    subtopicId
+            ));
+        }
+        catch (EmptyResultDataAccessException e) {
+            logger.warn("No tutorial completion record found for userId: {} and topicId: {}", userId, subtopicId);
+            return false;
+        }
+    }
+
+    @Override
+    public double getAverageElo(Long userId, String topicId) {
+        logger.info("Starting getAverageElo");
+
+        try {
+            Double result = jdbcTemplate.queryForObject(
+                    UserSubtopicMasteryConstant.CALCULATE_AVERAGE_ELO_OF_TOPIC,
+                    Double.class,
+                    userId,
+                    topicId
+            );
+
+            return result != null ? result : 0.0;
+        }
+        catch (EmptyResultDataAccessException e) {
+            logger.warn("No subtopics found for userId: {} and topicId: {}", userId, topicId);
+            return 0.0;
+        }
+    }
+
+    @Override
+    public double getAveragePKnow(Long userId, String topicId) {
+        logger.info("Starting getAveragePKnow");
+
+        try {
+            Double result = jdbcTemplate.queryForObject(
+                    UserSubtopicMasteryConstant.CALCULATE_AVERAGE_P_KNOW_OF_TOPIC,
+                    Double.class,
+                    userId,
+                    topicId
+            );
+
+            return result != null ? result : 0.0;
+        }
+        catch (EmptyResultDataAccessException e) {
+            logger.warn("No subtopics found for userId: {} and topicId: {}", userId, topicId);
+            return 0.0;
         }
     }
 

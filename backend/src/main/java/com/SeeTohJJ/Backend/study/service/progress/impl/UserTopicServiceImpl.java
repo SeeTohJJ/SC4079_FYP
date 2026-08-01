@@ -1,6 +1,7 @@
 package com.SeeTohJJ.Backend.study.service.progress.impl;
 
 import com.SeeTohJJ.Backend.study.dao.UserTopicMasteryDao;
+import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,16 +14,50 @@ public class UserTopicServiceImpl implements UserTopicService {
     private static final Logger logger = LoggerFactory.getLogger(UserTopicServiceImpl.class);
 
     private final UserTopicMasteryDao userTopicMasteryDao;
+    private final UserSubtopicService userSubtopicService;
 
     @Autowired
-    public UserTopicServiceImpl(UserTopicMasteryDao userTopicMasteryDao) {
+    public UserTopicServiceImpl(UserTopicMasteryDao userTopicMasteryDao,
+                                UserSubtopicService userSubtopicService
+    ) {
         this.userTopicMasteryDao = userTopicMasteryDao;
+        this.userSubtopicService = userSubtopicService;
     }
 
     @Override
-    public boolean isTutorialCompleted(Long userId, String topicId){
-        logger.info("Starting isTutorialCompleted");
+    public void calculateAverageElo(Long userId, String topicId){
+        logger.info("Starting calculateAverageElo");
 
-        return userTopicMasteryDao.isTutorialCompleted(userId, topicId);
+        userTopicMasteryDao.setAverageElo(userId, topicId, userSubtopicService.getAverageElo(userId, topicId));
     }
+
+    @Override
+    public void calculateAveragePKnow(Long userId, String topicId){
+        logger.info("Starting calculateAveragePKnow");
+
+        userTopicMasteryDao.setAveragePKnow(userId, topicId, userSubtopicService.getAveragePKnow(userId, topicId));
+    }
+
+    @Override
+    public void updateTopicMasteryAverage(Long userId, String topicId){
+        logger.info("Starting updateTopicMasteryAverage");
+
+        calculateAverageElo(userId, topicId);
+        calculateAveragePKnow(userId, topicId);
+    }
+
+    @Override
+    public double getAverageElo(Long userId, String topicId){
+        logger.info("Starting getAverageElo");
+
+        return userTopicMasteryDao.getAverageElo(userId, topicId);
+    }
+
+    @Override
+    public double getAveragePKnow(Long userId, String topicId){
+        logger.info("Starting getAveragePKnow");
+
+        return userTopicMasteryDao.getAveragePKnow(userId, topicId);
+    }
+
 }

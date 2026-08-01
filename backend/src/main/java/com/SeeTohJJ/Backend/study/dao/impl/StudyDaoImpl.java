@@ -199,5 +199,19 @@ public class StudyDaoImpl implements StudyDao {
         );
     }
 
+    @Override
+    public List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount){
+        logger.info("Starting getIncorrectNodes");
+
+        return jdbcTemplate.queryForList(
+                StudyConstant.GET_INCORRECT_NODES,
+                String.class,
+                userId,
+                subtopicId,
+                reviewNodeCount
+        );
+    }
+
+
 
 }

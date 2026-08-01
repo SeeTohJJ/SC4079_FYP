@@ -41,7 +41,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                                      TopicService topicService,
                                      ForgettingService forgettingService,
                                      ContentRetrievalService contentRetrievalService,
-                                     AttemptHistoryService attemptHistoryService, ConfidenceService confidenceService) {
+                                     AttemptHistoryService attemptHistoryService,
+                                     ConfidenceService confidenceService) {
         this.nodeGenerationService = nodeGenerationService;
         this.bktService = bktService;
         this.eloService = eloService;
@@ -74,7 +75,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
 
         attemptHistoryService.saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken, hintUsed);
         forgettingService.updateForgettingDecay(userId, subtopicId);
-        bktService.updateUserKnowledge(
+        bktService.runBktModel(
                 userId,
                 subtopicId,
                 isCorrectAnswer,
@@ -82,7 +83,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                 confidenceService.getConfidence(userId, nodeId, timeTaken,  hintUsed)
         );
         eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
-        bktService.updateSubTopicMastery(userId, subtopicId);
+
         processQuizCompletion(userId, nodeId);
     }
 

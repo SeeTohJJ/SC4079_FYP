@@ -1,11 +1,14 @@
 package com.SeeTohJJ.Backend.study.service.progress.impl;
 
+import com.SeeTohJJ.Backend.common.exception.ChainGenerationException;
 import com.SeeTohJJ.Backend.study.dao.ChainTemplateDao;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.dto.*;
+import com.SeeTohJJ.Backend.study.model.GeneratedNode;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.model.UserNodeProgress;
 import com.SeeTohJJ.Backend.study.model.chain.ChainTemplate;
+import com.SeeTohJJ.Backend.study.service.adaptive.SpacedRepetitionService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
@@ -16,8 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -31,25 +37,30 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
     private final SubTopicService subTopicService;
     private final ChainTemplateDao chainTemplateDao;
     private final UserSubtopicService userSubtopicService;
+    private final SpacedRepetitionService spacedRepetitionService;
 
     @Autowired
     public NodeGenerationServiceImpl(StudyDao studyDao,
                                      TopicService topicService,
                                      ProgressService progressService,
                                      SubTopicService subTopicService,
-                                     ChainTemplateDao chainTemplateDao, UserSubtopicService userSubtopicService) {
+                                     ChainTemplateDao chainTemplateDao,
+                                     UserSubtopicService userSubtopicService,
+                                     SpacedRepetitionService spacedRepetitionService) {
         this.studyDao = studyDao;
         this.topicService = topicService;
         this.progressService = progressService;
         this.subTopicService = subTopicService;
         this.chainTemplateDao = chainTemplateDao;
         this.userSubtopicService = userSubtopicService;
+        this.spacedRepetitionService = spacedRepetitionService;
     }
 
     public enum ChainType {
         STANDARD,
         PRACTICE,
-        TUTORIAL
+        TUTORIAL,
+        REVIEW
     }
 
     @Override
@@ -149,9 +160,17 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         }
     }
 
+    @Transactional
     @Override
     public void generateNewChain(Long userId){
         logger.info("Starting generateNewChain");
+
+        List<String> dueReviews = spacedRepetitionService.getDueReviews(userId);
+
+        if (!dueReviews.isEmpty()) {
+            generateReviewChain(userId, dueReviews.getFirst());
+            return;
+        }
 
         String currentSubtopic = progressService.getCurrentSubtopic(userId);
 
@@ -180,60 +199,25 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
     }
 
+    @Transactional
     public void generateStandardChain(Long userId, String subtopicId) {
         logger.info("Starting generateStandardChain");
 
         generateChain(userId, subtopicId, ChainType.STANDARD);
     }
 
+    @Transactional
     public void generatePracticeChain(Long userId, String subtopicId) {
         logger.info("Starting generatePracticeChain");
 
         generateChain(userId, subtopicId, ChainType.PRACTICE);
     }
 
-    private void generateChain(Long userId, String subtopicId, ChainType chainType) {
-        logger.info("Starting generateChain");
+    @Transactional
+    public void generateReviewChain(Long userId, String subtopicId) {
+        logger.info("Starting generateReviewChain");
 
-        List<ChainTemplate> template = chainTemplateDao.getChainTemplate(chainType);
-        int currentChain = userSubtopicService.getCurrentChain(userId, subtopicId);
-
-        if (template.isEmpty()) {
-            throw new RuntimeException("No chain template found for " + chainType);
-        }
-
-        int currentPathPositionIndex = studyDao.getUserLastPositionIndex(userId) + 1;
-
-        boolean unlock = true;
-
-        for (ChainTemplate step : template) {
-            String nodeId = subTopicService.getNodeId(
-                            subtopicId,
-                            step.getNodeType(),
-                            step.getContentSequence(),
-                            currentChain);
-
-            if (nodeId == null) {
-                throw new RuntimeException(
-                        "Missing study node. " +
-                                "Subtopic=" + subtopicId +
-                                ", Type=" + step.getNodeType() +
-                                ", Sequence=" + step.getContentSequence());
-            }
-
-            currentPathPositionIndex++;
-
-            progressService.insertNodeIntoUserProgress(
-                    userId,
-                    nodeId,
-                    currentPathPositionIndex,
-                    unlock,
-                    step.getNodeType()
-            );
-
-            unlock = false;
-        }
-
+        generateChain(userId, subtopicId, ChainType.REVIEW);
     }
 
     // NodeId S-T000-S000-TI-001
@@ -252,5 +236,117 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
                 unlock,
                 nodeType
         );
+    }
+
+    @Transactional
+    public void generateChain(Long userId, String subtopicId, ChainType chainType) {
+        logger.info("Starting generateChain");
+
+        List<ChainTemplate> template = chainTemplateDao.getChainTemplate(chainType);
+
+        if (template.isEmpty()) {
+            throw new ChainGenerationException(
+                    "No chain template found for " + chainType);
+        }
+
+        int currentChain = userSubtopicService.getCurrentChain(userId, subtopicId);
+        int startPosition = studyDao.getUserLastPositionIndex(userId);
+
+        List<GeneratedNode> generatedNodes = resolveNodes(userId, subtopicId, template, currentChain, startPosition);
+
+        insertNodes(userId, generatedNodes);
+    }
+
+    private List<GeneratedNode> resolveNodes(Long userId, String subtopicId, List<ChainTemplate> template, int currentChain, int startPosition) {
+        logger.info("Starting resolveNodes");
+
+        List<GeneratedNode> nodes = new ArrayList<>();
+        int position = startPosition;
+
+        // Count how many REVIEW slots exist
+        int requiredReviewNodeCount = (int) template.stream()
+                .filter(step -> StudyNode.NodeType.REVIEW.toString().equals(step.getNodeType()))
+                .count();
+
+        List<String> reviewNodes = progressService.getIncorrectNodes(
+                userId,
+                subtopicId,
+                requiredReviewNodeCount);
+
+        int reviewIndex = 0;
+        int fallbackQuizSequence = 1;
+
+        for (ChainTemplate step : template) {
+
+            String actualNodeType = step.getNodeType();
+            String nodeId;
+
+            if (StudyNode.NodeType.REVIEW.toString().equals(actualNodeType)) {
+
+                // Use an incorrect question first
+                if (reviewIndex < reviewNodes.size()) {
+
+                    nodeId = reviewNodes.get(reviewIndex++);
+
+                } else {
+
+                    // Not enough incorrect questions, use a normal quiz
+                    nodeId = subTopicService.getNodeId(
+                            subtopicId,
+                            StudyNode.NodeType.QUIZ.toString(),
+                            fallbackQuizSequence++,
+                            currentChain);
+
+                    if (nodeId == null) {
+                        throw new ChainGenerationException(
+                                "Unable to find fallback quiz for subtopic "
+                                        + subtopicId);
+                    }
+
+                }
+                actualNodeType = StudyNode.NodeType.QUIZ.toString();
+
+            } else {
+
+                nodeId = subTopicService.getNodeId(
+                        subtopicId,
+                        actualNodeType,
+                        step.getContentSequence(),
+                        currentChain);
+
+                if (nodeId == null) {
+                    throw new ChainGenerationException(
+                            "Missing node. " +
+                                    "Subtopic=" + subtopicId +
+                                    ", Type=" + actualNodeType +
+                                    ", Sequence=" + step.getContentSequence());
+                }
+            }
+
+            position++;
+
+            nodes.add(new GeneratedNode(
+                    nodeId,
+                    actualNodeType,
+                    position,
+                    nodes.isEmpty()));
+        }
+
+        return nodes;
+    }
+
+    private void insertNodes(Long userId, List<GeneratedNode> nodes) {
+
+        logger.info("Starting insertNodes");
+
+        for (GeneratedNode node : nodes) {
+
+            progressService.insertNodeIntoUserProgress(
+                    userId,
+                    node.getNodeId(),
+                    node.getPosition(),
+                    node.isUnlocked(),
+                    node.getNodeType());
+        }
     }
 }

@@ -163,6 +163,25 @@ public class UserSubtopicServiceImpl implements UserSubtopicService {
         userSubtopicMasteryDao.incrementHintUsage(userId, subtopicId);
     }
 
+    @Override
+    public boolean isTutorialCompleted(Long userId, String topicId){
+        logger.info("Starting isTutorialCompleted");
 
+        return userSubtopicMasteryDao.isTutorialCompleted(userId, topicId);
+    }
+
+    @Override
+    public double getAverageElo(Long userId, String topicId){
+        logger.info("Starting getAverageElo");
+
+        return userSubtopicMasteryDao.getAverageElo(userId, topicId);
+    }
+
+    @Override
+    public double getAveragePKnow(Long userId, String topicId){
+        logger.info("Starting getAveragePKnow");
+
+        return userSubtopicMasteryDao.getAveragePKnow(userId, topicId);
+    }
 
 }

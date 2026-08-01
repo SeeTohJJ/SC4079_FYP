@@ -4,7 +4,9 @@ import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
 import com.SeeTohJJ.Backend.study.service.adaptive.ConfidenceService;
 import com.SeeTohJJ.Backend.study.service.adaptive.ForgettingService;
+import com.SeeTohJJ.Backend.study.service.adaptive.SpacedRepetitionService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
+import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
@@ -21,11 +23,29 @@ public class BktServiceImpl implements BktService {
 
     private final SubTopicService subTopicService;
     private final UserSubtopicService userSubtopicService;
+    private final UserTopicService userTopicService;
+    private final SpacedRepetitionService spacedRepetitionService;
 
     public BktServiceImpl(SubTopicService subTopicService,
-                          UserSubtopicService userSubtopicService) {
+                          UserSubtopicService userSubtopicService,
+                          UserTopicService userTopicService,
+                          SpacedRepetitionService spacedRepetitionService) {
         this.subTopicService = subTopicService;
         this.userSubtopicService = userSubtopicService;
+        this.userTopicService = userTopicService;
+        this.spacedRepetitionService = spacedRepetitionService;
+    }
+
+    @Override
+    public void runBktModel(Long userId, String subtopicId, boolean isCorrectAnswer, int timeTaken, double confidence) {
+        logger.info("Starting runBktModel");
+
+        updateUserKnowledge(userId, subtopicId, isCorrectAnswer, timeTaken, confidence);
+        updateSubTopicMastery(userId, subtopicId);
+
+        String topicId = subTopicService.getTopicIdFromSubtopicId(subtopicId);
+        userTopicService.updateTopicMasteryAverage(userId, topicId);
+        spacedRepetitionService.scheduleNextReview(userId, topicId, userTopicService.getAveragePKnow(userId, topicId));
     }
 
     @Override

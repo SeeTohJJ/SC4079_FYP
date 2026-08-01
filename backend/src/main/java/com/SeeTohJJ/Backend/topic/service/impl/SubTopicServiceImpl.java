@@ -130,5 +130,13 @@ public class SubTopicServiceImpl implements SubTopicService {
         return topicDao.getNodeDifficulty(nodeId);
     }
 
+    @Override
+    public String getTopicIdFromSubtopicId(String subtopicId){
+        logger.info("Starting getTopicIdFromSubtopicId");
+
+        return topicDao.getTopicIdFromSubtopicId(subtopicId);
+    }
+
+
 
 }

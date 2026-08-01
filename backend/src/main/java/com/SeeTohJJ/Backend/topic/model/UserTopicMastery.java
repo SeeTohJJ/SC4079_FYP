@@ -1,23 +1,18 @@
 package com.SeeTohJJ.Backend.topic.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class UserTopicMastery {
 
-    private String masteryId;
     private Long userId;
     private String topicId;
-    private int masteryScore; // 1 - 100
-    private LocalDateTime createdAt;
+    private double averageElo;
+    private double averagePKnow;
     private LocalDateTime lastUpdated;
-
-    public String getMasteryId() {
-        return masteryId;
-    }
-
-    public void setMasteryId(String masteryId) {
-        this.masteryId = masteryId;
-    }
+    private Date nextReviewDate;
+    private int reviewIntervalDay;
+    private int reviewCount;
 
     public Long getUserId() {
         return userId;
@@ -35,20 +30,20 @@ public class UserTopicMastery {
         this.topicId = topicId;
     }
 
-    public int getMasteryScore() {
-        return masteryScore;
+    public double getAverageElo() {
+        return averageElo;
     }
 
-    public void setMasteryScore(int masteryScore) {
-        this.masteryScore = masteryScore;
+    public void setAverageElo(double averageElo) {
+        this.averageElo = averageElo;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public double getAveragePKnow() {
+        return averagePKnow;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setAveragePKnow(double averagePKnow) {
+        this.averagePKnow = averagePKnow;
     }
 
     public LocalDateTime getLastUpdated() {
@@ -57,6 +52,30 @@ public class UserTopicMastery {
 
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Date getNextReviewDate() {
+        return nextReviewDate;
+    }
+
+    public void setNextReviewDate(Date nextReviewDate) {
+        this.nextReviewDate = nextReviewDate;
+    }
+
+    public int getReviewIntervalDay() {
+        return reviewIntervalDay;
+    }
+
+    public void setReviewIntervalDay(int reviewIntervalDay) {
+        this.reviewIntervalDay = reviewIntervalDay;
+    }
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
     }
 
 

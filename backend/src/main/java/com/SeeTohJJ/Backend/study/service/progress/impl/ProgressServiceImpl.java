@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProgressServiceImpl implements ProgressService {
 
@@ -74,6 +76,13 @@ public class ProgressServiceImpl implements ProgressService {
         logger.info("Starting completeTutorialForInterestedTopic");
 
         studyDao.completeTutorialForInterestedTopic(userId, subtopicId);
+    }
+
+    @Override
+    public List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount){
+        logger.info("Starting getIncorrectNodes");
+
+        return studyDao.getIncorrectNodes(userId, subtopicId, reviewNodeCount);
     }
 
 

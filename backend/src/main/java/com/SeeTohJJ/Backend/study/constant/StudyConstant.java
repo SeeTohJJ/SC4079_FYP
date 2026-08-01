@@ -67,8 +67,9 @@ public class StudyConstant {
     public static final String GET_CURRENT_SUBTOPIC = """
         SELECT subtopic_id
         FROM user_node_progress
-        WHERE user_id = ? AND is_completed = true
-        ORDER BY last_updated
+        WHERE user_id = ? AND is_completed = true AND node_type <> 'REVIEW_QUIZ'
+        ORDER BY last_updated DESC
+        LIMIT 1;
         """;
 
     public static final String GET_NODE_PATH_LAST_POS_INDEX = """
@@ -83,5 +84,13 @@ public class StudyConstant {
         UPDATE user_interested_topics
         SET tutorial_completed = true, last_updated = CURRENT_TIMESTAMP
         WHERE user_id = ? AND topic_id = ?
+        """;
+
+    public static final String GET_INCORRECT_NODES = """
+        SELECT node_id
+        FROM question_attempt_history
+        WHERE user_id = ? AND subtopic_id = ? AND correct = false
+        ORDER BY answered_at DESC
+        LIMIT ?
         """;
 }

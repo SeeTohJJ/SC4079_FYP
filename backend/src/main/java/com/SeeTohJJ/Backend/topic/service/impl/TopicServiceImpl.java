@@ -37,13 +37,6 @@ public class TopicServiceImpl implements TopicService {
         userTopicMasteryDao.insertInitialTopicProgress(userId, topicId);
     }
 
-//    @Override
-//    public boolean isTutorialCompleted(Long userId, String topicId){
-//        logger.info("Starting isTutorialCompleted");
-//
-//        return userTopicMasteryDao.isTutorialCompleted(userId, topicId);
-//    }
-
     @Override
     public List<String> getUserTopicFromUserId(Long userId) {
         logger.info("Starting getUserTopicFromUserId");

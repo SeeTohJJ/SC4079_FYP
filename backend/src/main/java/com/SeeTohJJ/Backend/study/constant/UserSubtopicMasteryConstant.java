@@ -106,4 +106,30 @@ public class UserSubtopicMasteryConstant {
             SET hint_used = hint_used + 1, last_updated = CURRENT_TIMESTAMP
             WHERE user_id = ? AND subtopic_id = ?
             """;
+
+    public static final String CHECK_TUTORIAL_COMPLETED = """
+            SELECT tutorial_completed
+            FROM user_subtopic_mastery
+            WHERE user_id = ? AND subtopic_id = ?
+            """;
+
+    public static final String CALCULATE_AVERAGE_ELO_OF_TOPIC = """
+            SELECT AVG(elo) AS average_elo
+            FROM user_subtopic_mastery
+            WHERE user_id = ? AND subtopic_id IN (
+                SELECT subtopic_id
+                FROM subtopics
+                WHERE topic_id = ?
+            )
+            """;
+
+    public static final String CALCULATE_AVERAGE_P_KNOW_OF_TOPIC = """
+            SELECT AVG(p_know) AS average_p_know
+            FROM user_subtopic_mastery
+            WHERE user_id = ? AND subtopic_id IN (
+                SELECT subtopic_id
+                FROM subtopics
+                WHERE topic_id = ?
+            )
+            """;
 }

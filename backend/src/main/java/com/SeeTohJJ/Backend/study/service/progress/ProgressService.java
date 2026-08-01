@@ -1,5 +1,7 @@
 package com.SeeTohJJ.Backend.study.service.progress;
 
+import java.util.List;
+
 // Related to study node path and unlocking nodes
 public interface ProgressService {
 
@@ -10,4 +12,5 @@ public interface ProgressService {
     String getCurrentSubtopic(Long userId);
     void insertNodeIntoUserProgress(Long userId, String nodeId, int currentPathPositionIndex, boolean unlock, String nodeType);
     void completeTutorialForInterestedTopic(Long userId, String subtopicId);
+    List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount);
 }
