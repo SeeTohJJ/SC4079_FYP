@@ -58,5 +58,12 @@ public class TopicServiceImpl implements TopicService {
         return topicDao.getTopicId(nodeId);
     }
 
+    @Override
+    public String getTopicName(String topicId) {
+        logger.info("Starting getTopicName");
+
+        return topicDao.getTopicName(topicId);
+    }
+
 
 }

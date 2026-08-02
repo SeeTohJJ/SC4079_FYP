@@ -17,5 +17,4 @@ public interface UserTopicMasteryDao {
     List<String> getDueReviews(Long userId);
     double getAverageElo(Long userId, String topicId);
     double getAveragePKnow(Long userId, String topicId);
-
 }

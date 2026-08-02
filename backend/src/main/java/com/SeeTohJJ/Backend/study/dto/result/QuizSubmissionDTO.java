@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.study.dto.result;
 
-public class QuizResultDTO {
+public class QuizSubmissionDTO {
 
     private String nodeId;
     private String optionSelected;

@@ -348,7 +348,7 @@ public class UserSubtopicMasteryDaoImpl implements UserSubtopicMasteryDao {
     }
 
     @Override
-    public double getAverageElo(Long userId, String topicId) {
+    public double getAverageEloOfTopic(Long userId, String topicId) {
         logger.info("Starting getAverageElo");
 
         try {
@@ -368,7 +368,7 @@ public class UserSubtopicMasteryDaoImpl implements UserSubtopicMasteryDao {
     }
 
     @Override
-    public double getAveragePKnow(Long userId, String topicId) {
+    public double getAveragePKnowOfTopic(Long userId, String topicId) {
         logger.info("Starting getAveragePKnow");
 
         try {

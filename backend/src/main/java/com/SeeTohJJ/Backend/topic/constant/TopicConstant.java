@@ -82,4 +82,10 @@ public class TopicConstant {
             FROM study_nodes
             WHERE node_id = ?
             """;
+
+    public static final String GET_TOPIC_NAME = """
+            SELECT name
+            FROM topics
+            WHERE topic_id = ?
+            """;
 }

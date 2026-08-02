@@ -23,7 +23,7 @@ public interface UserSubtopicService {
     void setUserSubtopicPKnow(Long userId, String subtopicId, double PKnow);
     void incrementHintUsage(Long userId, String subtopicId);
     boolean isTutorialCompleted(Long userId, String topicId);
-    double getAverageElo(Long userId, String topicId);
-    double getAveragePKnow(Long userId, String topicId);
+    double getAverageEloOfTopic(Long userId, String topicId);
+    double getAveragePKnowOfTopic(Long userId, String topicId);
 
 }

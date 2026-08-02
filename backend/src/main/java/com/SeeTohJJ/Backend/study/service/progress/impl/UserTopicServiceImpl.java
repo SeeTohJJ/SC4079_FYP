@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class UserTopicServiceImpl implements UserTopicService {
 
@@ -28,14 +30,14 @@ public class UserTopicServiceImpl implements UserTopicService {
     public void calculateAverageElo(Long userId, String topicId){
         logger.info("Starting calculateAverageElo");
 
-        userTopicMasteryDao.setAverageElo(userId, topicId, userSubtopicService.getAverageElo(userId, topicId));
+        userTopicMasteryDao.setAverageElo(userId, topicId, userSubtopicService.getAverageEloOfTopic(userId, topicId));
     }
 
     @Override
     public void calculateAveragePKnow(Long userId, String topicId){
         logger.info("Starting calculateAveragePKnow");
 
-        userTopicMasteryDao.setAveragePKnow(userId, topicId, userSubtopicService.getAveragePKnow(userId, topicId));
+        userTopicMasteryDao.setAveragePKnow(userId, topicId, userSubtopicService.getAveragePKnowOfTopic(userId, topicId));
     }
 
     @Override
@@ -59,5 +61,13 @@ public class UserTopicServiceImpl implements UserTopicService {
 
         return userTopicMasteryDao.getAveragePKnow(userId, topicId);
     }
+
+    @Override
+    public LocalDate getNextReviewDate(Long userId, String topicId){
+        logger.info("Starting getNextReviewDate");
+
+        return userTopicMasteryDao.getNextReview(userId, topicId);
+    }
+
 
 }

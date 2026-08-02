@@ -151,5 +151,16 @@ public class TopicDaoImpl implements TopicDao {
         return result != null ? result : 0;
     }
 
+    @Override
+    public String getTopicName(String topicId){
+        logger.info("Starting getTopicName");
+
+        return jdbcTemplate.queryForObject(
+                TopicConstant.GET_TOPIC_NAME,
+                String.class,
+                topicId
+        );
+    }
+
 
 }

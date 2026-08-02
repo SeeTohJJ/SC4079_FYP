@@ -1,11 +1,14 @@
 package com.SeeTohJJ.Backend.study.service.submission.impl;
 
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
-import com.SeeTohJJ.Backend.study.dto.result.QuizResultDTO;
+import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
+import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
 import com.SeeTohJJ.Backend.study.service.adaptive.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
+import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
+import com.SeeTohJJ.Backend.study.service.result.QuizResultService;
 import com.SeeTohJJ.Backend.study.service.submission.QuizSubmissionService;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
@@ -30,6 +33,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private final ContentRetrievalService contentRetrievalService;
     private final AttemptHistoryService attemptHistoryService;
     private final ConfidenceService confidenceService;
+    private final QuizResultService quizResultService;
+    private final UserTopicService userTopicService;
 
     @Autowired
     public QuizSubmissionServiceImpl(NodeGenerationService nodeGenerationService,
@@ -42,7 +47,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                                      ForgettingService forgettingService,
                                      ContentRetrievalService contentRetrievalService,
                                      AttemptHistoryService attemptHistoryService,
-                                     ConfidenceService confidenceService) {
+                                     ConfidenceService confidenceService, QuizResultService quizResultService, UserTopicService userTopicService) {
         this.nodeGenerationService = nodeGenerationService;
         this.bktService = bktService;
         this.eloService = eloService;
@@ -54,6 +59,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         this.contentRetrievalService = contentRetrievalService;
         this.attemptHistoryService = attemptHistoryService;
         this.confidenceService = confidenceService;
+        this.quizResultService = quizResultService;
+        this.userTopicService = userTopicService;
     }
 
     @Override
@@ -64,7 +71,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     }
 
     @Override
-    public void completeQuiz(Long userId, QuizResultDTO quizResult){
+    public QuizResultResponseDTO completeQuiz(Long userId, QuizSubmissionDTO quizResult){
         logger.info("Starting completeQuiz");
 
         String nodeId = quizResult.getNodeId();
@@ -72,6 +79,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         boolean isCorrectAnswer = gradeAnswer(quizResult.getNodeId(), quizResult.getOptionSelected());
         String subtopicId = subTopicService.getSubTopicId(nodeId);
         boolean hintUsed = quizResult.isHintUsed();
+        String topicId = subtopicId.substring(0, 3);
+        double pastPKnow = userTopicService.getAveragePKnow(userId, topicId);
 
         attemptHistoryService.saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken, hintUsed);
         forgettingService.updateForgettingDecay(userId, subtopicId);
@@ -84,14 +93,17 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         );
         eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
 
-        processQuizCompletion(userId, nodeId);
+        boolean newChainCreated = processQuizCompletion(userId, nodeId);
+
+        return quizResultService.buildQuizResult(userId, subtopicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated);
     }
 
-    public void processQuizCompletion(Long userId, String nodeId){
+    public boolean processQuizCompletion(Long userId, String nodeId){
         logger.info("Starting processQuizCompletion");
 
         progressService.completeNode(userId, nodeId);
         int currentNodePosIndex = progressService.getNodePositionIndexInPath(userId, nodeId);
+        boolean newChainCreated = false;
 
         if (nodeId.contains("S001-Q-003")){
             progressService.completeTutorialForInterestedTopic(userId, topicService.getTopicId(nodeId));
@@ -106,7 +118,10 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         else {
             nodeGenerationService.generateNewChain(userId);
             progressService.unlockNextNode(userId, currentNodePosIndex);
+            newChainCreated = true;
         }
+
+        return newChainCreated;
 
     }
 

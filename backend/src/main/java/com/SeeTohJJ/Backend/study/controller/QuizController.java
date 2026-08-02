@@ -3,7 +3,8 @@ package com.SeeTohJJ.Backend.study.controller;
 import com.SeeTohJJ.Backend.auth.service.JwtService;
 import com.SeeTohJJ.Backend.study.dto.NodeRequestDTO;
 import com.SeeTohJJ.Backend.study.dto.node.QuizContentDTO;
-import com.SeeTohJJ.Backend.study.dto.result.QuizResultDTO;
+import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
+import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.submission.QuizSubmissionService;
 import org.slf4j.Logger;
@@ -39,11 +40,11 @@ public class QuizController {
     }
 
     @PostMapping("/SubmitQuiz")
-    public void submitQuiz(@RequestHeader("Authorization") String authHeader,
-                           @RequestBody QuizResultDTO request){
+    public QuizResultResponseDTO submitQuiz(@RequestHeader("Authorization") String authHeader,
+                                            @RequestBody QuizSubmissionDTO request){
         logger.info("Starting submitQuiz");
 
-        quizSubmissionService.completeQuiz(jwtService.extractUserId(authHeader.substring(7)), request);
+        return quizSubmissionService.completeQuiz(jwtService.extractUserId(authHeader.substring(7)), request);
     }
 
     @GetMapping("/GetQuizHint/{nodeId}")

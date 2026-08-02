@@ -1,5 +1,7 @@
 package com.SeeTohJJ.Backend.study.service.progress;
 
+import java.time.LocalDate;
+
 public interface UserTopicService {
 
     void calculateAverageElo(Long userId, String topicId);
@@ -7,4 +9,5 @@ public interface UserTopicService {
     void updateTopicMasteryAverage(Long userId, String topicId);
     double getAverageElo(Long userId, String topicId);
     double getAveragePKnow(Long userId, String topicId);
+    LocalDate getNextReviewDate(Long userId, String topicId);
 }

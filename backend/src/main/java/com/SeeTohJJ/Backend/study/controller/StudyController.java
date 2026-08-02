@@ -4,7 +4,7 @@ import com.SeeTohJJ.Backend.auth.service.JwtService;
 import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
-import com.SeeTohJJ.Backend.study.dto.result.LessonResultDTO;
+import com.SeeTohJJ.Backend.study.dto.result.LessonSubmissionDTO;
 import com.SeeTohJJ.Backend.study.dto.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
@@ -71,7 +71,7 @@ public class StudyController {
 
     @PostMapping("/SubmitLesson")
     public ResponseEntity<Void> lessonResult(@RequestHeader("Authorization") String authHeader,
-                                             @RequestBody LessonResultDTO request){
+                                             @RequestBody LessonSubmissionDTO request){
         logger.info("Starting lessonResult");
 
         nodeSubmissionService.completeLesson(

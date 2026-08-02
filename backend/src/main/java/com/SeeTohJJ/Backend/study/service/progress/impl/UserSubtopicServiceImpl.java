@@ -3,7 +3,6 @@ package com.SeeTohJJ.Backend.study.service.progress.impl;
 import com.SeeTohJJ.Backend.study.dao.UserSubtopicMasteryDao;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.model.UserSubTopicMastery;
-import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,17 +170,17 @@ public class UserSubtopicServiceImpl implements UserSubtopicService {
     }
 
     @Override
-    public double getAverageElo(Long userId, String topicId){
-        logger.info("Starting getAverageElo");
+    public double getAverageEloOfTopic(Long userId, String topicId){
+        logger.info("Starting getAverageEloOfTopic");
 
-        return userSubtopicMasteryDao.getAverageElo(userId, topicId);
+        return userSubtopicMasteryDao.getAverageEloOfTopic(userId, topicId);
     }
 
     @Override
-    public double getAveragePKnow(Long userId, String topicId){
-        logger.info("Starting getAveragePKnow");
+    public double getAveragePKnowOfTopic(Long userId, String topicId){
+        logger.info("Starting getAveragePKnowOfTopic");
 
-        return userSubtopicMasteryDao.getAveragePKnow(userId, topicId);
+        return userSubtopicMasteryDao.getAveragePKnowOfTopic(userId, topicId);
     }
 
 }
