@@ -192,24 +192,34 @@ public class StudyDaoImpl implements StudyDao {
     public void completeTutorialForInterestedTopic(Long userId, String subtopicId){
         logger.info("Starting completeTutorialForInterestedTopic");
 
-        jdbcTemplate.update(
-                StudyConstant.COMPLETE_TUTORIAL_FOR_INTERESTED_TOPIC,
-                userId,
-                subtopicId
-        );
+        try {
+            jdbcTemplate.update(
+                    StudyConstant.COMPLETE_TUTORIAL_FOR_INTERESTED_TOPIC,
+                    userId,
+                    subtopicId
+            );
+        } catch (Exception e) {
+            logger.error("Error completing tutorial for interested topic: {}", e.getMessage());
+            throw e;
+        }
     }
 
     @Override
     public List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount){
         logger.info("Starting getIncorrectNodes");
 
-        return jdbcTemplate.queryForList(
-                StudyConstant.GET_INCORRECT_NODES,
-                String.class,
-                userId,
-                subtopicId,
-                reviewNodeCount
-        );
+        try {
+            return jdbcTemplate.queryForList(
+                    StudyConstant.GET_INCORRECT_NODES,
+                    String.class,
+                    userId,
+                    subtopicId,
+                    reviewNodeCount
+            );
+        } catch (Exception e) {
+            logger.error("Error retrieving incorrect nodes: {}", e.getMessage());
+            return null;
+        }
     }
 
 
