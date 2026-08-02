@@ -29,14 +29,14 @@ class _RegisterTopicsStepState
   final topics = [
     {"id": "T001", "name": "Budgeting"},
     {"id": "T002", "name": "Saving"},
-    {"id": "T003", "name": "Investing"},
-    {"id": "T004", "name": "Credit Cards"},
-    {"id": "T005", "name": "Loans"},
-    {"id": "T006", "name": "Insurance"},
+    {"id": "T003", "name": "Banking"},
+    {"id": "T004", "name": "Investing"},
+    {"id": "T005", "name": "Insurance"},
+    {"id": "T006", "name": "Loans & Debt"},
     {"id": "T007", "name": "Taxes"},
     {"id": "T008", "name": "Retirement Planning"},
-    {"id": "T009", "name": "Debt Management"},
-    {"id": "T010", "name": "Emergency Fund"},
+    {"id": "T009", "name": "Financial Scams"},
+    {"id": "T010", "name": "Personal Finance"},
   ];
 
   late final Map<String, String> topicToIdMap = {
@@ -46,10 +46,21 @@ class _RegisterTopicsStepState
 
   final List<String> selectedTopics = [];
 
+  bool get isAllSelected => selectedTopics.length == topics.length;
+
+  void toggleSelectAll() {
+    setState(() {
+      if (isAllSelected) {
+        selectedTopics.clear();
+      } else {
+        selectedTopics.clear();
+        selectedTopics.addAll(topics.map((t) => t["id"] as String));
+      }
+    });
+  }
+
   Future<void> finishRegistration() async {
-
     if (selectedTopics.isEmpty) {
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -57,7 +68,6 @@ class _RegisterTopicsStepState
           ),
         ),
       );
-
       return;
     }
 
@@ -95,28 +105,21 @@ class _RegisterTopicsStepState
           context,
           '/login',
         );
-
       } else {
-
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Registration failed"),
           ),
         );
       }
-
     } catch (e) {
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Error: $e"),
         ),
       );
-
     } finally {
-
       if (mounted) {
-
         setState(() {
           loading = false;
         });
@@ -129,15 +132,11 @@ class _RegisterTopicsStepState
 
     return Padding(
       padding: const EdgeInsets.all(16),
-
       child: Column(
         crossAxisAlignment:
             CrossAxisAlignment.start,
-
         children: [
-
           const SizedBox(height: 48),
-
           const Text(
             "What would you like to learn?",
             style: TextStyle(
@@ -152,31 +151,48 @@ class _RegisterTopicsStepState
             child: Wrap(
               spacing: 12,
               runSpacing: 12,
-
-              children: topics.map((topic) {
-
-                final name = topic["name"] as String;
-                final id = topic["id"] as String;
-
-                final selected = selectedTopics.contains(id);
-
-                return FilterChip(
-                  label: Text(name),
-                  selected: selected,
-
-                  onSelected: (value) {
-                    setState(() {
-                      if (value) {
-                        if (!selectedTopics.contains(id)) {
-                          selectedTopics.add(id);
+              children: [
+                // Render all topics as FilterChips
+                ...topics.map((topic) {
+                  final name = topic["name"] as String;
+                  final id = topic["id"] as String;
+                  final selected = selectedTopics.contains(id);
+                  return FilterChip(
+                    label: Text(name),
+                    selected: selected,
+                    onSelected: (value) {
+                      setState(() {
+                        if (value) {
+                          if (!selectedTopics.contains(id)) {
+                            selectedTopics.add(id);
+                          }
+                        } else {
+                          selectedTopics.remove(id);
                         }
-                      } else {
-                        selectedTopics.remove(id);
-                      }
-                    });
-                  },
-                );
-              }).toList(),
+                      });
+                    },
+                  );
+                }),
+                // "Select All" chip after all topics, forced to be on a new row
+                FractionallySizedBox(
+                  widthFactor: 1.0,
+                  child: Align(
+                    alignment: Alignment.centerLeft, // Align chip to the start of the line
+                    child: FilterChip(
+                      avatar: Icon(
+                        isAllSelected ? Icons.remove_done : Icons.done_all,
+                        size: 18,
+                      ),
+                      label: Text(
+                        isAllSelected ? "Deselect All" : "Select All",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      selected: isAllSelected,
+                      onSelected: (_) => toggleSelectAll(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
 
