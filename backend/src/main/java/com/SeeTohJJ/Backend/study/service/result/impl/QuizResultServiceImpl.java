@@ -38,7 +38,7 @@ public class QuizResultServiceImpl implements QuizResultService {
         quizResultResponseDTO.setNewChainGenerated(newChainCreated);
         quizResultResponseDTO.setTopicName(topicService.getTopicName(topicId));
         quizResultResponseDTO.setNextReviewDate(userTopicService.getNextReviewDate(userId, topicId));
-
+        quizResultResponseDTO.setFeedback("GOOD TEST");
         return quizResultResponseDTO;
     }
 

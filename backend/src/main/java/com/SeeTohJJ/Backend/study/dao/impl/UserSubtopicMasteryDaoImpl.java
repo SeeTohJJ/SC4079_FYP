@@ -156,12 +156,17 @@ public class UserSubtopicMasteryDaoImpl implements UserSubtopicMasteryDao {
     public void insertNewSubtopicMastery(Long userId, String subtopicId, double p_know){
         logger.info("Starting insertNewSubtopicMastery");
 
-        jdbcTemplate.update(
-                UserSubtopicMasteryConstant.INSERT_NEW_SUBTOPIC_MASTERY,
-                userId,
-                subtopicId,
-                p_know
-        );
+        try {
+            jdbcTemplate.update(
+                    UserSubtopicMasteryConstant.INSERT_NEW_SUBTOPIC_MASTERY,
+                    userId,
+                    subtopicId,
+                    p_know
+            );
+        }
+        catch (EmptyResultDataAccessException e) {
+            logger.warn("Subtopic Mastery already exists for userId: {} and subtopicId: {}.", userId, subtopicId);
+        }
     }
 
     @Override

@@ -8,6 +8,7 @@ class QuizContent {
   final String optionB;
   final String optionC;
   final String optionD;
+  final String? hint;
 
   QuizContent({
     required this.nodeId,
@@ -17,6 +18,7 @@ class QuizContent {
     required this.optionB,
     required this.optionC,
     required this.optionD,
+    this.hint,
   });
 
   factory QuizContent.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class QuizContent {
       optionB: json["optionB"],
       optionC: json["optionC"],
       optionD: json["optionD"],
+      hint: json["hint"],
     );
   }
 

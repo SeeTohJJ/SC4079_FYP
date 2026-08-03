@@ -9,7 +9,7 @@ public class NodeContentConstant {
         """;
 
     public static final String GET_QUIZ_NODE_CONTENT = """
-        SELECT node_id, title, content, option_a, option_b, option_c, option_d
+        SELECT node_id, title, content, option_a, option_b, option_c, option_d, hint
         FROM node_quiz_content
         WHERE node_id = ?
         """;

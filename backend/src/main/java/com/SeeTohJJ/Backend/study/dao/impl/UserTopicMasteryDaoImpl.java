@@ -173,7 +173,7 @@ public class UserTopicMasteryDaoImpl implements UserTopicMasteryDao {
             return result != null ? result : 0;
         } catch (Exception e) {
             logger.error("Error retrieving average ELO: {}", e.getMessage());
-            throw e;
+            return 0.0;
         }
     }
 
@@ -191,7 +191,7 @@ public class UserTopicMasteryDaoImpl implements UserTopicMasteryDao {
             return result != null ? result : 0.0;
         } catch (Exception e) {
             logger.error("Error retrieving average PKnow: {}", e.getMessage());
-            throw e;
+            return 0.0;
         }
     }
 

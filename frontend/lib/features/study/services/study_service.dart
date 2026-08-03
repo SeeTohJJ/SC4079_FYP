@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:frontend/features/study/models/lesson_content.dart';
 import 'package:frontend/features/study/models/quiz_content.dart';
+import 'package:frontend/features/study/models/quiz_result.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/auth/services/auth_services.dart';
 
@@ -124,7 +125,7 @@ class StudyService {
     return QuizContent.fromJson(jsonDecode(response.body));
   }
 
-    Future<void> submitQuiz({required String nodeId, required String optionSelected, required int timeTaken}) async {
+    Future<QuizResult> submitQuiz({required String nodeId, required String optionSelected, required int timeTaken, required bool hintUsed}) async {
     final token = await authService.getToken();
 
     if (token == null) {
@@ -147,6 +148,10 @@ class StudyService {
     if (response.statusCode != 200) {
       throw Exception("Failed to submit quiz");
     }
+
+    print("Response body: ${response.body}");
+
+    return QuizResult.fromJson(jsonDecode(response.body));
   }
 
   

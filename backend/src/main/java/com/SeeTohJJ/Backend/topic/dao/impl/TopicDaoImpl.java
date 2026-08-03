@@ -153,7 +153,7 @@ public class TopicDaoImpl implements TopicDao {
 
     @Override
     public String getTopicName(String topicId){
-        logger.info("Starting getTopicName");
+        logger.info("Starting getTopicName {}", topicId);
 
         return jdbcTemplate.queryForObject(
                 TopicConstant.GET_TOPIC_NAME,

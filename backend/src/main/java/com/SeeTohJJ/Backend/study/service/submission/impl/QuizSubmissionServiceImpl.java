@@ -79,7 +79,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         boolean isCorrectAnswer = gradeAnswer(quizResult.getNodeId(), quizResult.getOptionSelected());
         String subtopicId = subTopicService.getSubTopicId(nodeId);
         boolean hintUsed = quizResult.isHintUsed();
-        String topicId = subtopicId.substring(0, 3);
+        String topicId = subtopicId.substring(0, 4);
         double pastPKnow = userTopicService.getAveragePKnow(userId, topicId);
 
         attemptHistoryService.saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken, hintUsed);
@@ -95,7 +95,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
 
         boolean newChainCreated = processQuizCompletion(userId, nodeId);
 
-        return quizResultService.buildQuizResult(userId, subtopicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated);
+        return quizResultService.buildQuizResult(userId, topicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated);
     }
 
     public boolean processQuizCompletion(Long userId, String nodeId){
