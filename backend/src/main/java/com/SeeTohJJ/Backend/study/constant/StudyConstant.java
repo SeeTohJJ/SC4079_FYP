@@ -65,10 +65,13 @@ public class StudyConstant {
         """;
 
     public static final String GET_CURRENT_SUBTOPIC = """
-        SELECT subtopic_id
-        FROM user_node_progress
-        WHERE user_id = ? AND is_completed = true AND node_type <> 'REVIEW_QUIZ'
-        ORDER BY last_updated DESC
+        SELECT sn.subtopic_id
+        FROM user_node_progress unp
+        JOIN study_nodes sn ON unp.node_id = sn.node_id
+        WHERE unp.user_id = ?
+          AND unp.is_completed = true
+          AND unp.node_type <> 'REVIEW'
+        ORDER BY unp.last_updated DESC
         LIMIT 1;
         """;
 
@@ -88,7 +91,7 @@ public class StudyConstant {
 
     public static final String GET_INCORRECT_NODES = """
         SELECT node_id
-        FROM question_attempt_history
+        FROM user_question_attempts
         WHERE user_id = ? AND subtopic_id = ? AND correct = false
         ORDER BY answered_at DESC
         LIMIT ?

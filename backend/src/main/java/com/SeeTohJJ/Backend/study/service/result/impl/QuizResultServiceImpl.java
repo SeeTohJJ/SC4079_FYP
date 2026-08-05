@@ -2,6 +2,7 @@ package com.SeeTohJJ.Backend.study.service.result.impl;
 
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
+import com.SeeTohJJ.Backend.study.service.result.FeedbackService;
 import com.SeeTohJJ.Backend.study.service.result.QuizResultService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import org.slf4j.Logger;
@@ -12,12 +13,15 @@ import org.springframework.stereotype.Service;
 public class QuizResultServiceImpl implements QuizResultService {
 
     private static final Logger logger = LoggerFactory.getLogger(QuizResultServiceImpl.class);
+
     private final UserTopicService userTopicService;
     private final TopicService topicService;
+    private final FeedbackService feedbackService;
 
-    public QuizResultServiceImpl(UserTopicService userTopicService, TopicService topicService) {
+    public QuizResultServiceImpl(UserTopicService userTopicService, TopicService topicService, FeedbackService feedbackService) {
         this.userTopicService = userTopicService;
         this.topicService = topicService;
+        this.feedbackService = feedbackService;
     }
 
 
@@ -27,7 +31,8 @@ public class QuizResultServiceImpl implements QuizResultService {
                                                  boolean correct,
                                                  double previousPKnow,
                                                  double updatedPKnow,
-                                                 boolean newChainCreated) {
+                                                 boolean newChainCreated,
+                                                 int timeTaken) {
         logger.info("Starting buildQuizResult");
 
         QuizResultResponseDTO quizResultResponseDTO = new QuizResultResponseDTO();
@@ -38,7 +43,7 @@ public class QuizResultServiceImpl implements QuizResultService {
         quizResultResponseDTO.setNewChainGenerated(newChainCreated);
         quizResultResponseDTO.setTopicName(topicService.getTopicName(topicId));
         quizResultResponseDTO.setNextReviewDate(userTopicService.getNextReviewDate(userId, topicId));
-        quizResultResponseDTO.setFeedback("GOOD TEST");
+        quizResultResponseDTO.setFeedback(feedbackService.generateFeedback(correct, updatedPKnow, timeTaken));
         return quizResultResponseDTO;
     }
 

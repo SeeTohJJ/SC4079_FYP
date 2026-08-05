@@ -95,7 +95,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
 
         boolean newChainCreated = processQuizCompletion(userId, nodeId);
 
-        return quizResultService.buildQuizResult(userId, topicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated);
+        return quizResultService.buildQuizResult(userId, topicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated, timeTaken);
     }
 
     public boolean processQuizCompletion(Long userId, String nodeId){

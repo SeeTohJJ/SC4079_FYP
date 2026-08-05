@@ -179,7 +179,7 @@ public class StudyDaoImpl implements StudyDao {
         try {
             Integer result = jdbcTemplate.queryForObject(
                     StudyConstant.GET_NODE_PATH_LAST_POS_INDEX,
-                    (rs, rowNum) -> rs.getInt("current_chain"),
+                    (rs, rowNum) -> rs.getInt("position_index"),
                     userId
             );
             return result != null ? result : 1;
