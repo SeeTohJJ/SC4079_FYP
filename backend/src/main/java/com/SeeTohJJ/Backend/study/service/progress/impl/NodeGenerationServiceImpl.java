@@ -63,6 +63,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         REVIEW
     }
 
+    @Transactional
     @Override
     public List<StudyNodePathDTO> getStudyPathNodes(Long userId){
         logger.info("Starting getStudyPathNodes");
@@ -107,7 +108,10 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
         StudyNodePathDTO dto = new StudyNodePathDTO();
 
+        String topicName = topicService.getTopicName(topicService.getTopicId(nodeProgress.getNodeId()));
+
         dto.setNodeId(nodeProgress.getNodeId());
+        dto.setNodeTopic(topicName);
         dto.setNodeType(nodeProgress.getNodeType());
         dto.setPositionIndex(nodeProgress.getPositionIndex());
         dto.setUnlocked(nodeProgress.isUnlocked());
@@ -122,7 +126,8 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
     }
 
-    private void generateNewTopicTutorial(Long userId, String topicId) {
+    @Transactional
+    public void generateNewTopicTutorial(Long userId, String topicId) {
         logger.info("Starting generateNewTopicTutorial");
 
         String subtopicId = topicId.concat("S001");

@@ -5,6 +5,7 @@ import com.SeeTohJJ.Backend.study.model.StudyNode;
 public class StudyNodePathDTO {
 
     private String nodeId;
+    private String nodeTopic;
     private StudyNode.NodeType nodeType;
     private int positionIndex;
     private boolean isUnlocked;
@@ -16,6 +17,14 @@ public class StudyNodePathDTO {
 
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
+    }
+
+    public String getNodeTopic() {
+        return nodeTopic;
+    }
+
+    public void setNodeTopic(String nodeTopic) {
+        this.nodeTopic = nodeTopic;
     }
 
     public StudyNode.NodeType getNodeType() {

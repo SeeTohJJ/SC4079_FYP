@@ -24,7 +24,7 @@ class StudyNode {
     factory StudyNode.fromJson(Map<String, dynamic> json) {
     return StudyNode(
       id: json['nodeId'],
-      title: json['nodeId'],
+      title: json['nodeTopic'],
       type: _mapType(json['nodeType']),
       isUnlocked: json['unlocked'] ?? false,
       isCompleted: json['completed'] ?? false,
