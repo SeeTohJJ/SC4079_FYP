@@ -1,8 +1,10 @@
 package com.SeeTohJJ.Backend.study.service.submission.impl;
 
+import com.SeeTohJJ.Backend.garden.service.GardenService;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
+import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.service.adaptive.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
@@ -35,6 +37,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private final ConfidenceService confidenceService;
     private final QuizResultService quizResultService;
     private final UserTopicService userTopicService;
+    private final GardenService gardenService;
 
     @Autowired
     public QuizSubmissionServiceImpl(NodeGenerationService nodeGenerationService,
@@ -47,7 +50,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                                      ForgettingService forgettingService,
                                      ContentRetrievalService contentRetrievalService,
                                      AttemptHistoryService attemptHistoryService,
-                                     ConfidenceService confidenceService, QuizResultService quizResultService, UserTopicService userTopicService) {
+                                     ConfidenceService confidenceService, QuizResultService quizResultService, UserTopicService userTopicService, GardenService gardenService) {
         this.nodeGenerationService = nodeGenerationService;
         this.bktService = bktService;
         this.eloService = eloService;
@@ -61,6 +64,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         this.confidenceService = confidenceService;
         this.quizResultService = quizResultService;
         this.userTopicService = userTopicService;
+        this.gardenService = gardenService;
     }
 
     @Override
@@ -94,6 +98,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
 
         boolean newChainCreated = processQuizCompletion(userId, nodeId);
+        gardenService.onStudyCompleted(userId, topicId, StudyNode.NodeType.QUIZ, isCorrectAnswer);
 
         return quizResultService.buildQuizResult(userId, topicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated, timeTaken);
     }
