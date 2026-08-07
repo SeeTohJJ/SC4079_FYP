@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/features/study/exceptions/insufficient_energy_exception.dart';
 import 'package:frontend/features/study/models/energy.dart';
 import 'package:frontend/features/study/models/study_node.dart';
 import 'package:frontend/features/study/screens/nodes/boss_node_page.dart';
@@ -242,86 +243,104 @@ Widget build(BuildContext context) {
   }
 
   Future<void> _openNode(BuildContext context, StudyNode node) async {
-    switch (node.type) {
+    try {
+      switch (node.type) {
+        case NodeType.lesson:
+          final lesson = await studyService.getLessonContent(node.id);
 
-      case NodeType.lesson:
+          if (!mounted) return;
 
-        final lesson = await studyService.getLessonContent(node.id);
-
-        if (!mounted) return;
-
-        final result = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => LessonNodePage(
-              lesson: lesson,
-              nodeId: node.id,
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => LessonNodePage(
+                lesson: lesson,
+                nodeId: node.id,
+              ),
             ),
-          ),
-        );
+          );
 
-        if (!mounted) return;
+          if (!mounted) return;
 
-        if (result == true) {
-          await loadNodes();
-        }
+          if (result == true) {
+            await loadNodes();
+          }
 
-        break;
+          break;
 
-      case NodeType.quiz:
-        final quiz = await studyService.getQuizContent(node.id);
+        case NodeType.quiz:
+          final quiz = await studyService.getQuizContent(node.id);
 
-        if (!mounted) return;
+          if (!mounted) return;
 
-        final result = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => QuizNodePage(
-              nodeId: node.id,
-              quiz: quiz,
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => QuizNodePage(
+                nodeId: node.id,
+                quiz: quiz,
+              ),
             ),
-          ),
-        );
+          );
 
-        if (!mounted) return;
+          if (!mounted) return;
 
-        if (result == true) {
-          await loadNodes();
-        }
+          if (result == true) {
+            await loadNodes();
+          }
 
-        break;
+          break;
 
-      case NodeType.decision:
-        final result = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => DecisionNodePage(node: node),
-          ),
-        );
+        case NodeType.decision:
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => DecisionNodePage(node: node),
+            ),
+          );
 
-        if (result == true) {
-          _completeNode(node.id);
-        }
+          if (result == true) {
+            _completeNode(node.id);
+          }
 
-        break;
+          break;
 
-      case NodeType.reward:
+        case NodeType.reward:
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => RewardNodePage(node: node),
+            ),
+          );
+          break;
+      case NodeType.boss:
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => RewardNodePage(node: node),
+            builder: (_) => BossNodePage(node: node),
           ),
         );
         break;
-    case NodeType.boss:
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => BossNodePage(node: node),
-        ),
-      );
-      break;
-    }
+      }
+    } on InsufficientEnergyException catch (e) {
+      if (!mounted) return;
+          _showInsufficientEnergyDialog(
+            context,
+            e,
+          );
+
+        } catch (e) {
+
+          if (!mounted) return;
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'You do not have enough energy to start this activity.',
+              ),
+            ),
+          );
+        }
   }
 
   Future<void> _completeNode(String nodeId) async {
@@ -334,5 +353,64 @@ Widget build(BuildContext context) {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  void _showInsufficientEnergyDialog(BuildContext context, InsufficientEnergyException e,) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Not Enough Energy'),
+
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.bolt,
+                size: 48,
+                color: Colors.amber,
+              ),
+
+              const SizedBox(height: 16),
+
+              Text(
+                'You need ${e.requiredEnergy} energy to start this activity.',
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 12),
+
+              Text(
+                'Current energy: ${e.currentEnergy}',
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 8),
+
+              Text(
+                'Next energy in ${_formatTime(e.secondsUntilNextEnergy)}',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  String _formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+
+    return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 }

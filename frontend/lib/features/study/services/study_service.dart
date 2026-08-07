@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:frontend/features/study/exceptions/insufficient_energy_exception.dart';
 import 'package:frontend/features/study/models/lesson_content.dart';
 import 'package:frontend/features/study/models/quiz_content.dart';
 import 'package:frontend/features/study/models/quiz_result.dart';
@@ -72,6 +73,21 @@ class StudyService {
 
     if (response.statusCode == 200) {
       return LessonContent.fromJson(jsonDecode(response.body));
+    }
+
+    if (response.statusCode == 409) {
+
+      final data = jsonDecode(response.body);
+
+      if (data['error'] == 'INSUFFICIENT_ENERGY') {
+
+        throw InsufficientEnergyException(
+          currentEnergy: data['currentEnergy'],
+          requiredEnergy: data['requiredEnergy'],
+          secondsUntilNextEnergy:
+              data['secondsUntilNextEnergy'],
+        );
+      }
     }
 
     throw Exception('Failed to load lesson content');

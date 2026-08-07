@@ -95,8 +95,16 @@ public class EnergyServiceImpl implements EnergyService {
         updateRegeneration(energy, now);
 
         if (energy.getCurrentEnergy() < cost) {
+            long secondsUntilNextEnergy =
+                    calculateSecondsUntilNextEnergy(
+                            energy,
+                            now
+                    );
+
             throw new InsufficientEnergyException(
-                    "Not enough energy"
+                    energy.getCurrentEnergy(),
+                    cost,
+                    secondsUntilNextEnergy
             );
         }
 
