@@ -4,7 +4,7 @@ import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.dao.TopicDao;
 import com.SeeTohJJ.Backend.topic.dao.UserTopicDao;
-import com.SeeTohJJ.Backend.study.dao.UserTopicMasteryDao;
+import com.SeeTohJJ.Backend.study.dao.mastery.UserTopicMasteryDao;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;

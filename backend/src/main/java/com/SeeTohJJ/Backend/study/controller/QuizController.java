@@ -1,11 +1,13 @@
 package com.SeeTohJJ.Backend.study.controller;
 
 import com.SeeTohJJ.Backend.auth.service.JwtService;
+import com.SeeTohJJ.Backend.study.constant.EnergyConstant;
 import com.SeeTohJJ.Backend.study.dto.NodeRequestDTO;
 import com.SeeTohJJ.Backend.study.dto.node.QuizContentDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
+import com.SeeTohJJ.Backend.study.service.gameplay.EnergyService;
 import com.SeeTohJJ.Backend.study.service.submission.QuizSubmissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +24,27 @@ public class QuizController {
     private final QuizSubmissionService quizSubmissionService;
     private final JwtService jwtService;
     private final ContentRetrievalService contentRetrievalService;
+    private final EnergyService energyService;
 
     @Autowired
     public QuizController(QuizSubmissionService quizSubmissionService,
                           JwtService jwtService,
-                          ContentRetrievalService contentRetrievalService) {
+                          ContentRetrievalService contentRetrievalService,
+                          EnergyService energyService) {
         this.quizSubmissionService = quizSubmissionService;
         this.jwtService = jwtService;
         this.contentRetrievalService = contentRetrievalService;
+        this.energyService = energyService;
     }
 
     @PostMapping("/GetQuizContent")
-    public QuizContentDTO getQuizContent(@RequestBody NodeRequestDTO request) {
+    public QuizContentDTO getQuizContent(@RequestHeader("Authorization") String authHeader,
+                                         @RequestBody NodeRequestDTO request) {
         logger.info("Starting getQuizContent");
 
+        Long userId = jwtService.extractUserId(authHeader.substring(7));
+
+        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_LESSON);
         return contentRetrievalService.getQuizContent(request.getNodeId());
     }
 

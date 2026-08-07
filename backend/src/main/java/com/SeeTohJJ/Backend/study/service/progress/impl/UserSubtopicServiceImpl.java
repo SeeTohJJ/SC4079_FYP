@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.study.service.progress.impl;
 
-import com.SeeTohJJ.Backend.study.dao.UserSubtopicMasteryDao;
+import com.SeeTohJJ.Backend.study.dao.mastery.UserSubtopicMasteryDao;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.model.UserSubTopicMastery;
 import org.slf4j.Logger;

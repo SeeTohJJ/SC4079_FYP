@@ -8,7 +8,7 @@ import 'package:frontend/auth/services/auth_services.dart';
 class StudyService {
   static const String baseUrl = "http://10.0.2.2:8080/api/study";
 
-  final authService = AuthService();
+  final AuthService authService = AuthService();
 
   Future<List<dynamic>> getStudyPathNodes(String token) async {
 

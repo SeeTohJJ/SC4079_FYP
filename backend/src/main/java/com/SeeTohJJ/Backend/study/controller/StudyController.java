@@ -1,12 +1,14 @@
 package com.SeeTohJJ.Backend.study.controller;
 
 import com.SeeTohJJ.Backend.auth.service.JwtService;
+import com.SeeTohJJ.Backend.study.constant.EnergyConstant;
 import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
 import com.SeeTohJJ.Backend.study.dto.result.LessonSubmissionDTO;
 import com.SeeTohJJ.Backend.study.dto.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
+import com.SeeTohJJ.Backend.study.service.gameplay.EnergyService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.submission.NodeSubmissionService;
 import org.slf4j.Logger;
@@ -27,17 +29,20 @@ public class StudyController {
     private final JwtService jwtService;
     private final NodeSubmissionService nodeSubmissionService;
     private final ContentRetrievalService contentRetrievalService;
+    private final EnergyService energyService;
 
     @Autowired
     public StudyController(NodeGenerationService nodeGenerationService,
                            JwtService jwtService,
                            NodeSubmissionService nodeSubmissionService,
-                           ContentRetrievalService contentRetrievalService
+                           ContentRetrievalService contentRetrievalService,
+                           EnergyService energyService
     ) {
         this.nodeGenerationService = nodeGenerationService;
         this.jwtService = jwtService;
         this.nodeSubmissionService = nodeSubmissionService;
         this.contentRetrievalService = contentRetrievalService;
+        this.energyService = energyService;
     }
 
     @PostMapping("/GetStudyPathNodes")
@@ -52,6 +57,9 @@ public class StudyController {
                                              @RequestBody NodeRequestDTO request) {
         logger.info("Starting getLessonContent");
 
+        Long userId = jwtService.extractUserId(authHeader.substring(7));
+
+        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_LESSON);
         return contentRetrievalService.getLessonNodeContent(request.getNodeId());
     }
 

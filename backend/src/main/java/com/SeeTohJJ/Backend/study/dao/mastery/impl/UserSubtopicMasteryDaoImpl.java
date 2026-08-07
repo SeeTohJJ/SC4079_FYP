@@ -1,10 +1,7 @@
-package com.SeeTohJJ.Backend.study.dao.impl;
+package com.SeeTohJJ.Backend.study.dao.mastery.impl;
 
-import com.SeeTohJJ.Backend.study.constant.StudyConstant;
 import com.SeeTohJJ.Backend.study.constant.UserSubtopicMasteryConstant;
-import com.SeeTohJJ.Backend.study.constant.UserTopicMasteryConstant;
-import com.SeeTohJJ.Backend.study.dao.UserSubtopicMasteryDao;
-import com.SeeTohJJ.Backend.topic.constant.TopicConstant;
+import com.SeeTohJJ.Backend.study.dao.mastery.UserSubtopicMasteryDao;
 import com.SeeTohJJ.Backend.topic.model.UserSubTopicMastery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

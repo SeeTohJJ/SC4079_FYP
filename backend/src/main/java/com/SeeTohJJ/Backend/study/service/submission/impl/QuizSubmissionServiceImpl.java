@@ -98,7 +98,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
 
         boolean newChainCreated = processQuizCompletion(userId, nodeId);
-        gardenService.onStudyCompleted(userId, topicId, StudyNode.NodeType.QUIZ, isCorrectAnswer);
+//        gardenService.onStudyCompleted(userId, topicId, StudyNode.NodeType.QUIZ, isCorrectAnswer);
 
         return quizResultService.buildQuizResult(userId, topicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated, timeTaken);
     }

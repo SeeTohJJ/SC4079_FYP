@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/features/study/models/energy.dart';
 import 'package:frontend/features/study/models/study_node.dart';
 import 'package:frontend/features/study/screens/nodes/boss_node_page.dart';
 import 'package:frontend/features/study/screens/nodes/decision_node_page.dart';
 import 'package:frontend/features/study/screens/nodes/lesson_node_page.dart';
 import 'package:frontend/features/study/screens/nodes/quiz_node_page.dart';
 import 'package:frontend/features/study/screens/nodes/reward_node_page.dart';
+import 'package:frontend/features/study/services/energy_service.dart';
+import 'package:frontend/features/study/widgets/energy_widget.dart';
 import 'package:frontend/features/study/widgets/study_line_painter.dart';
 import 'package:frontend/features/study/services/study_service.dart';
 import 'package:frontend/auth/services/auth_services.dart';
@@ -20,29 +23,65 @@ class _StudyPageState extends State<StudyPage> {
 
   final authService = AuthService();
   final studyService = StudyService();
+  final EnergyService energyService = EnergyService();
 
   late Future<String?> token;
   late List<StudyNode> nodes;
   bool isLoading = true;
+  Energy? energy;
 
   @override
   void initState() {
     super.initState();
     loadNodes();
+    loadEnergy();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Future<void> loadEnergy() async {
+  try {
+    final result = await energyService.getEnergy();
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Study Path")),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: 1200, // temporary fixed height for debugging
-          width: double.infinity,
-          child: Stack(
-            children: [
-              Positioned.fill(
+    if (!mounted) return;
+
+    setState(() {
+      energy = result;
+    });
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text("Study Path"),
+
+      // Energy Display
+      actions: [
+        if (energy != null)
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: EnergyWidget(
+              energy: energy!,
+              onRefresh: loadEnergy,
+            ),
+          ),
+      ],
+    ),
+
+    body: Column(
+      children: [
+        // Study path display
+        Expanded(
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: 1200,
+              width: double.infinity,
+              child: Stack(
+                children: [
+
+                  Positioned.fill(
                     child: CustomPaint(
                       painter: StudyPathPainter(
                         nodes: nodes,
@@ -67,12 +106,15 @@ class _StudyPageState extends State<StudyPage> {
                       ),
                     );
                   }),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 
   double _getX(int index, BuildContext context) {
     final width = MediaQuery.of(context).size.width;
