@@ -10,6 +10,7 @@ public class StudyNodePathDTO {
     private int positionIndex;
     private boolean isUnlocked;
     private boolean isCompleted;
+    private int energyCost;
 
     public String getNodeId() {
         return nodeId;
@@ -57,5 +58,13 @@ public class StudyNodePathDTO {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public int getEnergyCost() {
+        return energyCost;
+    }
+
+    public void setEnergyCost(int energyCost) {
+        this.energyCost = energyCost;
     }
 }

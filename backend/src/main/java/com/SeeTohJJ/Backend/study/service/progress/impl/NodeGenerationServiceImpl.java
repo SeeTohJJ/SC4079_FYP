@@ -1,6 +1,7 @@
 package com.SeeTohJJ.Backend.study.service.progress.impl;
 
 import com.SeeTohJJ.Backend.common.exception.ChainGenerationException;
+import com.SeeTohJJ.Backend.study.constant.EnergyConstant;
 import com.SeeTohJJ.Backend.study.dao.ChainTemplateDao;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.dto.*;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Service
@@ -97,7 +97,6 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
         List<UserNodeProgress> nodePaths = studyDao.getExistingNodePath(userId);
 
-
         return nodePaths.stream()
                 .map(this::convertToStudyNodePathDTO)
                 .toList();
@@ -116,8 +115,18 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         dto.setPositionIndex(nodeProgress.getPositionIndex());
         dto.setUnlocked(nodeProgress.isUnlocked());
         dto.setCompleted(nodeProgress.isCompleted());
+        dto.setEnergyCost(getNodeEnergyCost(nodeProgress.getNodeType()));
 
         return dto;
+    }
+
+    private int getNodeEnergyCost(StudyNode.NodeType nodeType) {
+        return switch (nodeType) {
+            case LESSON -> EnergyConstant.ENERGY_COST_LESSON;
+            case QUIZ -> EnergyConstant.ENERGY_COST_QUIZ;
+            default -> 0;
+        };
+
     }
 
 

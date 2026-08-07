@@ -12,6 +12,7 @@ class StudyNode {
   final NodeType type;
   bool isUnlocked;
   bool isCompleted;
+  int energyCost;
 
   StudyNode({
     required this.id,
@@ -19,6 +20,7 @@ class StudyNode {
     required this.type,
     this.isUnlocked = false,
     this.isCompleted = false,
+    required this.energyCost,
   });
 
     factory StudyNode.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class StudyNode {
       type: _mapType(json['nodeType']),
       isUnlocked: json['unlocked'] ?? false,
       isCompleted: json['completed'] ?? false,
+      energyCost: json['energyCost'] ?? 0,
     );
   }
 

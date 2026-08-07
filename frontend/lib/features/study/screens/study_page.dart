@@ -213,6 +213,32 @@ Widget build(BuildContext context) {
               const SizedBox(height: 10),
               Text("Type: ${node.type.toString().split('.').last.toUpperCase()}"),
               const SizedBox(height: 20),
+              
+              // Energy cost
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Energy Cost: ",
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const Icon(
+                    Icons.bolt,
+                    color: Colors.amber,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${node.energyCost}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+              
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);

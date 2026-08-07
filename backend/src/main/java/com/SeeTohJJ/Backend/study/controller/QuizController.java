@@ -44,7 +44,7 @@ public class QuizController {
 
         Long userId = jwtService.extractUserId(authHeader.substring(7));
 
-        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_LESSON);
+        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_QUIZ);
         return contentRetrievalService.getQuizContent(request.getNodeId());
     }
 
