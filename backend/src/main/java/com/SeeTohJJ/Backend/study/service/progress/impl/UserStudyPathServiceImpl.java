@@ -1,8 +1,7 @@
 package com.SeeTohJJ.Backend.study.service.progress.impl;
 
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
-import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
-import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
+import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProgressServiceImpl implements ProgressService {
+public class UserStudyPathServiceImpl implements UserStudyPathService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProgressServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserStudyPathServiceImpl.class);
 
     private final StudyDao studyDao;
 
     @Autowired
-    public ProgressServiceImpl(StudyDao studyDao) {
+    public UserStudyPathServiceImpl(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
 

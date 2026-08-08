@@ -4,11 +4,10 @@ import com.SeeTohJJ.Backend.garden.service.GardenService;
 import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
-import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.service.adaptive.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
-import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
+import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
 import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
 import com.SeeTohJJ.Backend.study.service.result.QuizResultService;
 import com.SeeTohJJ.Backend.study.service.submission.QuizSubmissionService;
@@ -29,7 +28,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private final EloService eloService;
     private final SubTopicService subTopicService;
     private final StudyDao studyDao;
-    private final ProgressService progressService;
+    private final UserStudyPathService userStudyPathService;
     private final TopicService topicService;
     private final ForgettingService forgettingService;
     private final ContentRetrievalService contentRetrievalService;
@@ -45,7 +44,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                                      EloService eloService,
                                      SubTopicService subTopicService,
                                      StudyDao studyDao,
-                                     ProgressService progressService,
+                                     UserStudyPathService userStudyPathService,
                                      TopicService topicService,
                                      ForgettingService forgettingService,
                                      ContentRetrievalService contentRetrievalService,
@@ -56,7 +55,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         this.eloService = eloService;
         this.subTopicService = subTopicService;
         this.studyDao = studyDao;
-        this.progressService = progressService;
+        this.userStudyPathService = userStudyPathService;
         this.topicService = topicService;
         this.forgettingService = forgettingService;
         this.contentRetrievalService = contentRetrievalService;
@@ -106,23 +105,23 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     public boolean processQuizCompletion(Long userId, String nodeId){
         logger.info("Starting processQuizCompletion");
 
-        progressService.completeNode(userId, nodeId);
-        int currentNodePosIndex = progressService.getNodePositionIndexInPath(userId, nodeId);
+        userStudyPathService.completeNode(userId, nodeId);
+        int currentNodePosIndex = userStudyPathService.getNodePositionIndexInPath(userId, nodeId);
         boolean newChainCreated = false;
 
         if (nodeId.contains("S001-Q-003")){
-            progressService.completeTutorialForInterestedTopic(userId, topicService.getTopicId(nodeId));
+            userStudyPathService.completeTutorialForInterestedTopic(userId, topicService.getTopicId(nodeId));
         }
 
         // Unlock next node if it exists
-        if(progressService.checkIfNextNodePosExist(userId, currentNodePosIndex)) {
-            progressService.unlockNextNode(userId, currentNodePosIndex);
+        if(userStudyPathService.checkIfNextNodePosExist(userId, currentNodePosIndex)) {
+            userStudyPathService.unlockNextNode(userId, currentNodePosIndex);
         }
 
         // Generate new chain if there is no next node in progress
         else {
             nodeGenerationService.generateNewChain(userId);
-            progressService.unlockNextNode(userId, currentNodePosIndex);
+            userStudyPathService.unlockNextNode(userId, currentNodePosIndex);
             newChainCreated = true;
         }
 

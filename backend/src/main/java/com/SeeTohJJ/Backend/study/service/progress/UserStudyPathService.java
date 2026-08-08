@@ -3,7 +3,7 @@ package com.SeeTohJJ.Backend.study.service.progress;
 import java.util.List;
 
 // Related to study node path and unlocking nodes
-public interface ProgressService {
+public interface UserStudyPathService {
 
     void completeNode(Long userId, String nodeId);
     void unlockNextNode(Long userId, int nodePosIndex);

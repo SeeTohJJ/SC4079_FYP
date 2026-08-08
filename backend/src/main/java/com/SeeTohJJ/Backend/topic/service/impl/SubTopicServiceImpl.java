@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.topic.service.impl;
 
-import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
+import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.dao.TopicDao;
 import com.SeeTohJJ.Backend.topic.dao.UserTopicDao;
@@ -21,7 +21,7 @@ public class SubTopicServiceImpl implements SubTopicService {
     private final TopicDao topicDao;
     private final UserTopicMasteryDao userTopicMasteryDao;
     private final UserTopicDao userTopicDao;
-    private final ProgressService progressService;
+    private final UserStudyPathService userStudyPathService;
     private final TopicService topicService;
     private final UserSubtopicService userSubtopicService;
 
@@ -29,12 +29,12 @@ public class SubTopicServiceImpl implements SubTopicService {
     public SubTopicServiceImpl(TopicDao topicDao,
                                UserTopicMasteryDao userTopicMasteryDao,
                                UserTopicDao userTopicDao,
-                               ProgressService progressService,
+                               UserStudyPathService userStudyPathService,
                                TopicService topicService, UserSubtopicService userSubtopicService) {
         this.topicDao = topicDao;
         this.userTopicMasteryDao = userTopicMasteryDao;
         this.userTopicDao = userTopicDao;
-        this.progressService = progressService;
+        this.userStudyPathService = userStudyPathService;
         this.topicService = topicService;
         this.userSubtopicService = userSubtopicService;
     }

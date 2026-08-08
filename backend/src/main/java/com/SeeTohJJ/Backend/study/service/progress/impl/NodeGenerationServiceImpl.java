@@ -11,7 +11,7 @@ import com.SeeTohJJ.Backend.study.model.UserNodeProgress;
 import com.SeeTohJJ.Backend.study.model.chain.ChainTemplate;
 import com.SeeTohJJ.Backend.study.service.adaptive.SpacedRepetitionService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
-import com.SeeTohJJ.Backend.study.service.progress.ProgressService;
+import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
@@ -33,7 +33,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
     private final StudyDao studyDao;
     private final TopicService topicService;
-    private final ProgressService progressService;
+    private final UserStudyPathService userStudyPathService;
     private final SubTopicService subTopicService;
     private final ChainTemplateDao chainTemplateDao;
     private final UserSubtopicService userSubtopicService;
@@ -42,14 +42,14 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
     @Autowired
     public NodeGenerationServiceImpl(StudyDao studyDao,
                                      TopicService topicService,
-                                     ProgressService progressService,
+                                     UserStudyPathService userStudyPathService,
                                      SubTopicService subTopicService,
                                      ChainTemplateDao chainTemplateDao,
                                      UserSubtopicService userSubtopicService,
                                      SpacedRepetitionService spacedRepetitionService) {
         this.studyDao = studyDao;
         this.topicService = topicService;
-        this.progressService = progressService;
+        this.userStudyPathService = userStudyPathService;
         this.subTopicService = subTopicService;
         this.chainTemplateDao = chainTemplateDao;
         this.userSubtopicService = userSubtopicService;
@@ -186,7 +186,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
             return;
         }
 
-        String currentSubtopic = progressService.getCurrentSubtopic(userId);
+        String currentSubtopic = userStudyPathService.getCurrentSubtopic(userId);
 
         if (userSubtopicService.isSubtopicMastered(userId, currentSubtopic)){
             String nextSubtopic = subTopicService.getNextSubtopic(currentSubtopic);
@@ -243,7 +243,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         boolean unlock = true;
         String nodeType = "TOPIC_INTEREST";
 
-        progressService.insertNodeIntoUserProgress(
+        userStudyPathService.insertNodeIntoUserProgress(
                 userId,
                 nodeId,
                 currentPathPositionIndex,
@@ -282,7 +282,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
                 .filter(step -> StudyNode.NodeType.REVIEW.toString().equals(step.getNodeType()))
                 .count();
 
-        List<String> reviewNodes = progressService.getIncorrectNodes(
+        List<String> reviewNodes = userStudyPathService.getIncorrectNodes(
                 userId,
                 subtopicId,
                 requiredReviewNodeCount);
@@ -355,7 +355,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
         for (GeneratedNode node : nodes) {
 
-            progressService.insertNodeIntoUserProgress(
+            userStudyPathService.insertNodeIntoUserProgress(
                     userId,
                     node.getNodeId(),
                     node.getPosition(),
