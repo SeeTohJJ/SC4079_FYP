@@ -3,7 +3,7 @@ import 'package:frontend/common/widgets/app_bottom_nav_bar.dart';
 import 'package:frontend/features/progress/screens/progress_page.dart';
 import 'package:frontend/features/settings/screens/settings_page.dart';
 import 'package:frontend/features/study/screens/study_page.dart';
-import 'package:frontend/features/home/screens/home_page.dart';
+import 'package:frontend/features/garden/screens/garden_page.dart';
 
 
 class MainNavigationPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   int currentIndex = 0;
 
   final pages = [
-    HomePage(),
+    GardenPage(),
     StudyPage(),
     ProgressPage(),
     SettingsPage(),

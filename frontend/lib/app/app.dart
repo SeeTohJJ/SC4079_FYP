@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/features/home/screens/home_page.dart';
+import 'package:frontend/features/garden/screens/garden_page.dart';
 
 import '../auth/screens/login_page.dart';
 import '../auth/screens/register_page.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         '/login': (_) => const LoginPage(),
         '/register': (_) => const RegisterPage(),
         '/forgot-password': (_) => const ForgotPasswordPage(),
-        '/home': (_) => const HomePage(),
+        '/garden': (_) => const GardenPage(),
       },
     );
   }
