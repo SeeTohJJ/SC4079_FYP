@@ -1,7 +1,7 @@
 package com.SeeTohJJ.Backend.study.dao.impl;
 
-import com.SeeTohJJ.Backend.study.constant.StudyConstant;
-import com.SeeTohJJ.Backend.study.dao.StudyDao;
+import com.SeeTohJJ.Backend.study.constant.StudyPathConstant;
+import com.SeeTohJJ.Backend.study.dao.StudyPathDao;
 import com.SeeTohJJ.Backend.study.mapper.StudyNodeRowMapper;
 import com.SeeTohJJ.Backend.study.mapper.StudyPathRowMapper;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
@@ -17,17 +17,17 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class StudyDaoImpl implements StudyDao {
+public class StudyPathDaoImpl implements StudyPathDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(StudyDaoImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(StudyPathDaoImpl.class);
 
     private final JdbcTemplate jdbcTemplate;
     private final StudyNodeRowMapper studyNodeRowMapper;
     private final StudyPathRowMapper studyPathRowMapper;
 
     @Autowired
-    public StudyDaoImpl(DataSource dataSource, StudyNodeRowMapper studyNodeRowMapper,
-                        StudyPathRowMapper studyPathRowMapper)
+    public StudyPathDaoImpl(DataSource dataSource, StudyNodeRowMapper studyNodeRowMapper,
+                            StudyPathRowMapper studyPathRowMapper)
     {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.studyNodeRowMapper = studyNodeRowMapper;
@@ -40,18 +40,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting getTutorialNodes");
 
         return jdbcTemplate.query(
-                StudyConstant.GET_TUTORIAL_NODES,
-                studyNodeRowMapper,
-                topicId
-        );
-    }
-
-    @Override
-    public List<StudyNode> generateAdaptiveNodes(Long userId, String topicId){
-        logger.info("Starting generateAdaptiveNodes");
-
-        return jdbcTemplate.query(
-                StudyConstant.GET_TUTORIAL_NODES,
+                StudyPathConstant.GET_TUTORIAL_NODES,
                 studyNodeRowMapper,
                 topicId
         );
@@ -62,7 +51,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting getExistingNodePath");
 
         return jdbcTemplate.query(
-                StudyConstant.GET_EXISTING_NODE_PATH,
+                StudyPathConstant.GET_EXISTING_NODE_PATH,
                 studyPathRowMapper,
                 userId
         );
@@ -73,7 +62,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting hasActiveNodes");
 
         Integer count = jdbcTemplate.queryForObject(
-                StudyConstant.COUNT_ACTIVE_NODES,
+                StudyPathConstant.COUNT_ACTIVE_NODES,
                 Integer.class,
                 userId
         );
@@ -91,7 +80,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting insertNodeIntoUserProgress");
 
         jdbcTemplate.update(
-                StudyConstant.INSERT_NODE_INTO_USER_PROGRESS,
+                StudyPathConstant.INSERT_NODE_INTO_USER_PROGRESS,
                 userId,
                 nodeId,
                 nodeType,
@@ -107,7 +96,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting completeNode");
 
         jdbcTemplate.update(
-                StudyConstant.COMPLETE_NODE_WITH_USER_ID,
+                StudyPathConstant.COMPLETE_NODE_WITH_USER_ID,
                 userId,
                 nodeId
         );
@@ -118,7 +107,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting getCorrectAnswer");
 
         return jdbcTemplate.queryForObject(
-                StudyConstant.GET_CORRECT_ANSWER,
+                StudyPathConstant.GET_CORRECT_ANSWER,
                 (rs, rowNum) -> rs.getString("correct_answer"),
                 nodeId
         );
@@ -129,7 +118,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting getNodePositionalIndex");
 
         return jdbcTemplate.queryForObject(
-                StudyConstant.GET_NODE_POSITIONAL_INDEX,
+                StudyPathConstant.GET_NODE_POSITIONAL_INDEX,
                 (rs, rowNum) -> rs.getInt("position_index"),
                 userId,
                 nodeId
@@ -141,7 +130,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting unlockNextNode");
 
         jdbcTemplate.update(
-                StudyConstant.UNLOCK_NEXT_NODE,
+                StudyPathConstant.UNLOCK_NEXT_NODE,
                 userId,
                 nodePosIndex
         );
@@ -152,7 +141,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting checkIfNodeExistInProgress");
 
         Integer count = jdbcTemplate.queryForObject(
-                StudyConstant.CHECK_IF_NODE_POS_EXIST_IN_PROGRESS,
+                StudyPathConstant.CHECK_IF_NODE_POS_EXIST_IN_PROGRESS,
                 Integer.class,
                 userId,
                 nodePosIndex
@@ -166,7 +155,7 @@ public class StudyDaoImpl implements StudyDao {
         logger.info("Starting getCurrentSubtopic");
 
         return jdbcTemplate.queryForObject(
-                StudyConstant.GET_CURRENT_SUBTOPIC,
+                StudyPathConstant.GET_CURRENT_SUBTOPIC,
                 (rs, rowNum) -> rs.getString("subtopic_id"),
                 userId
         );
@@ -178,7 +167,7 @@ public class StudyDaoImpl implements StudyDao {
 
         try {
             Integer result = jdbcTemplate.queryForObject(
-                    StudyConstant.GET_NODE_PATH_LAST_POS_INDEX,
+                    StudyPathConstant.GET_NODE_PATH_LAST_POS_INDEX,
                     (rs, rowNum) -> rs.getInt("position_index"),
                     userId
             );
@@ -189,28 +178,12 @@ public class StudyDaoImpl implements StudyDao {
     }
 
     @Override
-    public void completeTutorialForInterestedTopic(Long userId, String subtopicId){
-        logger.info("Starting completeTutorialForInterestedTopic");
-
-        try {
-            jdbcTemplate.update(
-                    StudyConstant.COMPLETE_TUTORIAL_FOR_INTERESTED_TOPIC,
-                    userId,
-                    subtopicId
-            );
-        } catch (Exception e) {
-            logger.error("Error completing tutorial for interested topic: {}", e.getMessage());
-            throw e;
-        }
-    }
-
-    @Override
     public List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount){
         logger.info("Starting getIncorrectNodes");
 
         try {
             return jdbcTemplate.queryForList(
-                    StudyConstant.GET_INCORRECT_NODES,
+                    StudyPathConstant.GET_INCORRECT_NODES,
                     String.class,
                     userId,
                     subtopicId,

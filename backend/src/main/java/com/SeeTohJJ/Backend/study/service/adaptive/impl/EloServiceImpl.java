@@ -1,10 +1,8 @@
 package com.SeeTohJJ.Backend.study.service.adaptive.impl;
 
-import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.service.adaptive.EloService;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
-import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

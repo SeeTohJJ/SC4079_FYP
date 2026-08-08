@@ -1,7 +1,7 @@
 package com.SeeTohJJ.Backend.topic.service.impl;
 
 import com.SeeTohJJ.Backend.topic.dao.TopicDao;
-import com.SeeTohJJ.Backend.topic.dao.UserTopicDao;
+import com.SeeTohJJ.Backend.user.dao.UserInterestedTopicsDao;
 import com.SeeTohJJ.Backend.study.dao.mastery.UserTopicMasteryDao;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import org.slf4j.Logger;
@@ -16,15 +16,15 @@ public class TopicServiceImpl implements TopicService {
 
     private static final Logger logger = LoggerFactory.getLogger(TopicServiceImpl.class);
 
-    private final UserTopicDao userTopicDao;
+    private final UserInterestedTopicsDao userInterestedTopicsDao;
     private final UserTopicMasteryDao userTopicMasteryDao;
     private final TopicDao topicDao;
 
     @Autowired
-    public TopicServiceImpl(UserTopicDao userTopicDao,
+    public TopicServiceImpl(UserInterestedTopicsDao userInterestedTopicsDao,
                             UserTopicMasteryDao userTopicMasteryDao,
                             TopicDao topicDao) {
-        this.userTopicDao = userTopicDao;
+        this.userInterestedTopicsDao = userInterestedTopicsDao;
         this.userTopicMasteryDao = userTopicMasteryDao;
         this.topicDao = topicDao;
     }
@@ -33,7 +33,7 @@ public class TopicServiceImpl implements TopicService {
     public void setUserTopicInterest(Long userId, String topicId){
         logger.info("Starting setUserTopicInterest");
 
-        userTopicDao.insertUserInterestedTopic(userId, topicId);
+        userInterestedTopicsDao.insertUserInterestedTopic(userId, topicId);
         userTopicMasteryDao.insertInitialTopicProgress(userId, topicId);
     }
 
@@ -41,7 +41,7 @@ public class TopicServiceImpl implements TopicService {
     public List<String> getUserTopicFromUserId(Long userId) {
         logger.info("Starting getUserTopicFromUserId");
 
-        return userTopicDao.getUserTopicFromUserId(userId);
+        return userInterestedTopicsDao.getUserTopicFromUserId(userId);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.SeeTohJJ.Backend.study.service.submission.impl;
 
 import com.SeeTohJJ.Backend.garden.service.GardenService;
-import com.SeeTohJJ.Backend.study.dao.StudyDao;
+import com.SeeTohJJ.Backend.study.dao.StudyPathDao;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
 import com.SeeTohJJ.Backend.study.service.adaptive.*;
@@ -27,7 +27,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private final BktService bktService;
     private final EloService eloService;
     private final SubTopicService subTopicService;
-    private final StudyDao studyDao;
+    private final StudyPathDao studyPathDao;
     private final UserStudyPathService userStudyPathService;
     private final TopicService topicService;
     private final ForgettingService forgettingService;
@@ -43,7 +43,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                                      BktService bktService,
                                      EloService eloService,
                                      SubTopicService subTopicService,
-                                     StudyDao studyDao,
+                                     StudyPathDao studyPathDao,
                                      UserStudyPathService userStudyPathService,
                                      TopicService topicService,
                                      ForgettingService forgettingService,
@@ -54,7 +54,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         this.bktService = bktService;
         this.eloService = eloService;
         this.subTopicService = subTopicService;
-        this.studyDao = studyDao;
+        this.studyPathDao = studyPathDao;
         this.userStudyPathService = userStudyPathService;
         this.topicService = topicService;
         this.forgettingService = forgettingService;
@@ -70,7 +70,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     public boolean gradeAnswer(String nodeId, String optionSelected){
         logger.info("Starting gradeAnswer");
 
-        return studyDao.getCorrectAnswer(nodeId).equals(optionSelected);
+        return studyPathDao.getCorrectAnswer(nodeId).equals(optionSelected);
     }
 
     @Override

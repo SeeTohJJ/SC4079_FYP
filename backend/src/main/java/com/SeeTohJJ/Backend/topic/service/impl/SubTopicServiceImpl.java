@@ -3,7 +3,7 @@ package com.SeeTohJJ.Backend.topic.service.impl;
 import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.dao.TopicDao;
-import com.SeeTohJJ.Backend.topic.dao.UserTopicDao;
+import com.SeeTohJJ.Backend.user.dao.UserInterestedTopicsDao;
 import com.SeeTohJJ.Backend.study.dao.mastery.UserTopicMasteryDao;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
@@ -20,7 +20,7 @@ public class SubTopicServiceImpl implements SubTopicService {
 
     private final TopicDao topicDao;
     private final UserTopicMasteryDao userTopicMasteryDao;
-    private final UserTopicDao userTopicDao;
+    private final UserInterestedTopicsDao userInterestedTopicsDao;
     private final UserStudyPathService userStudyPathService;
     private final TopicService topicService;
     private final UserSubtopicService userSubtopicService;
@@ -28,12 +28,12 @@ public class SubTopicServiceImpl implements SubTopicService {
     @Autowired
     public SubTopicServiceImpl(TopicDao topicDao,
                                UserTopicMasteryDao userTopicMasteryDao,
-                               UserTopicDao userTopicDao,
+                               UserInterestedTopicsDao userInterestedTopicsDao,
                                UserStudyPathService userStudyPathService,
                                TopicService topicService, UserSubtopicService userSubtopicService) {
         this.topicDao = topicDao;
         this.userTopicMasteryDao = userTopicMasteryDao;
-        this.userTopicDao = userTopicDao;
+        this.userInterestedTopicsDao = userInterestedTopicsDao;
         this.userStudyPathService = userStudyPathService;
         this.topicService = topicService;
         this.userSubtopicService = userSubtopicService;

@@ -7,4 +7,21 @@ public class UserConstant {
         VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
+    public static final String GET_CURRENT_LOGIN_STREAK = """
+        SELECT current_streak
+        FROM user_activity
+        WHERE user_id = ?
+        """;
+
+    public static final String GET_LAST_LOGIN_DATE = """
+        SELECT last_login_date
+        FROM user_activity
+        WHERE user_id = ?
+        """;
+
+    public static final String UPDATE_LOGIN_STREAK = """
+        UPDATE user_activity
+        SET current_streak = ?, last_login_date = ?
+        WHERE user_id = ?
+        """;
 }

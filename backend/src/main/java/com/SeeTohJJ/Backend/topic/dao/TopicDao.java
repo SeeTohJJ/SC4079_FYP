@@ -12,7 +12,6 @@ public interface TopicDao {
     BktParameters getBktParameters(String subtopicId);
     String getTopicIdFromSubtopicId(String subtopicId);
     boolean checkSubtopicExist(String subtopicId);
-    String getRandomUninterestedTopic(Long userId);
     int getNodeDifficulty(String nodeId);
     String getTopicName(String topicId);
 }

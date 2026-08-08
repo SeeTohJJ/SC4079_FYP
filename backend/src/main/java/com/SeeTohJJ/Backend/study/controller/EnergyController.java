@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 public class EnergyController {
     private static final Logger logger = LoggerFactory.getLogger(EnergyController.class);
 
-
     private final EnergyService energyService;
     private final JwtService jwtService;
 

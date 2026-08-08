@@ -3,7 +3,7 @@ package com.SeeTohJJ.Backend.study.service.progress.impl;
 import com.SeeTohJJ.Backend.common.exception.ChainGenerationException;
 import com.SeeTohJJ.Backend.study.constant.EnergyConstant;
 import com.SeeTohJJ.Backend.study.dao.ChainTemplateDao;
-import com.SeeTohJJ.Backend.study.dao.StudyDao;
+import com.SeeTohJJ.Backend.study.dao.StudyPathDao;
 import com.SeeTohJJ.Backend.study.dto.*;
 import com.SeeTohJJ.Backend.study.model.GeneratedNode;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
@@ -31,7 +31,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
     private static final Logger logger = LoggerFactory.getLogger(NodeGenerationServiceImpl.class);
 
-    private final StudyDao studyDao;
+    private final StudyPathDao studyPathDao;
     private final TopicService topicService;
     private final UserStudyPathService userStudyPathService;
     private final SubTopicService subTopicService;
@@ -40,14 +40,14 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
     private final SpacedRepetitionService spacedRepetitionService;
 
     @Autowired
-    public NodeGenerationServiceImpl(StudyDao studyDao,
+    public NodeGenerationServiceImpl(StudyPathDao studyPathDao,
                                      TopicService topicService,
                                      UserStudyPathService userStudyPathService,
                                      SubTopicService subTopicService,
                                      ChainTemplateDao chainTemplateDao,
                                      UserSubtopicService userSubtopicService,
                                      SpacedRepetitionService spacedRepetitionService) {
-        this.studyDao = studyDao;
+        this.studyPathDao = studyPathDao;
         this.topicService = topicService;
         this.userStudyPathService = userStudyPathService;
         this.subTopicService = subTopicService;
@@ -69,7 +69,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         logger.info("Starting getStudyPathNodes");
 
         // Check and get nodes from user_node_progress if there is one that is unlocked AND not completed
-        if (studyDao.hasActiveNodes(userId)) {
+        if (studyPathDao.hasActiveNodes(userId)) {
             return getExistingNodePath(userId);
         }
 
@@ -95,7 +95,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
     public List<StudyNodePathDTO> getExistingNodePath(Long userId){
         logger.info("Starting getExistingNodePath");
 
-        List<UserNodeProgress> nodePaths = studyDao.getExistingNodePath(userId);
+        List<UserNodeProgress> nodePaths = studyPathDao.getExistingNodePath(userId);
 
         return nodePaths.stream()
                 .map(this::convertToStudyNodePathDTO)
@@ -149,7 +149,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
     private List<StudyNode> fetchTutorialNodes(String TopicId) {
         logger.info("Starting fetchTutorialNodes");
 
-        return studyDao.getTutorialNodes(TopicId);
+        return studyPathDao.getTutorialNodes(TopicId);
     }
 
     private void insertNodesIntoNodeProgress(List<StudyNode> nodes, Long userId) {
@@ -161,7 +161,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
             boolean unlocked = (position == 0);
 
-            studyDao.insertNodeIntoUserProgress(
+            studyPathDao.insertNodeIntoUserProgress(
                     userId,
                     node.getNodeId(),
                     node.getType().toString(),
@@ -239,7 +239,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         logger.info("Starting generateInterestDecisionNode");
 
         String nodeId = "S-T000-S000-TI-001";
-        int currentPathPositionIndex = studyDao.getUserLastPositionIndex(userId) + 1;
+        int currentPathPositionIndex = studyPathDao.getUserLastPositionIndex(userId) + 1;
         boolean unlock = true;
         String nodeType = "TOPIC_INTEREST";
 
@@ -264,7 +264,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         }
 
         int currentChain = userSubtopicService.getCurrentChain(userId, subtopicId);
-        int startPosition = studyDao.getUserLastPositionIndex(userId);
+        int startPosition = studyPathDao.getUserLastPositionIndex(userId);
 
         List<GeneratedNode> generatedNodes = resolveNodes(userId, subtopicId, template, currentChain, startPosition);
 

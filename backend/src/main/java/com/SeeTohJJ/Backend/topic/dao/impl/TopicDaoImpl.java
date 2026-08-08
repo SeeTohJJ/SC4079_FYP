@@ -129,17 +129,6 @@ public class TopicDaoImpl implements TopicDao {
     }
 
     @Override
-    public String getRandomUninterestedTopic(Long userId){
-        logger.info("Starting getRandomUninterestedTopic");
-
-        return jdbcTemplate.queryForObject(
-                TopicConstant.GET_RANDOM_UNINTERESTED_TOPIC,
-                String.class,
-                userId
-        );
-    }
-
-    @Override
     public int getNodeDifficulty(String nodeId){
         logger.info("Starting getNodeDifficulty");
 

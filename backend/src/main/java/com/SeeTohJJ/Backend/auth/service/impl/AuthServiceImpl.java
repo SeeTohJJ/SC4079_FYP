@@ -11,6 +11,7 @@ import com.SeeTohJJ.Backend.auth.service.JwtService;
 import com.SeeTohJJ.Backend.topic.model.Topic;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import com.SeeTohJJ.Backend.user.model.UserProfile;
+import com.SeeTohJJ.Backend.user.service.LoginStreakService;
 import com.SeeTohJJ.Backend.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +33,21 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TopicService topicService;
     private final UserService userService;
+    private final LoginStreakService loginStreakService;
 
     @Autowired
-    public AuthServiceImpl(UserDao userDao,  JwtService jwtService,  PasswordEncoder passwordEncoder,  TopicService topicService,  UserService userService) {
+    public AuthServiceImpl(UserDao userDao,
+                           JwtService jwtService,
+                           PasswordEncoder passwordEncoder,
+                           TopicService topicService,
+                           UserService userService,
+                           LoginStreakService loginStreakService) {
         this.userDao = userDao;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.topicService = topicService;
         this.userService = userService;
+        this.loginStreakService = loginStreakService;
     }
 
     @Transactional
@@ -82,6 +90,8 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid email or password");
         }
+
+        loginStreakService.updateDailyLoginStreak(user.getUserId());
 
         String token = jwtService.generateToken(user);
 

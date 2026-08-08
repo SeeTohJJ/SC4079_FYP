@@ -1,20 +1,14 @@
 package com.SeeTohJJ.Backend.study.service.adaptive.impl;
 
-import com.SeeTohJJ.Backend.study.dao.StudyDao;
 import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
-import com.SeeTohJJ.Backend.study.service.adaptive.ConfidenceService;
-import com.SeeTohJJ.Backend.study.service.adaptive.ForgettingService;
 import com.SeeTohJJ.Backend.study.service.adaptive.SpacedRepetitionService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
 import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
-import com.SeeTohJJ.Backend.topic.service.TopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class BktServiceImpl implements BktService {

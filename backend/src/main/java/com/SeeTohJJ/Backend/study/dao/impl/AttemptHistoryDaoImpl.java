@@ -1,7 +1,6 @@
 package com.SeeTohJJ.Backend.study.dao.impl;
 
 import com.SeeTohJJ.Backend.study.constant.AttemptHistoryConstant;
-import com.SeeTohJJ.Backend.study.constant.StudyConstant;
 import com.SeeTohJJ.Backend.study.dao.AttemptHistoryDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

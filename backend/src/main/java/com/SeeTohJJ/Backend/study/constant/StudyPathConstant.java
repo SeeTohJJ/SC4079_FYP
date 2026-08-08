@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.study.constant;
 
-public class StudyConstant {
+public class StudyPathConstant {
 
     public static final String GET_TUTORIAL_NODES = """
         SELECT node_id, type, order_index
@@ -83,17 +83,28 @@ public class StudyConstant {
         LIMIT 1
         """;
 
-    public static final String COMPLETE_TUTORIAL_FOR_INTERESTED_TOPIC = """
-        UPDATE user_interested_topics
-        SET tutorial_completed = true, last_updated = CURRENT_TIMESTAMP
-        WHERE user_id = ? AND topic_id = ?
-        """;
-
     public static final String GET_INCORRECT_NODES = """
         SELECT node_id
         FROM user_question_attempts
         WHERE user_id = ? AND subtopic_id = ? AND correct = false
         ORDER BY answered_at DESC
         LIMIT ?
+        """;
+
+    public static final String GET_COMPLETED_LESSONS_COUNT = """
+        SELECT COUNT(*)
+        FROM study_nodes n
+        JOIN user_node_progress unp
+            ON n.node_id = unp.node_id
+        WHERE unp.user_id = ?
+          AND n.topic_id = ?
+          AND n.type = 'LESSON'
+          AND unp.is_completed = true
+        """;
+
+    public static final String GET_TOTAL_LESSONS_COUNT = """
+        SELECT COUNT(*)
+        FROM study_nodes
+        WHERE topic_id = ? AND type = 'LESSON'
         """;
 }
