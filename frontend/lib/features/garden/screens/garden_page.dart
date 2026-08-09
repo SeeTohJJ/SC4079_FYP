@@ -269,12 +269,10 @@ class _GardenPageState extends State<GardenPage> {
       children: [
         Column(
           children: [
-            const Text(
-              '❤️',
-              style: TextStyle(
-                fontSize: 26,
-              ),
-            ),
+            Icon(
+                  Icons.favorite,
+                  size: 26
+                ),
             const SizedBox(height: 4),
             Text(
               '${plant.happiness}',
@@ -293,12 +291,10 @@ class _GardenPageState extends State<GardenPage> {
         ),
         Column(
           children: [
-            const Text(
-              '🧠',
-              style: TextStyle(
-                fontSize: 26,
-              ),
-            ),
+            Icon(
+                  Icons.psychology_alt,
+                  size: 26
+                ),
             const SizedBox(height: 4),
             Text(
               '${plant.growth.toStringAsFixed(0)}%',
