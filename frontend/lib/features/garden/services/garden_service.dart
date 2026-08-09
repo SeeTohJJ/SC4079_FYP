@@ -29,6 +29,7 @@ class GardenService {
         'Failed to load garden',
       );
     }
+    debugPrint('Garden response: ${response.body}');
 
     return Garden.fromJson(jsonDecode(response.body));
   }

@@ -8,7 +8,4 @@ public interface UserProfileDao {
 
     void setUserProfile(UserProfile userProfile);
 
-    Integer getCurrentStreak(Long userId);
-    LocalDate getLastLoginDate(Long userId);
-    void updateLoginStreak(Long userId, int streak, LocalDate loginDate);
 }

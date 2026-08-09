@@ -18,4 +18,9 @@ public class EnergyConstant {
             SET current_energy = ?,  last_updated = ?
             WHERE user_id = ?;
             """;
+
+    public static final String INSERT_ENERGY = """
+            INSERT INTO user_energy (user_id)
+            VALUES (?);
+            """;
 }

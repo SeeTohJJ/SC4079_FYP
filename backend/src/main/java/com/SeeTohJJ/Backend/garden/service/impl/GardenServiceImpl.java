@@ -87,6 +87,7 @@ public class GardenServiceImpl implements GardenService {
         dto.setMaxGrowth(plant.getMaxGrowth());
         dto.setHappiness(plant.getHappiness());
         dto.setStage(plant.getStage());
+        dto.setPKnow(plant.getPKnow());
 
         return dto;
     }
@@ -118,8 +119,8 @@ public class GardenServiceImpl implements GardenService {
     }
 
     @Override
-    public void onStudyCompleted(Long userId, String topicId, StudyNode.NodeType nodeType, boolean isCorrectAnswer) {
-        logger.info("Starting onStudyCompleted");
+    public void onNodeCompleted(Long userId, String topicId, StudyNode.NodeType nodeType, boolean isCorrectAnswer) {
+        logger.info("Starting onNodeCompleted");
 
         UserCurrency currency = userCurrencyDao.getCurrency(userId);
         UserPlant plant = userPlantDao.findByUserIdAndTopicId(userId, topicId);
@@ -198,42 +199,10 @@ public class GardenServiceImpl implements GardenService {
     }
 
     @Override
-    public void createInitialPlantsDuringRegistration(Long userId){
-        logger.info("Starting createInitialPlantsDuringRegistration");
+    public void insertPlant(Long userId, String topicId){
+        logger.info("Starting insertPlant");
 
-        List<String> topics = topicService.getUserTopicFromUserId(userId);
-
-        for(String topicId : topics){
-            UserPlant plant = new UserPlant();
-            plant.setUserId(userId);
-            plant.setTopicId(topicId);
-            plant.setCurrentGrowth(0);
-            plant.setMaxGrowth(0);
-            plant.setHappiness(100);
-            plant.setStage(PlantStage.SEEDING.name());
-            plant.setLastGrowthUpdate(LocalDateTime.now());
-            plant.setLastWatered(LocalDateTime.now());
-            userPlantDao.insert(plant);
-
-        }
-    }
-
-    @Override
-    public void createPlant(Long userId, String topicId){
-        logger.info("Starting createPlant");
-
-        UserPlant plant = new UserPlant();
-
-        plant.setUserId(userId);
-        plant.setTopicId(topicId);
-        plant.setCurrentGrowth(0);
-        plant.setMaxGrowth(0);
-        plant.setHappiness(100);
-        plant.setStage(PlantStage.SEEDING.name());
-        plant.setLastGrowthUpdate(LocalDateTime.now());
-        plant.setLastWatered(LocalDateTime.now());
-
-        userPlantDao.insert(plant);
+        userPlantDao.insert(userId, topicId);
     }
 
     private void updateDailyHappinessDecay(UserPlant plant){
@@ -269,6 +238,29 @@ public class GardenServiceImpl implements GardenService {
         return 0;
     }
 
+    @Override
+    public void insertInitialGardenTables(Long userId){
+        logger.info("Starting insertInitialGardenTables");
 
+        insertInitialPlants(userId);
+        insertCurrency(userId);
+    }
+
+    public void insertInitialPlants(Long userId){
+        logger.info("Starting insertInitialPlants");
+
+        List<String> topics = topicService.getUserTopicFromUserId(userId);
+
+        for(String topicId : topics){
+            userPlantDao.insert(userId, topicId);
+
+        }
+    }
+
+    public void insertCurrency(Long userId){
+        logger.info("Starting insertCurrency");
+
+        userCurrencyDao.insert(userId);
+    }
 
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface UserService {
 
-    void setUserProfile(Long userId, RegisterRequestDTO request);
+    void insertAllUserInitialTables(Long userId, RegisterRequestDTO request);
 }

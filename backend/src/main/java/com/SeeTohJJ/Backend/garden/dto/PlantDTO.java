@@ -9,6 +9,7 @@ public class PlantDTO {
     private double maxGrowth;
     private int happiness;
     private String stage;
+    private double pKnow;
 
     public String getTopicId() {
         return topicId;
@@ -64,5 +65,12 @@ public class PlantDTO {
 
     public void setStage(String stage) {
         this.stage = stage;
+    }
+
+    public double getPKnow() {
+        return pKnow;
+    }
+    public void setPKnow(double pKnow) {
+        this.pKnow = pKnow;
     }
 }

@@ -297,7 +297,7 @@ class _GardenPageState extends State<GardenPage> {
                 ),
             const SizedBox(height: 4),
             Text(
-              '${plant.growth.toStringAsFixed(0)}%',
+              '${(plant.mastery * 100).toStringAsFixed(0)}%',
               style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,

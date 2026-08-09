@@ -7,4 +7,5 @@ import java.time.LocalDateTime;
 public interface EnergyDao {
     UserEnergy findByUserId(Long userId);
     void updateEnergy(Long userId, int currentEnergy, LocalDateTime lastUpdated);
+    void insert(Long userId);
 }

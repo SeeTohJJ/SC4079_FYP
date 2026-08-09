@@ -31,7 +31,6 @@ public class AuthServiceImpl implements AuthService {
     private final UserDao userDao;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final TopicService topicService;
     private final UserService userService;
     private final LoginStreakService loginStreakService;
 
@@ -39,13 +38,11 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceImpl(UserDao userDao,
                            JwtService jwtService,
                            PasswordEncoder passwordEncoder,
-                           TopicService topicService,
                            UserService userService,
                            LoginStreakService loginStreakService) {
         this.userDao = userDao;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
-        this.topicService = topicService;
         this.userService = userService;
         this.loginStreakService = loginStreakService;
     }
@@ -68,11 +65,7 @@ public class AuthServiceImpl implements AuthService {
 
         Long userId = userDao.registerUser(user);
 
-        userService.setUserProfile(userId, request);
-
-        for (String topicId : request.getTopics()) {
-            topicService.setUserTopicInterest(userId, topicId);
-        }
+        userService.insertAllUserInitialTables(userId, request);
 
         return "User registered";
     }

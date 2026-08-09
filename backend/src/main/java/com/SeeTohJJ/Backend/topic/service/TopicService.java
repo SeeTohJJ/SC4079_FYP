@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TopicService {
 
-    void setUserTopicInterest(Long userId, String topicId);
+    void insertUserTopicInterest(Long userId, String topicId);
 //    boolean isTutorialCompleted(Long userId, String topicId);
     List<String> getUserTopicFromUserId(Long userId);
     String getUncompletedTutorialTopic(Long userId);

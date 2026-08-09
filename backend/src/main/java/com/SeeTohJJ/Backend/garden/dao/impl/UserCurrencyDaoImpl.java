@@ -54,5 +54,13 @@ public class UserCurrencyDaoImpl implements UserCurrencyDao {
         );
     }
 
+    @Override
+    public void insert(Long userId){
+        logger.info("Starting insertCurrency for userId: {}", userId);
 
+        jdbcTemplate.update(
+                GardenConstant.INSERT_USER_CURRENCY,
+                userId
+        );
+    }
 }

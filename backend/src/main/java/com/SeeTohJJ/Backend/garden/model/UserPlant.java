@@ -13,6 +13,7 @@ public class UserPlant {
     private LocalDateTime lastWatered;
     private LocalDateTime lastGrowthUpdate;
     private String stage;
+    private double pKnow;
 
     public Long getUserId() {
         return userId;
@@ -37,7 +38,7 @@ public class UserPlant {
     public void setTopicName(String topicName) {
         this.topicName = topicName;
     }
-    
+
     public double getCurrentGrowth() {
         return currentGrowth;
     }
@@ -84,5 +85,13 @@ public class UserPlant {
 
     public void setStage(String stage) {
         this.stage = stage;
+    }
+
+    public double getPKnow() {
+        return pKnow;
+    }
+
+    public void setPKnow(double pKnow) {
+        this.pKnow = pKnow;
     }
 }

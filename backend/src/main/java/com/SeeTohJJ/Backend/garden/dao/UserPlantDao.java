@@ -9,6 +9,6 @@ public interface UserPlantDao {
     List<UserPlant> findByUserId(Long userId);
     UserPlant findByUserIdAndTopicId(Long userId,String topicId);
     void update(UserPlant plant);
-    void insert(UserPlant plant);
+    void insert(Long userId, String topicId);
 
 }

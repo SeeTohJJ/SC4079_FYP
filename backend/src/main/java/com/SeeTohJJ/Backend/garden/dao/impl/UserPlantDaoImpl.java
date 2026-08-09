@@ -46,6 +46,7 @@ public class UserPlantDaoImpl implements UserPlantDao {
                         userPlant.setLastGrowthUpdate(lastGrowthUpdate.toLocalDateTime());
                     }
                     userPlant.setStage(rs.getString("stage"));
+                    userPlant.setPKnow(rs.getDouble("average_p_know"));
                     return userPlant;
                 },
                 userId
@@ -75,6 +76,7 @@ public class UserPlantDaoImpl implements UserPlantDao {
                         userPlant.setLastGrowthUpdate(lastGrowthUpdate.toLocalDateTime());
                     }
                     userPlant.setStage(rs.getString("stage"));
+                    userPlant.setPKnow(rs.getDouble("average_p_know"));
                     return userPlant;
                 },
                 userId,
@@ -100,19 +102,13 @@ public class UserPlantDaoImpl implements UserPlantDao {
     }
 
     @Override
-    public void insert(UserPlant plant){
-        logger.info("Starting insert user plant: {}", plant);
+    public void insert(Long userId, String topicId) {
+        logger.info("Starting insert user plant: {}", userId);
 
         jdbcTemplate.update(
                 GardenConstant.INSERT_USER_PLANT,
-                plant.getCurrentGrowth(),
-                plant.getMaxGrowth(),
-                plant.getHappiness(),
-                plant.getLastWatered(),
-                plant.getLastGrowthUpdate(),
-                plant.getStage(),
-                plant.getUserId(),
-                plant.getTopicId()
+                userId,
+                topicId
         );
     }
 

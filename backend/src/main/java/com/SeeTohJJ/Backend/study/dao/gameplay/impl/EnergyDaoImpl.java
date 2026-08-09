@@ -51,4 +51,14 @@ public class EnergyDaoImpl implements EnergyDao {
                 userId
         );
     }
+
+    @Override
+    public void insert(Long userId) {
+        logger.info("Starting insert energy for {}",  userId);
+
+        jdbcTemplate.update(
+                EnergyConstant.INSERT_ENERGY,
+                userId
+        );
+    }
 }

@@ -1,5 +1,6 @@
 package com.SeeTohJJ.Backend.user.service.impl;
 
+import com.SeeTohJJ.Backend.user.dao.LoginStreakDao;
 import com.SeeTohJJ.Backend.user.dao.UserProfileDao;
 import com.SeeTohJJ.Backend.user.service.LoginStreakService;
 import org.slf4j.Logger;
@@ -14,11 +15,11 @@ public class LoginStreakServiceImpl implements LoginStreakService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private final UserProfileDao userProfileDao;
+    private final LoginStreakDao loginStreakDao;
 
     @Autowired
-    public LoginStreakServiceImpl(UserProfileDao userProfileDao) {
-        this.userProfileDao = userProfileDao;
+    public LoginStreakServiceImpl(LoginStreakDao loginStreakDao) {
+        this.loginStreakDao = loginStreakDao;
     }
 
     @Override
@@ -26,9 +27,9 @@ public class LoginStreakServiceImpl implements LoginStreakService {
         logger.info("Starting updateDailyLoginStreak");
 
         LocalDate today = LocalDate.now();
-        LocalDate lastLogin = userProfileDao.getLastLoginDate(userId);
+        LocalDate lastLogin = loginStreakDao.getLastLoginDate(userId);
 
-        int currentStreak = userProfileDao.getCurrentStreak(userId);
+        int currentStreak = loginStreakDao.getCurrentStreak(userId);
         int newStreak;
 
         // Brand new account
@@ -47,13 +48,21 @@ public class LoginStreakServiceImpl implements LoginStreakService {
             newStreak = 1;
         }
 
-        userProfileDao.updateLoginStreak(userId, newStreak, today);
+        loginStreakDao.updateLoginStreak(userId, newStreak, today);
     }
 
     @Override
     public int getCurrentStreak(Long userId) {
         logger.info("Starting getCurrentStreak");
 
-        return userProfileDao.getCurrentStreak(userId);
+        return loginStreakDao.getCurrentStreak(userId);
     }
+
+    @Override
+    public void insertInitialLoginStreak(Long userId) {
+        logger.info("Starting insertInitialLoginStreak");
+
+        loginStreakDao.insert(userId);
+    }
+
 }

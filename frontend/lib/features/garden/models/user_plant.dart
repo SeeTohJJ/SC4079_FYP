@@ -6,6 +6,7 @@ class UserPlant {
   final double maxGrowth;
   final int happiness;
   final String stage;
+  final double mastery;
 
   UserPlant({
     required this.topicId,
@@ -15,6 +16,7 @@ class UserPlant {
     required this.maxGrowth,
     required this.happiness,
     required this.stage,
+    required this.mastery,
   });
 
   factory UserPlant.fromJson(
@@ -28,6 +30,7 @@ class UserPlant {
       maxGrowth: json['maxGrowth'],
       happiness: json['happiness'],
       stage: json['stage'],
+      mastery: json['pKnow']
     );
   }
 }

@@ -38,42 +38,4 @@ public class UserProfileDaoImpl implements UserProfileDao {
         );
     }
 
-    @Override
-    public Integer getCurrentStreak(Long userId) {
-        logger.info("Starting getCurrentStreak");
-
-        return jdbcTemplate.queryForObject(
-                UserConstant.GET_CURRENT_LOGIN_STREAK,
-                Integer.class,
-                userId
-        );
-    }
-
-    @Override
-    public LocalDate getLastLoginDate(Long userId) {
-        logger.info("Starting getLastLoginDate");
-
-        try {
-            return jdbcTemplate.queryForObject(
-                    UserConstant.GET_LAST_LOGIN_DATE,
-                    LocalDate.class,
-                    userId
-            );
-        } catch (Exception e) {
-            logger.error("Error retrieving last login date: {}", e.getMessage());
-            throw e;
-        }
-    }
-
-    @Override
-    public void updateLoginStreak(Long userId, int streak, LocalDate loginDate) {
-        logger.info("Starting updateLoginStreak");
-
-        jdbcTemplate.update(
-                UserConstant.UPDATE_LOGIN_STREAK,
-                streak,
-                loginDate,
-                userId
-        );
-    }
 }

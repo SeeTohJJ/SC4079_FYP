@@ -30,8 +30,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void setUserTopicInterest(Long userId, String topicId){
-        logger.info("Starting setUserTopicInterest");
+    public void insertUserTopicInterest(Long userId, String topicId){
+        logger.info("Starting insertUserTopicInterest");
 
         userInterestedTopicsDao.insertUserInterestedTopic(userId, topicId);
         userTopicMasteryDao.insertInitialTopicProgress(userId, topicId);

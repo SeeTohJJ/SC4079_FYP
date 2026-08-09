@@ -9,4 +9,5 @@ public interface EnergyService {
     void consumeEnergy(Long userId, int cost);
 //    void addEnergy(Long userId, int amount);
 //    void refillEnergy(Long userId);
+    void insertInitialEnergyTables(Long userId);
 }

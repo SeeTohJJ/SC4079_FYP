@@ -24,4 +24,9 @@ public class UserConstant {
         SET current_streak = ?, last_login_date = ?
         WHERE user_id = ?
         """;
+
+    public static final String INSERT_LOGIN_STREAK = """
+        INSERT INTO user_activity (user_id)
+        VALUES (?)
+        """;
 }

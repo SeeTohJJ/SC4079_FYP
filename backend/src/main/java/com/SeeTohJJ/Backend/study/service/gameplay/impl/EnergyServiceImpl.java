@@ -113,4 +113,12 @@ public class EnergyServiceImpl implements EnergyService {
         energyDao.updateEnergy(userId, newEnergy, energy.getLastUpdated());
     }
 
+    @Override
+    public void insertInitialEnergyTables(Long userId){
+        logger.info("Starting insertInitialEnergyTables");
+
+        energyDao.insert(userId);
+    }
+
+
 }
