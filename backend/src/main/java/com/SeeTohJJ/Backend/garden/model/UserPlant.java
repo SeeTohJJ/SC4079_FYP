@@ -6,14 +6,13 @@ public class UserPlant {
 
     private Long userId;
     private String topicId;
+    private String topicName;
     private double currentGrowth;
     private double maxGrowth;
     private int happiness;
     private LocalDateTime lastWatered;
     private LocalDateTime lastGrowthUpdate;
     private String stage;
-
-
 
     public Long getUserId() {
         return userId;
@@ -31,6 +30,14 @@ public class UserPlant {
         this.topicId = topicId;
     }
 
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
+    
     public double getCurrentGrowth() {
         return currentGrowth;
     }

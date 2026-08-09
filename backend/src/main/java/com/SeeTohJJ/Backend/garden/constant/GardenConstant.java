@@ -10,9 +10,10 @@ public class GardenConstant {
     public static final int WATER_REWARD_QUIZ = 3;
 
     public static final String GET_USER_PLANTS_BY_USER_ID = """
-            SELECT *
-            FROM user_plant
-            WHERE user_id = ?
+            SELECT up.*, t.topic_name
+            FROM user_plant up
+            JOIN topics t ON up.topic_id = t.topic_id
+            WHERE up.user_id = ?
             """;
 
     public static final String GET_USER_CURRENCY_BY_USER_ID = """
@@ -22,9 +23,10 @@ public class GardenConstant {
             """;
 
     public static final String GET_USER_PLANT_BY_USER_ID_AND_TOPIC_ID = """
-            SELECT *
-            FROM user_plant
-            WHERE user_id = ? AND topic_id = ?
+            SELECT up.*, t.topic_name
+            FROM user_plant up
+            JOIN topics t ON up.topic_id = t.topic_id
+            WHERE up.user_id = ? AND up.topic_id = ?
             """;
 
     public static final String UPDATE_USER_PLANT = """

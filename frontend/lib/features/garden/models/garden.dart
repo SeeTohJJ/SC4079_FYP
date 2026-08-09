@@ -2,10 +2,12 @@ import 'user_plant.dart';
 
 class Garden {
   final int waterCurrency;
+  final int coinCurrency;
   final List<UserPlant> plants;
 
   Garden({
     required this.waterCurrency,
+    required this.coinCurrency,
     required this.plants,
   });
 
@@ -14,7 +16,9 @@ class Garden {
 
     return Garden(
       waterCurrency:
-          json['waterCurrency'],
+          json['water'],
+      coinCurrency:
+          json['coins'],
 
       plants: (json['plants'] as List)
           .map(

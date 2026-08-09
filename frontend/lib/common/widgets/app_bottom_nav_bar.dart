@@ -18,8 +18,8 @@ class AppBottomNavBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Icon(Icons.local_florist),
+          label: 'Garden',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school),

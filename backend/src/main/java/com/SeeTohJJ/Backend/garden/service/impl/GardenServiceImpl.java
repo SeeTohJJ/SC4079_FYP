@@ -82,6 +82,7 @@ public class GardenServiceImpl implements GardenService {
 
         dto.setTopicId(plant.getTopicId());
         dto.setPlantType(plant.getTopicId()); // TODO: create plant types or just remove this para
+        dto.setTopicName(plant.getTopicName());
         dto.setGrowth(plant.getCurrentGrowth());
         dto.setMaxGrowth(plant.getMaxGrowth());
         dto.setHappiness(plant.getHappiness());

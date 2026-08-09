@@ -34,6 +34,7 @@ class _StudyPageState extends State<StudyPage> {
   @override
   void initState() {
     super.initState();
+    nodes = [];
     loadNodes();
     loadEnergy();
   }

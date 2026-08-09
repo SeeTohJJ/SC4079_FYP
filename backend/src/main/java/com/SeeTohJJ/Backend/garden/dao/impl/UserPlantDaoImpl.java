@@ -33,6 +33,7 @@ public class UserPlantDaoImpl implements UserPlantDao {
                     UserPlant userPlant = new UserPlant();
                     userPlant.setUserId(rs.getLong("user_id"));
                     userPlant.setTopicId(rs.getString("topic_id"));
+                    userPlant.setTopicName(rs.getString("topic_name"));
                     userPlant.setCurrentGrowth(rs.getDouble("current_growth"));
                     userPlant.setMaxGrowth(rs.getDouble("max_growth"));
                     userPlant.setHappiness(rs.getInt("happiness"));
@@ -61,6 +62,7 @@ public class UserPlantDaoImpl implements UserPlantDao {
                     UserPlant userPlant = new UserPlant();
                     userPlant.setUserId(rs.getLong("user_id"));
                     userPlant.setTopicId(rs.getString("topic_id"));
+                    userPlant.setTopicName(rs.getString("topic_name"));
                     userPlant.setCurrentGrowth(rs.getDouble("current_growth"));
                     userPlant.setMaxGrowth(rs.getDouble("max_growth"));
                     userPlant.setHappiness(rs.getInt("happiness"));

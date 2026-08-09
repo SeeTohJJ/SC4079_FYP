@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:frontend/features/garden/models/user_plant.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,11 +14,10 @@ class GardenService {
   final AuthService authService = AuthService();
 
   Future<Garden> getGarden() async {
-    final token =
-        await authService.getToken();
+    final token = await authService.getToken();
 
     final response = await http.get(
-      Uri.parse(baseUrl),
+      Uri.parse('$baseUrl/GetGarden'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
@@ -30,30 +30,27 @@ class GardenService {
       );
     }
 
-    return Garden.fromJson(
-      jsonDecode(response.body),
-    );
+    return Garden.fromJson(jsonDecode(response.body));
   }
 
-  Future<UserPlant> waterPlant(int plantId) async {
+  Future<UserPlant> waterPlant(String topicId) async {
 
-    final token =
-        await authService.getToken();
+    final token = await authService.getToken();
 
     final response = await http.post(
-      Uri.parse(
-        '$baseUrl/plants/$plantId/water',
-      ),
+      Uri.parse('$baseUrl/WaterPlant'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
+      body: jsonEncode({
+        "topicId": topicId,
+      }),
     );
 
     if (response.statusCode == 200) {
-      return UserPlant.fromJson(
-        jsonDecode(response.body),
-      );
+      debugPrint('Water plant response: ${response.body}');
+      return UserPlant.fromJson(jsonDecode(response.body));
     }
 
     if (response.statusCode == 409) {

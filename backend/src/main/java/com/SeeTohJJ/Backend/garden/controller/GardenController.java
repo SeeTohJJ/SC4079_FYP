@@ -28,7 +28,7 @@ public class GardenController {
     }
 
 
-    @PostMapping("/getGarden")
+    @GetMapping("/GetGarden")
     public ResponseEntity<GardenDTO> getGardenInfo(@RequestHeader("Authorization") String authHeader) {
         logger.info("Starting getGardenInfo");
 
@@ -38,7 +38,7 @@ public class GardenController {
         return ResponseEntity.ok(garden);
     }
 
-    @PostMapping("/waterPlant")
+    @PostMapping("/WaterPlant")
     public ResponseEntity<PlantDTO> waterPlant(@RequestHeader("Authorization") String authHeader,
                                                @RequestBody WaterPlantRequest request) {
         logger.info("Starting waterPlant");
