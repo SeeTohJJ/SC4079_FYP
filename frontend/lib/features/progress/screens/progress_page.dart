@@ -150,8 +150,7 @@ class _ProgressPageState extends State<ProgressPage> {
             : topic.completedLessons /
                 topic.totalLessons;
 
-    final mastery =
-        topic.masteryScore / 100.0;
+    final mastery = topic.masteryScore * 100.0;
 
     return Card(
       margin: const EdgeInsets.only(
@@ -206,7 +205,7 @@ class _ProgressPageState extends State<ProgressPage> {
                 const Text('Mastery'),
 
                 Text(
-                  '${topic.masteryScore.toStringAsFixed(0)}%',
+                  '${mastery.toStringAsFixed(0)}%',
                 ),
               ],
             ),
@@ -214,7 +213,7 @@ class _ProgressPageState extends State<ProgressPage> {
             const SizedBox(height: 6),
 
             LinearProgressIndicator(
-              value: mastery,
+              value: topic.masteryScore,
             ),
           ],
         ),
