@@ -13,7 +13,7 @@ class AuthService {
         "Content-Type": "application/json",
       },
       body: jsonEncode({
-        "email": email,
+        "email": email.toLowerCase().trim(),
         "password": password,
       }),
     );
@@ -46,7 +46,7 @@ class AuthService {
   ) async {
 
     final payload = {
-      "email": email,
+      "email": email.toLowerCase().trim(),
       "password": password,
       "username": username,
       "gender": gender,

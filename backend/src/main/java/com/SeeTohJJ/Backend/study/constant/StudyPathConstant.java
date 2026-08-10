@@ -86,7 +86,7 @@ public class StudyPathConstant {
     public static final String GET_INCORRECT_NODES = """
         SELECT node_id
         FROM user_question_attempts
-        WHERE user_id = ? AND subtopic_id = ? AND correct = false
+        WHERE user_id = ? AND subtopic_id = ? AND is_correct = false
         ORDER BY answered_at DESC
         LIMIT ?
         """;

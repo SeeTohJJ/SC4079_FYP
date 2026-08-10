@@ -291,6 +291,7 @@ Widget build(BuildContext context) {
 
           if (result == true) {
             await loadNodes();
+            await loadEnergy();
           }
 
           break;
@@ -314,6 +315,7 @@ Widget build(BuildContext context) {
 
           if (result == true) {
             await loadNodes();
+            await loadEnergy();
           }
 
           break;
@@ -374,7 +376,6 @@ Widget build(BuildContext context) {
     try {
       await studyService.completeNode(nodeId);
 
-      // Reload from backend so UI stays in sync
       await loadNodes();
 
     } catch (e) {

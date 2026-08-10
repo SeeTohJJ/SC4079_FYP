@@ -282,10 +282,14 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
                 .filter(step -> StudyNode.NodeType.REVIEW.toString().equals(step.getNodeType()))
                 .count();
 
-        List<String> reviewNodes = userStudyPathService.getIncorrectNodes(
-                userId,
-                subtopicId,
-                requiredReviewNodeCount);
+        List<String> reviewNodes = new ArrayList<>();
+
+        if (requiredReviewNodeCount > 0) {
+            reviewNodes = userStudyPathService.getIncorrectNodes(
+                    userId,
+                    subtopicId,
+                    requiredReviewNodeCount);
+        }
 
         int reviewIndex = 0;
         int fallbackQuizSequence = 1;

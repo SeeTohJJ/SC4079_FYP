@@ -180,6 +180,7 @@ public class StudyPathDaoImpl implements StudyPathDao {
     @Override
     public List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount){
         logger.info("Starting getIncorrectNodes");
+        logger.info("Parameters: userID {}, {}, {}",  userId, subtopicId, reviewNodeCount);
 
         try {
             return jdbcTemplate.queryForList(
