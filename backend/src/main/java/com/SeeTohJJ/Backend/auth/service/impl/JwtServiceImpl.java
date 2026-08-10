@@ -19,6 +19,7 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.secret}")
     private String SECRET;
 
+    @Override
     public String generateToken(User user) {
 
         SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
@@ -26,12 +27,14 @@ public class JwtServiceImpl implements JwtService {
         return Jwts.builder()
                 .subject(user.getEmail())
                 .claim("userId", user.getUserId())
+                .claim("role", user.getRole().name())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(key)
                 .compact();
     }
 
+    @Override
     public String extractEmail(String token) {
 
         SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
@@ -44,11 +47,12 @@ public class JwtServiceImpl implements JwtService {
                 .getSubject();
     }
 
-
+    @Override
     public String extractToken(String authHeader) {
         return authHeader.substring(7); // remove "Bearer "
     }
 
+    @Override
     public Claims extractClaims(String token) {
 
         SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
@@ -60,8 +64,17 @@ public class JwtServiceImpl implements JwtService {
                 .getPayload();
     }
 
+    @Override
     public Long extractUserId(String token) {
         Claims claims = extractClaims(token);
         return Long.parseLong(claims.get("userId").toString());
+    }
+
+    @Override
+    public String extractRole(String token) {
+
+        Claims claims = extractClaims(token);
+
+        return claims.get("role", String.class);
     }
 }

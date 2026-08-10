@@ -14,4 +14,5 @@ public interface JwtService {
     String extractToken(String authHeader);
     Claims extractClaims(String token);
     Long extractUserId(String token);
+    String extractRole(String token);
 }
