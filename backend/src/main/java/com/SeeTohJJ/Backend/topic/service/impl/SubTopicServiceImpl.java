@@ -2,6 +2,7 @@ package com.SeeTohJJ.Backend.topic.service.impl;
 
 import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
 import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
+import com.SeeTohJJ.Backend.topic.dao.SubtopicDao;
 import com.SeeTohJJ.Backend.topic.dao.TopicDao;
 import com.SeeTohJJ.Backend.user.dao.UserInterestedTopicsDao;
 import com.SeeTohJJ.Backend.study.dao.mastery.UserTopicMasteryDao;
@@ -18,7 +19,7 @@ public class SubTopicServiceImpl implements SubTopicService {
 
     private static final Logger logger = LoggerFactory.getLogger(SubTopicServiceImpl.class);
 
-    private final TopicDao topicDao;
+    private final SubtopicDao subtopicDao;
     private final UserTopicMasteryDao userTopicMasteryDao;
     private final UserInterestedTopicsDao userInterestedTopicsDao;
     private final UserStudyPathService userStudyPathService;
@@ -26,12 +27,12 @@ public class SubTopicServiceImpl implements SubTopicService {
     private final UserSubtopicService userSubtopicService;
 
     @Autowired
-    public SubTopicServiceImpl(TopicDao topicDao,
+    public SubTopicServiceImpl(SubtopicDao subtopicDao,
                                UserTopicMasteryDao userTopicMasteryDao,
                                UserInterestedTopicsDao userInterestedTopicsDao,
                                UserStudyPathService userStudyPathService,
                                TopicService topicService, UserSubtopicService userSubtopicService) {
-        this.topicDao = topicDao;
+        this.subtopicDao = subtopicDao;
         this.userTopicMasteryDao = userTopicMasteryDao;
         this.userInterestedTopicsDao = userInterestedTopicsDao;
         this.userStudyPathService = userStudyPathService;
@@ -43,14 +44,14 @@ public class SubTopicServiceImpl implements SubTopicService {
     public String getSubTopicId(String nodeId) {
         logger.info("Starting getSubTopicId");
 
-        return topicDao.getSubTopicId(nodeId);
+        return subtopicDao.getSubTopicId(nodeId);
     }
 
     @Override
     public BktParameters getBktParameters(String subtopicId) {
         logger.info("Starting getBktParameters");
 
-        return topicDao.getBktParameters(subtopicId);
+        return subtopicDao.getBktParameters(subtopicId);
     }
 
     public static String incrementSubtopicId(String subtopicId){
@@ -75,7 +76,7 @@ public class SubTopicServiceImpl implements SubTopicService {
         int currentChain = userSubtopicService.getCurrentChain(userId, subtopicId);
         int targetNodeIndex = 6 + currentChain * 3; // 5 tutorial lesson + 3 standard lesson per chain + 1
 
-        return topicDao.existsByNodeIndex(subtopicId, targetNodeIndex, "LESSON");
+        return subtopicDao.existsByNodeIndex(subtopicId, targetNodeIndex, "LESSON");
     }
 
     @Override
@@ -93,14 +94,14 @@ public class SubTopicServiceImpl implements SubTopicService {
             targetOrderIndex = (contentSequence - 1) + (nextChain * 3); // 3 standard lesson per chain
         }
 
-        return topicDao.getNodeId(subtopicId, nodeType, targetOrderIndex);
+        return subtopicDao.getNodeId(subtopicId, nodeType, targetOrderIndex);
     }
 
     @Override
     public double getPInit(String subtopicId){
         logger.info("Starting getPInit");
 
-        return topicDao.getPInit(subtopicId);
+        return subtopicDao.getPInit(subtopicId);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class SubTopicServiceImpl implements SubTopicService {
             newSubtopic = currentSubtopic.substring(0, currentSubtopic.length() - 1) + nextDigit;
         }
 
-        if (topicDao.checkSubtopicExist(newSubtopic)) {
+        if (subtopicDao.checkSubtopicExist(newSubtopic)) {
             return newSubtopic;
         }
 
@@ -127,14 +128,14 @@ public class SubTopicServiceImpl implements SubTopicService {
     public int getNodeDifficulty(String nodeId) {
         logger.info("Starting getNodeDifficulty");
 
-        return topicDao.getNodeDifficulty(nodeId);
+        return subtopicDao.getNodeDifficulty(nodeId);
     }
 
     @Override
     public String getTopicIdFromSubtopicId(String subtopicId){
         logger.info("Starting getTopicIdFromSubtopicId");
 
-        return topicDao.getTopicIdFromSubtopicId(subtopicId);
+        return subtopicDao.getTopicIdFromSubtopicId(subtopicId);
     }
 
 

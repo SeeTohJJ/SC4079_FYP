@@ -1,17 +1,19 @@
 package com.SeeTohJJ.Backend.topic.dao;
 
-import com.SeeTohJJ.Backend.topic.model.BktParameters;
+import com.SeeTohJJ.Backend.topic.dto.TopicDTO;
+import java.util.List;
 
 public interface TopicDao {
 
-    String getSubTopicId(String nodeId);
-    boolean existsByNodeIndex(String subtopicId, int targetNodeIndex, String nodeType);
-    String getNodeId(String subtopicId, String nodeType, int targetOrderIndex);
-    double getPInit(String subtopicId);
     String getTopicId(String nodeId);
-    BktParameters getBktParameters(String subtopicId);
-    String getTopicIdFromSubtopicId(String subtopicId);
-    boolean checkSubtopicExist(String subtopicId);
-    int getNodeDifficulty(String nodeId);
     String getTopicName(String topicId);
+
+    List<TopicDTO> getAllTopics();
+    TopicDTO findById(String topicId);
+    void setTopicInactive(String topicId);
+    void setTopicActive(String topicId);
+    boolean existsByName(String topicName);
+    String findNextTopicId();
+    void create(String topicId, String topicName, String topicDescription);
+    void update(String topicId, String topicName, String topicDescription);
 }

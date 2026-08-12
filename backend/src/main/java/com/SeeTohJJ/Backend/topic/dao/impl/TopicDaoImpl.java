@@ -3,6 +3,7 @@ package com.SeeTohJJ.Backend.topic.dao.impl;
 import com.SeeTohJJ.Backend.auth.dao.impl.UserDaoImpl;
 import com.SeeTohJJ.Backend.topic.constant.TopicConstant;
 import com.SeeTohJJ.Backend.topic.dao.TopicDao;
+import com.SeeTohJJ.Backend.topic.dto.TopicDTO;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class TopicDaoImpl implements TopicDao {
@@ -20,58 +22,6 @@ public class TopicDaoImpl implements TopicDao {
 
     public TopicDaoImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
-    @Override
-    public String getSubTopicId(String nodeId){
-        logger.info("Starting getSubTopicId");
-
-        return jdbcTemplate.queryForObject(
-                TopicConstant.GET_SUBTOPIC_ID,
-                String.class,
-                nodeId
-        );
-    }
-
-    @Override
-    public boolean existsByNodeIndex(String subtopicId, int targetNodeIndex, String nodeType) {
-        logger.info("Starting existsByNodeIndex");
-
-        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
-                TopicConstant.CHECK_NODE_INDEX_EXISTS,
-                boolean.class,
-                subtopicId,
-                targetNodeIndex,
-                nodeType
-        ));
-    }
-
-    @Override
-    public String getNodeId(String subtopicId, String nodeType, int targetOrderIndex) {
-        logger.info("Starting getNodeId");
-
-        logger.info("subtopicId: " + subtopicId + ", nodeType: " + nodeType + ", targetOrderIndex: " + targetOrderIndex);
-
-        return jdbcTemplate.queryForObject(
-                TopicConstant.GET_NODE_ID_BY_ORDER_INDEX,
-                String.class,
-                subtopicId,
-                targetOrderIndex,
-                nodeType
-        );
-    }
-
-    @Override
-    public double getPInit(String subtopicId){
-        logger.info("Starting getPInit");
-
-        Double result = jdbcTemplate.queryForObject(
-                TopicConstant.GET_P_INIT,
-                Double.class,
-                subtopicId
-        );
-
-        return result != null ? result : 0.0f;
     }
 
     @Override
@@ -86,61 +36,6 @@ public class TopicDaoImpl implements TopicDao {
     }
 
     @Override
-    public BktParameters getBktParameters(String subtopicId){
-        logger.info("Starting getBktParameters");
-
-        return jdbcTemplate.queryForObject(
-                TopicConstant.GET_BKT_PARAMETERS,
-                (rs, rowNum) -> {
-                    BktParameters bkt = new BktParameters();
-                    bkt.setSubTopic_id(subtopicId);
-                    bkt.setP_init(rs.getDouble("p_init"));
-                    bkt.setP_transit(rs.getDouble("p_transit"));
-                    bkt.setP_slip(rs.getDouble("p_slip"));
-                    bkt.setP_guess(rs.getDouble("p_guess"));
-                    return bkt;
-                },
-                subtopicId
-        );
-    }
-
-    @Override
-    public String getTopicIdFromSubtopicId(String subtopicId){
-        logger.info("Starting getTopicIdFromSubtopicId");
-
-        return jdbcTemplate.queryForObject(
-                TopicConstant.GET_TOPIC_ID_FROM_SUBTOPIC_ID,
-                String.class,
-                subtopicId
-        );
-    }
-
-    @Override
-    public boolean checkSubtopicExist(String subtopicId){
-        logger.info("Starting checkSubtopicExist");
-
-        Boolean result = jdbcTemplate.queryForObject(
-                TopicConstant.CHECK_SUBTOPIC_EXIST,
-                boolean.class,
-                subtopicId
-        );
-
-        return Boolean.TRUE.equals(result);
-    }
-
-    @Override
-    public int getNodeDifficulty(String nodeId){
-        logger.info("Starting getNodeDifficulty");
-
-        Integer result = jdbcTemplate.queryForObject(
-                TopicConstant.GET_NODE_DIFFICULTY,
-                Integer.class,
-                nodeId
-        );
-        return result != null ? result : 0;
-    }
-
-    @Override
     public String getTopicName(String topicId){
         logger.info("Starting getTopicName {}", topicId);
 
@@ -151,5 +46,109 @@ public class TopicDaoImpl implements TopicDao {
         );
     }
 
+    @Override
+    public List<TopicDTO> getAllTopics(){
+        logger.info("Starting getAllTopics");
 
+        return jdbcTemplate.query(
+                TopicConstant.GET_ALL_TOPICS,
+                (rs, rowNum) -> {
+                    TopicDTO topicDTO = new TopicDTO();
+                    topicDTO.setTopicId(rs.getString("topic_id"));
+                    topicDTO.setTopicName(rs.getString("topic_name"));
+                    topicDTO.setTopicDescription(rs.getString("description"));
+                    topicDTO.setActive(rs.getBoolean("is_active"));
+                    return topicDTO;
+                }
+        );
+    }
+
+    @Override
+    public TopicDTO findById(String topicId){
+        logger.info("Starting findById {}", topicId);
+
+        return jdbcTemplate.queryForObject(
+                TopicConstant.GET_TOPIC_BY_ID,
+                (rs, rowNum) -> {
+                    TopicDTO topicDTO = new TopicDTO();
+                    topicDTO.setTopicId(rs.getString("topic_id"));
+                    topicDTO.setTopicName(rs.getString("topic_name"));
+                    topicDTO.setTopicDescription(rs.getString("description"));
+                    topicDTO.setActive(rs.getBoolean("is_active"));
+                    return topicDTO;
+                },
+                topicId
+        );
+    }
+
+    @Override
+    public void setTopicInactive(String topicId){
+        logger.info("Starting setTopicInactive");
+
+        jdbcTemplate.update(
+                TopicConstant.SET_TOPIC_INACTIVE,
+                topicId
+        );
+    }
+
+    @Override
+    public void setTopicActive(String topicId){
+        logger.info("Starting setTopicActive");
+
+        jdbcTemplate.update(
+                TopicConstant.SET_TOPIC_ACTIVE,
+                topicId
+        );
+    }
+
+    @Override
+    public boolean existsByName(String topicName){
+        logger.info("Starting existsByName {}", topicName);
+
+        Boolean exists = jdbcTemplate.queryForObject(
+                TopicConstant.CHECK_TOPIC_EXIST_BY_NAME,
+                Boolean.class,
+                topicName
+        );
+
+        return Boolean.TRUE.equals(exists);
+    }
+
+    @Override
+    public String findNextTopicId(){
+        logger.info("Starting findNextTopicId");
+
+        Integer maxId = jdbcTemplate.queryForObject(
+                TopicConstant.FIND_NEXT_TOPIC_ID,
+                Integer.class
+        );
+
+        int nextId = maxId + 1;
+        return String.format("T%03d", nextId);
+
+    }
+
+    @Override
+    public void create(String topicId, String topicName, String topicDescription){
+        logger.info("Starting create");
+
+        jdbcTemplate.update(
+                TopicConstant.INSERT_TOPIC,
+                topicId,
+                topicName,
+                topicDescription
+        );
+    }
+
+    @Override
+    public void update(String topicId, String topicName, String topicDescription){
+        logger.info("Starting update");
+
+        jdbcTemplate.update(
+                TopicConstant.UPDATE_TOPIC,
+                topicId,
+                topicName,
+                topicDescription
+        );
+    }
 }

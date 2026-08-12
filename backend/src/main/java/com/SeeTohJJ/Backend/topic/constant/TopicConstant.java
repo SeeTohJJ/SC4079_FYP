@@ -2,60 +2,8 @@ package com.SeeTohJJ.Backend.topic.constant;
 
 public class TopicConstant {
 
-    public static final String GET_SUBTOPIC_ID = """
-            SELECT subtopic_id
-            FROM study_nodes
-            WHERE node_id = ? AND is_active = true
-            """;
-
-    public static final String GET_BKT_PARAMETERS = """
-            SELECT p_init, p_transit, p_slip, p_guess
-            FROM subtopics
-            WHERE subtopic_id = ? AND is_active = true
-            """;
-
-    public static final String GET_TOPIC_ID_FROM_SUBTOPIC_ID = """
-            SELECT topic_id
-            FROM subtopics
-            WHERE subtopic_id = ?
-            """;
-
-    public static final String CHECK_SUBTOPIC_EXIST = """
-            SELECT EXISTS (
-                SELECT 1
-                FROM subtopics
-                WHERE subtopic_id = ?
-            )
-            """;
-
-    public static final String CHECK_NODE_INDEX_EXISTS = """
-            SELECT EXISTS (
-                SELECT 1
-                FROM study_nodes
-                WHERE topic_id = ? AND order_index = ? AND type = ?
-            )
-            """;
-
-    public static final String GET_NODE_ID_BY_ORDER_INDEX = """
-            SELECT node_id
-            FROM study_nodes
-            WHERE subtopic_id = ? AND order_index = ? AND type = ?
-            """;
-
-    public static final String GET_P_INIT = """
-            SELECT p_init
-            FROM subtopics
-            WHERE subtopic_id = ?
-            """;
-
     public static final String GET_TOPIC_ID = """
             SELECT topic_id
-            FROM study_nodes
-            WHERE node_id = ?
-            """;
-
-    public static final String GET_NODE_DIFFICULTY = """
-            SELECT required_mastery
             FROM study_nodes
             WHERE node_id = ?
             """;
@@ -63,6 +11,57 @@ public class TopicConstant {
     public static final String GET_TOPIC_NAME = """
             SELECT topic_name
             FROM topics
+            WHERE topic_id = ?
+            """;
+
+    public static final String GET_ALL_TOPICS = """
+            SELECT topic_id, topic_name, description, is_active
+            FROM topics
+            """;
+
+    public static final String GET_TOPIC_BY_ID = """
+            SELECT topic_id, topic_name, description, is_active
+            FROM topics
+            WHERE topic_id = ?
+            """;
+
+    public static final String SET_TOPIC_INACTIVE = """
+            UPDATE topics
+            SET is_active = false
+            WHERE topic_id = ?
+            """;
+
+    public static final String SET_TOPIC_ACTIVE = """
+            UPDATE topics
+            SET is_active = true
+            WHERE topic_id = ?
+            """;
+
+    public static final String CHECK_TOPIC_EXIST_BY_NAME = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM topics
+                WHERE LOWER(topic_name) = LOWER(?)
+            )
+            """;
+
+    public static final String FIND_NEXT_TOPIC_ID = """
+            SELECT COALESCE(
+                MAX(CAST(SUBSTRING(topic_id, 2) AS INTEGER)),
+                0
+            )
+            FROM topics
+            WHERE topic_id LIKE 'T%'
+            """;
+
+    public static final String INSERT_TOPIC = """
+            INSERT INTO topics (topic_id, topic_name, description)
+            VALUES (?, ?, ?)
+            """;
+
+    public static final String UPDATE_TOPIC = """
+            UPDATE topics
+            SET topic_name = ?, description = ?
             WHERE topic_id = ?
             """;
 }
