@@ -1,14 +1,14 @@
-package com.SeeTohJJ.Backend.contentmanagement.dto;
+package com.SeeTohJJ.Backend.contentmanagement.dto.request;
 
-public class UpdateTopicRequest {
+public class CreateTopicRequest {
 
     private String topicName;
     private String topicDescription;
 
-    public UpdateTopicRequest() {
+    public CreateTopicRequest() {
     }
 
-    public UpdateTopicRequest(String topicName, String topicDescription) {
+    public CreateTopicRequest(String topicName, String topicDescription) {
         this.topicName = topicName;
         this.topicDescription = topicDescription;
     }

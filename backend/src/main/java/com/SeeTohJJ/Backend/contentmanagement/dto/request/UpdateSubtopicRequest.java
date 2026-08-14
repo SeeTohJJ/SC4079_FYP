@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.contentmanagement.dto;
+package com.SeeTohJJ.Backend.contentmanagement.dto.request;
 
 public class UpdateSubtopicRequest {
 

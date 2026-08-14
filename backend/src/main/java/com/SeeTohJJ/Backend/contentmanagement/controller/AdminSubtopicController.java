@@ -1,7 +1,7 @@
 package com.SeeTohJJ.Backend.contentmanagement.controller;
 
-import com.SeeTohJJ.Backend.contentmanagement.dto.CreateSubtopicRequest;
-import com.SeeTohJJ.Backend.contentmanagement.dto.UpdateSubtopicRequest;
+import com.SeeTohJJ.Backend.contentmanagement.dto.request.CreateSubtopicRequest;
+import com.SeeTohJJ.Backend.contentmanagement.dto.request.UpdateSubtopicRequest;
 import com.SeeTohJJ.Backend.contentmanagement.service.AdminSubtopicService;
 import com.SeeTohJJ.Backend.topic.dto.SubtopicDTO;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class AdminSubtopicController {
                 .body(createdSubtopic);
     }
 
-    @PutMapping("/update/{subtopicId}")
+    @PostMapping("/update/{subtopicId}")
     public ResponseEntity<?> updateSubtopic(@PathVariable String subtopicId,
                                          @RequestBody UpdateSubtopicRequest request) {
         logger.info("Starting updateSubtopic");
@@ -54,11 +54,20 @@ public class AdminSubtopicController {
         return ResponseEntity.ok(adminSubtopicService.updateSubtopic(subtopicId, request));
     }
 
-    @DeleteMapping("/set-inactive/{subtopicId}")
+    @PostMapping("/set-inactive/{topicId}")
     public ResponseEntity<?> setSubtopicInactive(@PathVariable String subtopicId) {
         logger.info("Starting setSubtopicInactive");
 
         adminSubtopicService.setSubtopicInactive(subtopicId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/set-active/{subtopicId}")
+    public ResponseEntity<?> setSubtopicActive(@PathVariable String subtopicId) {
+        logger.info("Starting setSubtopicActive");
+
+        adminSubtopicService.setSubtopicActive(subtopicId);
 
         return ResponseEntity.noContent().build();
     }

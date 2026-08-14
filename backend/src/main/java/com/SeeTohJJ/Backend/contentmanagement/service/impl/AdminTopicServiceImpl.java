@@ -1,7 +1,7 @@
 package com.SeeTohJJ.Backend.contentmanagement.service.impl;
 
-import com.SeeTohJJ.Backend.contentmanagement.dto.CreateTopicRequest;
-import com.SeeTohJJ.Backend.contentmanagement.dto.UpdateTopicRequest;
+import com.SeeTohJJ.Backend.contentmanagement.dto.request.CreateTopicRequest;
+import com.SeeTohJJ.Backend.contentmanagement.dto.request.UpdateTopicRequest;
 import com.SeeTohJJ.Backend.contentmanagement.service.AdminTopicService;
 import com.SeeTohJJ.Backend.topic.dao.TopicDao;
 import com.SeeTohJJ.Backend.topic.dto.TopicDTO;

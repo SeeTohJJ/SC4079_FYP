@@ -1,7 +1,7 @@
 package com.SeeTohJJ.Backend.contentmanagement.controller;
 
-import com.SeeTohJJ.Backend.contentmanagement.dto.CreateTopicRequest;
-import com.SeeTohJJ.Backend.contentmanagement.dto.UpdateTopicRequest;
+import com.SeeTohJJ.Backend.contentmanagement.dto.request.CreateTopicRequest;
+import com.SeeTohJJ.Backend.contentmanagement.dto.request.UpdateTopicRequest;
 import com.SeeTohJJ.Backend.contentmanagement.service.AdminTopicService;
 import com.SeeTohJJ.Backend.topic.dto.TopicDTO;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class AdminTopicController {
                 .body(createdTopic);
     }
 
-    @PutMapping("/update/{topicId}")
+    @PostMapping("/update/{topicId}")
     public ResponseEntity<?> updateTopic(@PathVariable String topicId,
                                          @RequestBody UpdateTopicRequest request) {
         logger.info("Starting updateTopic");
@@ -54,11 +54,20 @@ public class AdminTopicController {
         return ResponseEntity.ok(adminTopicService.updateTopic(topicId, request));
     }
 
-    @DeleteMapping("/set-inactive/{topicId}")
+    @PostMapping("/set-inactive/{topicId}")
     public ResponseEntity<?> setTopicInactive(@PathVariable String topicId) {
         logger.info("Starting setTopicInactive");
 
         adminTopicService.setTopicInactive(topicId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/set-active/{topicId}")
+    public ResponseEntity<?> setTopicActive(@PathVariable String topicId) {
+        logger.info("Starting setTopicActive");
+
+        adminTopicService.setTopicActive(topicId);
 
         return ResponseEntity.noContent().build();
     }
