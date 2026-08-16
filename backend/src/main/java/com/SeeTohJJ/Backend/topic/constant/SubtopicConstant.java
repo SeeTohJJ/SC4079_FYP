@@ -59,6 +59,7 @@ public class SubtopicConstant {
     public static final String GET_ALL_SUBTOPICS = """
             SELECT subtopic_id, topic_id, name, difficulty, p_init, p_transit, p_slip, p_guess, is_active
             FROM subtopics
+            ORDER BY subtopic_id, topic_id ASC
             """;
 
     public static final String GET_SUBTOPIC_BY_ID = """

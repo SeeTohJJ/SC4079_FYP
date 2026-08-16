@@ -6,10 +6,10 @@ public class SubtopicDTO {
     private String topicId;
     private String subtopicName;
     private int difficulty;
-    private double pInit;
-    private double pTransit;
-    private double pSlip;
-    private double pGuess;
+    private Double pInit;
+    private Double pTransit;
+    private Double pSlip;
+    private Double pGuess;
     private boolean isActive;
 
     public String getSubtopicId() {
@@ -44,35 +44,35 @@ public class SubtopicDTO {
         this.difficulty = difficulty;
     }
 
-    public double getpInit() {
+    public Double getPInit() {
         return pInit;
     }
 
-    public void setpInit(double pInit) {
+    public void setPInit(Double pInit) {
         this.pInit = pInit;
     }
 
-    public double getpTransit() {
+    public Double getPTransit() {
         return pTransit;
     }
 
-    public void setpTransit(double pTransit) {
+    public void setPTransit(Double pTransit) {
         this.pTransit = pTransit;
     }
 
-    public double getpSlip() {
+    public Double getPSlip() {
         return pSlip;
     }
 
-    public void setpSlip(double pSlip) {
+    public void setPSlip(Double pSlip) {
         this.pSlip = pSlip;
     }
 
-    public double getpGuess() {
+    public Double getPGuess() {
         return pGuess;
     }
 
-    public void setpGuess(double pGuess) {
+    public void setPGuess(Double pGuess) {
         this.pGuess = pGuess;
     }
 

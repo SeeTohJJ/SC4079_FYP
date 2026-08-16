@@ -1,0 +1,83 @@
+.subtopics-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.subtopics-table th,
+.subtopics-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.subtopics-table th:nth-child(1),
+.subtopics-table td:nth-child(1) {
+    width: 10%;
+}
+
+.subtopics-table th:nth-child(2),
+.subtopics-table td:nth-child(2) {
+    width: 10%;
+}
+
+.subtopics-table th:nth-child(3),
+.subtopics-table td:nth-child(3) {
+    width: 30%;
+}
+
+.subtopics-table th:nth-child(4),
+.subtopics-table td:nth-child(4) {
+    width: 5%;
+}
+
+.subtopics-table th:nth-child(5),
+.subtopics-table td:nth-child(5) {
+    width: 5%;
+}
+
+.subtopics-table th:nth-child(6),
+.subtopics-table td:nth-child(6) {
+    width: 5%;
+}
+
+.subtopics-table th:nth-child(7),
+.subtopics-table td:nth-child(7) {
+    width: 5%;
+}
+
+.subtopics-table th:nth-child(8),
+.subtopics-table td:nth-child(8) {
+    width: 5%;
+}
+
+.subtopics-table th:nth-child(9),
+.subtopics-table td:nth-child(9) {
+    width: 15%;
+}
+
+
+.subtopics-table input,
+.subtopics-table select {
+    width: 100%;
+    margin: 0;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-button {
+    background: #444;
+}
+
+.save-button {
+    background: #2e7d32;
+}
+
+.cancel-button {
+    background: #ddd;
+    color: #333;
+}

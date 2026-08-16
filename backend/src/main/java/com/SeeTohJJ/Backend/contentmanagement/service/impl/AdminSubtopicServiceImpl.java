@@ -42,10 +42,10 @@ public class AdminSubtopicServiceImpl implements AdminSubtopicService {
         String subtopicName = request.getSubtopicName();
         String topicId = request.getTopicId();
         int difficulty = request.getDifficulty();
-        double pInit = request.getpInit();
-        double pTransit = request.getpTransit();
-        double pSlip = request.getpSlip();
-        double pGuess = request.getpGuess();
+        Double pInit = request.getPInit();
+        Double pTransit = request.getPTransit();
+        Double pSlip = request.getPSlip();
+        Double pGuess = request.getPGuess();
 
         validateSubtopic(subtopicName);
 
@@ -66,10 +66,10 @@ public class AdminSubtopicServiceImpl implements AdminSubtopicService {
         String subtopicName = request.getSubtopicName();
         String topicId = request.getTopicId();
         int difficulty = request.getDifficulty();
-        double pInit = request.getpInit();
-        double pTransit = request.getpTransit();
-        double pSlip = request.getpSlip();
-        double pGuess = request.getpGuess();
+        double pInit = request.getPInit();
+        double pTransit = request.getPTransit();
+        double pSlip = request.getPSlip();
+        double pGuess = request.getPGuess();
         validateSubtopic(subtopicName);
 
         subtopicDao.update(subtopicId, topicId, subtopicName, difficulty, pInit, pTransit, pSlip, pGuess);

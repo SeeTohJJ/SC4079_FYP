@@ -1,10 +1,8 @@
 package com.SeeTohJJ.Backend.topic.dao.impl;
 
 import com.SeeTohJJ.Backend.topic.constant.SubtopicConstant;
-import com.SeeTohJJ.Backend.topic.constant.TopicConstant;
 import com.SeeTohJJ.Backend.topic.dao.SubtopicDao;
 import com.SeeTohJJ.Backend.topic.dto.SubtopicDTO;
-import com.SeeTohJJ.Backend.topic.dto.TopicDTO;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,10 +143,11 @@ public class SubtopicDaoImpl implements SubtopicDao {
                     dto.setTopicId(rs.getString("topic_id"));
                     dto.setSubtopicName(rs.getString("name"));
                     dto.setDifficulty(rs.getInt("difficulty"));
-                    dto.setpInit(rs.getDouble("p_init"));
-                    dto.setpTransit(rs.getDouble("p_transit"));
-                    dto.setpSlip(rs.getDouble("p_slip"));
-                    dto.setpGuess(rs.getDouble("p_guess"));
+                    dto.setPInit(rs.getDouble("p_init"));
+                    dto.setPInit(rs.getObject("p_init", Double.class));
+                    dto.setPTransit(rs.getObject("p_transit", Double.class));
+                    dto.setPSlip(rs.getObject("p_slip", Double.class));
+                    dto.setPGuess(rs.getObject("p_guess", Double.class));
                     dto.setActive(rs.getBoolean("is_active"));
                     return dto;
                 }
@@ -167,10 +166,10 @@ public class SubtopicDaoImpl implements SubtopicDao {
                     dto.setTopicId(rs.getString("topic_id"));
                     dto.setSubtopicName(rs.getString("name"));
                     dto.setDifficulty(rs.getInt("difficulty"));
-                    dto.setpInit(rs.getDouble("p_init"));
-                    dto.setpTransit(rs.getDouble("p_transit"));
-                    dto.setpSlip(rs.getDouble("p_slip"));
-                    dto.setpGuess(rs.getDouble("p_guess"));
+                    dto.setPInit(rs.getObject("p_init", Double.class));
+                    dto.setPTransit(rs.getObject("p_transit", Double.class));
+                    dto.setPSlip(rs.getObject("p_slip", Double.class));
+                    dto.setPGuess(rs.getObject("p_guess", Double.class));
                     dto.setActive(rs.getBoolean("is_active"));
                     return dto;
                 },

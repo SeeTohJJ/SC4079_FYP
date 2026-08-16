@@ -11,6 +11,7 @@ import LoginPage from "./pages/login/LoginPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 
 import TopicsPage from "./pages/topics/TopicsPage";
+import SubtopicsPage from "./pages/subtopics/SubtopicsPage";
 
 function ProtectedRoute({ children }) {
 
@@ -53,6 +54,11 @@ function App() {
                     <Route
                         path="topics"
                         element={<TopicsPage />}
+                    />
+
+                    <Route
+                        path="subtopics"
+                        element={<SubtopicsPage />}
                     />
 
                 </Route>

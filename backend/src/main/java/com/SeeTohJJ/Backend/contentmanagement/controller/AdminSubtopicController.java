@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/admin/subtopics")
 public class AdminSubtopicController {
@@ -35,7 +37,7 @@ public class AdminSubtopicController {
         return ResponseEntity.ok(adminSubtopicService.getSubtopic(subtopicId));
     }
 
-    @PostMapping("/create-subtopic")
+    @PostMapping("/create")
     public ResponseEntity<SubtopicDTO> createSubtopic(@RequestBody CreateSubtopicRequest request) {
         logger.info("Starting createSubtopic");
 
@@ -54,7 +56,7 @@ public class AdminSubtopicController {
         return ResponseEntity.ok(adminSubtopicService.updateSubtopic(subtopicId, request));
     }
 
-    @PostMapping("/set-inactive/{topicId}")
+    @PostMapping("/set-inactive/{subtopicId}")
     public ResponseEntity<?> setSubtopicInactive(@PathVariable String subtopicId) {
         logger.info("Starting setSubtopicInactive");
 

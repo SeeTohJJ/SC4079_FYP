@@ -6,7 +6,7 @@ function TopicsPage() {
 
     const [topics, setTopics] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [editingId, setEditingId] = useState(null);
+    const [editTopicId, setEditTopicId] = useState(null);
     const [editName, setEditName] = useState("");
     const [editDescription, setEditDescription] = useState("");
     const [editActive, setEditActive] = useState(true);
@@ -40,7 +40,7 @@ function TopicsPage() {
     }, []);
 
     const startEditing = (topic) => {
-        setEditingId(topic.topicId);
+        setEditTopicId(topic.topicId);
         setEditName(topic.topicName);
         setEditDescription(topic.topicDescription || "");
         setEditActive(topic.active);
@@ -49,7 +49,7 @@ function TopicsPage() {
     };
 
     const cancelEditing = () => {
-        setEditingId(null);
+        setEditTopicId(null);
         setEditName("");
         setEditDescription("");
         setError("");
@@ -87,7 +87,7 @@ function TopicsPage() {
                 }
             }
 
-            setEditingId(null);
+            setEditTopicId(null);
             setEditName("");
             setEditDescription("");
             setEditActive(true);
@@ -161,7 +161,7 @@ function TopicsPage() {
     }
 
     return (
-        <div>
+        <div className="main-content">
             <div className="page-header">
                 <div>
                     <h1>Topics</h1>
@@ -197,9 +197,7 @@ function TopicsPage() {
                     {creating && (
                         <tr>
                             <td>
-                                <span className="new-label">
-                                    New
-                                </span>
+                                New
                             </td>
                             <td>
                                 <input
@@ -253,7 +251,7 @@ function TopicsPage() {
                     )}
 
                     {topics.map((topic) => {
-                        const isEditing = editingId === topic.topicId;
+                        const isEditing = editTopicId === topic.topicId;
                         return (
                             <tr
                                 key={topic.topicId}
@@ -299,19 +297,16 @@ function TopicsPage() {
                                     {isEditing ? (
                                         <select
                                             value={editActive}
-                                            onChange={(e) =>
-                                                setEditActive(e.target.value === "true")
-                                            }
-                                        >
-                                            <option value="true">Active</option>
-                                            <option value="false">Inactive</option>
+                                            onChange={(e) => setEditActive(e.target.value === "true")}>
+                                            <option value="true">
+                                                Active
+                                            </option>
+                                            
+                                            <option value="false">
+                                                Inactive
+                                            </option>
                                         </select>
-                                    ) : (
-                                        <span
-                                            className={
-                                                topic.active ? "status-active" : "status-inactive"
-                                            }
-                                        >
+                                    ) : (<span className={topic.active ? "status-active" : "status-inactive"}>
                                             {topic.active ? "Active" : "Inactive"}
                                         </span>
                                     )}
