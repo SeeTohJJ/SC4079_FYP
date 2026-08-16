@@ -1,0 +1,149 @@
+.login-container {
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #f5f6fa;
+}
+
+.login-form {
+    width: 400px;
+    padding: 40px;
+
+    background: white;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.05),
+        0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.login-form h1 {
+    margin: 0 0 8px 0;
+
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+
+    text-align: center;
+}
+
+.login-form p {
+    margin: 0 0 30px 0;
+
+    color: #777;
+
+    text-align: center;
+    font-size: 14px;
+}
+
+.login-form label,
+form label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #333;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+
+    padding: 11px 13px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+
+    background: white;
+    color: #222;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #555;
+
+    box-shadow:
+        0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+    background: #f1f1f1;
+    color: #777;
+
+    cursor: not-allowed;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.password-input-container {
+    position: relative;
+
+    width: 100%;
+}
+
+.password-input-container input {
+    width: 100%;
+
+    padding-right: 65px;
+}
+
+.show-password-button {
+    position: absolute;
+
+    right: 8px;
+    top: 15%;
+
+    width: auto !important;
+
+    margin: 0 !important;
+    padding: 5px 8px !important;
+
+    background: transparent !important;
+
+    color: #555 !important;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.show-password-button:hover {
+    color: #111 !important;
+    opacity: 1;
+}
+
+.login-form > button {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 4px;
+
+    font-size: 15px;
+}

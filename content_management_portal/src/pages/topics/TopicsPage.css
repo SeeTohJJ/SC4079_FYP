@@ -1,0 +1,59 @@
+.topics-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.topics-table th,
+.topics-table td {
+    padding: 14px 16px;
+
+    text-align: left;
+
+    border-bottom: 1px solid #eee;
+}
+
+.topics-table th:nth-child(1),
+.topics-table td:nth-child(1) {
+    width: 15%;
+}
+
+.topics-table th:nth-child(2),
+.topics-table td:nth-child(2) {
+    width: 20%;
+}
+
+.topics-table th:nth-child(3),
+.topics-table td:nth-child(3) {
+    width: 40%;
+}
+
+.topics-table th:nth-child(4),
+.topics-table td:nth-child(4) {
+    width: 25%;
+}
+
+.topics-table input,
+.topics-table select {
+    width: 100%;
+    margin: 0;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-button {
+    background: #444;
+}
+
+.save-button {
+    background: #2e7d32;
+}
+
+.cancel-button {
+    background: #ddd;
+    color: #333;
+}

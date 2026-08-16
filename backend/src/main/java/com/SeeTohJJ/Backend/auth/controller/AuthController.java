@@ -54,4 +54,11 @@ public class AuthController {
 //
 //        return authService.resetPassword(token, newPassword);
 //    }
+
+    @PostMapping("/admin/login")
+    public AuthResponseDTO adminLogin(@RequestBody LoginRequestDTO request) {
+        logger.info("Starting adminLogin");
+
+        return authService.adminLogin(request);
+    }
 }

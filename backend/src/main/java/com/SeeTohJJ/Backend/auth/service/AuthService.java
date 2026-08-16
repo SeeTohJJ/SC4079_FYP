@@ -10,5 +10,6 @@ public interface AuthService {
 
     String register(RegisterRequestDTO request);
     AuthResponseDTO login(LoginRequestDTO request);
+    AuthResponseDTO adminLogin(LoginRequestDTO request);
 
 }

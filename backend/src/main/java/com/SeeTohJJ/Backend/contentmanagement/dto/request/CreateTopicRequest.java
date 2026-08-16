@@ -5,14 +5,6 @@ public class CreateTopicRequest {
     private String topicName;
     private String topicDescription;
 
-    public CreateTopicRequest() {
-    }
-
-    public CreateTopicRequest(String topicName, String topicDescription) {
-        this.topicName = topicName;
-        this.topicDescription = topicDescription;
-    }
-
     public String getTopicName() {
         return topicName;
     }

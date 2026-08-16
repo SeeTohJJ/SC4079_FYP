@@ -1,28 +1,28 @@
 import api from "./api";
 
-const login = async (email, password) => {
-    const response = await api.post("/auth/login", {
-        email,
-        password,
-    });
+const authService = {
 
-    const token = response.data.token;
+    async login(email, password) {
 
-    localStorage.setItem("adminToken", token);
+        const response = await api.post("/auth/admin/login", {
+            email,
+            password,
+        });
 
-    return response.data;
+        const token = response.data.token;
+
+        localStorage.setItem("adminToken", token);
+
+        return response.data;
+    },
+
+    logout() {
+        localStorage.removeItem("adminToken");
+    },
+
+    isLoggedIn() {
+        return localStorage.getItem("adminToken") !== null;
+    },
 };
 
-const logout = () => {
-    localStorage.removeItem("adminToken");
-};
-
-const isLoggedIn = () => {
-    return localStorage.getItem("adminToken") !== null;
-};
-
-export default {
-    login,
-    logout,
-    isLoggedIn,
-};
+export default authService;

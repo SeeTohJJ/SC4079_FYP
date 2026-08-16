@@ -35,7 +35,7 @@ public class AdminTopicController {
         return ResponseEntity.ok(adminTopicService.getTopic(topicId));
     }
 
-    @PostMapping("/create-topic")
+    @PostMapping("/create")
     public ResponseEntity<TopicDTO> createTopic(@RequestBody CreateTopicRequest request) {
         logger.info("Starting createTopic");
 
@@ -49,7 +49,7 @@ public class AdminTopicController {
     @PostMapping("/update/{topicId}")
     public ResponseEntity<?> updateTopic(@PathVariable String topicId,
                                          @RequestBody UpdateTopicRequest request) {
-        logger.info("Starting updateTopic");
+        logger.info("Starting updateTopic {}",  topicId);
 
         return ResponseEntity.ok(adminTopicService.updateTopic(topicId, request));
     }

@@ -17,6 +17,7 @@ public class TopicConstant {
     public static final String GET_ALL_TOPICS = """
             SELECT topic_id, topic_name, description, is_active
             FROM topics
+            ORDER BY topic_id ASC
             """;
 
     public static final String GET_TOPIC_BY_ID = """

@@ -1,13 +1,34 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Navigate,
+} from "react-router-dom";
 
-import LoginPage from "./pages/LoginPage";
-// import DashboardPage from "./pages/DashboardPage";
-import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 
+import LoginPage from "./pages/login/LoginPage";
+import DashboardPage from "./pages/dashboard/DashboardPage";
+
+import TopicsPage from "./pages/topics/TopicsPage";
+
+function ProtectedRoute({ children }) {
+
+    const token =
+        localStorage.getItem("adminToken");
+
+    if (!token) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+}
+
 function App() {
+
     return (
         <BrowserRouter>
+
             <Routes>
 
                 <Route
@@ -16,39 +37,28 @@ function App() {
                 />
 
                 <Route
+                    path="/"
                     element={
                         <ProtectedRoute>
                             <AdminLayout />
                         </ProtectedRoute>
                     }
                 >
+
                     <Route
-                        path="/dashboard"
+                        index
                         element={<DashboardPage />}
                     />
 
                     <Route
-                        path="/topics"
-                        element={<div>Topics</div>}
+                        path="topics"
+                        element={<TopicsPage />}
                     />
 
-                    <Route
-                        path="/subtopics"
-                        element={<div>Subtopics</div>}
-                    />
-
-                    <Route
-                        path="/lessons"
-                        element={<div>Lessons</div>}
-                    />
-
-                    <Route
-                        path="/quizzes"
-                        element={<div>Quizzes</div>}
-                    />
                 </Route>
 
             </Routes>
+
         </BrowserRouter>
     );
 }

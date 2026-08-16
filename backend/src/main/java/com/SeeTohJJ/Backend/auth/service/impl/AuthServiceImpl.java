@@ -94,4 +94,29 @@ public class AuthServiceImpl implements AuthService {
         return response;
     }
 
+    @Transactional
+    public AuthResponseDTO adminLogin(LoginRequestDTO request) {
+        logger.info("Starting adminLogin");
+
+        User user = userDao.findUserByEmail(request.getEmail());
+
+        if  (user == null) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        String token = jwtService.generateToken(user);
+
+        AuthResponseDTO response = new AuthResponseDTO();
+        response.setToken(token);
+        response.setUserId(user.getUserId());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole().toString());
+
+        return response;
+    }
+
 }

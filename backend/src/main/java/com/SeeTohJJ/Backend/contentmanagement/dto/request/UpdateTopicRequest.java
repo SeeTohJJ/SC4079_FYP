@@ -5,14 +5,6 @@ public class UpdateTopicRequest {
     private String topicName;
     private String topicDescription;
 
-    public UpdateTopicRequest() {
-    }
-
-    public UpdateTopicRequest(String topicName, String topicDescription) {
-        this.topicName = topicName;
-        this.topicDescription = topicDescription;
-    }
-
     public String getTopicName() {
         return topicName;
     }

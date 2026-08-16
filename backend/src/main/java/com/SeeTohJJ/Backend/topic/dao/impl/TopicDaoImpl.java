@@ -146,9 +146,9 @@ public class TopicDaoImpl implements TopicDao {
 
         jdbcTemplate.update(
                 TopicConstant.UPDATE_TOPIC,
-                topicId,
                 topicName,
-                topicDescription
+                topicDescription,
+                topicId
         );
     }
 }

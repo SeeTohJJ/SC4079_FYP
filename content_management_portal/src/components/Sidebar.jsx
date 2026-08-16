@@ -1,31 +1,60 @@
-import { Link } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import authService from "../services/authService";
+import "./Sidebar.css";
 
 function Sidebar() {
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+
+        authService.logout();
+
+        navigate("/login");
+    };
+
     return (
-        <aside>
-            <h2>Financial CMS</h2>
+        <aside className="sidebar">
+
+            <div className="sidebar-header">
+                <h2>Content Management Portal</h2>
+            </div>
 
             <nav>
-                <Link to="/dashboard">
+
+                <NavLink to="/">
                     Dashboard
-                </Link>
+                </NavLink>
 
-                <Link to="/topics">
+                <NavLink to="/topics">
                     Topics
-                </Link>
+                </NavLink>
 
-                <Link to="/subtopics">
+                <NavLink to="/subtopics">
                     Subtopics
-                </Link>
+                </NavLink>
 
-                <Link to="/lessons">
+                <NavLink to="/lessons">
                     Lessons
-                </Link>
+                </NavLink>
 
-                <Link to="/quizzes">
+                <NavLink to="/quizzes">
                     Quizzes
-                </Link>
+                </NavLink>
+
+                <NavLink to="/study-chains">
+                    Study Chains
+                </NavLink>
+
             </nav>
+
+            <button
+                className="logout-button"
+                onClick={handleLogout}
+            >
+                Logout
+            </button>
+
         </aside>
     );
 }
