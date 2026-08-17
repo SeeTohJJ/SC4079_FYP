@@ -1,0 +1,150 @@
+.study-chains-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.study-chains-table th,
+.study-chains-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.study-chains-table th {
+    font-weight: 600;
+    background: #f8f8f8;
+}
+
+.page-header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inactive-button {
+    background: #f1f1f1;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.inactive-button:hover {
+    background: #e5e5e5;
+}
+
+.status-active,
+.status-inactive {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-active {
+    background: #e5f7e8;
+    color: #217a2b;
+}
+
+.status-inactive {
+    background: #eeeeee;
+    color: #666;
+}
+
+.save-button {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+.save-button:hover {
+    background: #256628;
+}
+
+.cancel-button {
+    background: #ddd;
+    color: #333;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background: #ccc;
+}
+
+.edit-button {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background: #222;
+}
+
+.editor-row td {
+    padding: 0;
+    background: #fafafa;
+}
+
+.study-chain-editor {
+    padding: 25px 30px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.study-chain-editor h3 {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.study-chain-form-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.study-chain-editor-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 25px;
+}

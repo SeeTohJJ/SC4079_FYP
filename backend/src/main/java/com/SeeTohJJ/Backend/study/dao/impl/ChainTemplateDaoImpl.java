@@ -2,6 +2,7 @@ package com.SeeTohJJ.Backend.study.dao.impl;
 
 import com.SeeTohJJ.Backend.contentmanagement.dto.response.ChainTemplateResponseDTO;
 import com.SeeTohJJ.Backend.study.constant.ChainTemplateConstant;
+import com.SeeTohJJ.Backend.study.constant.NodeContentConstant;
 import com.SeeTohJJ.Backend.study.dao.ChainTemplateDao;
 import com.SeeTohJJ.Backend.study.model.chain.ChainTemplate;
 import com.SeeTohJJ.Backend.study.service.progress.impl.NodeGenerationServiceImpl;
@@ -52,11 +53,11 @@ public class ChainTemplateDaoImpl implements ChainTemplateDao {
 
 
     @Override
-    public List<ChainTemplateResponseDTO> getAllChainTemplates(){
-        logger.info("Starting getAllChainTemplates");
+    public List<ChainTemplateResponseDTO> getAllActiveChainTemplates(){
+        logger.info("Starting getAllActiveChainTemplates");
 
         return jdbcTemplate.query(
-                ChainTemplateConstant.GET_ALL_CHAIN_TEMPLATES,
+                ChainTemplateConstant.GET_ALL_ACTIVE_CHAIN_TEMPLATES,
                 (rs, rowNum) -> {
                     ChainTemplateResponseDTO dto = new ChainTemplateResponseDTO();
                     dto.setChainTemplateId(rs.getInt("template_id"));
@@ -64,10 +65,25 @@ public class ChainTemplateDaoImpl implements ChainTemplateDao {
                     dto.setOrderInChain(rs.getInt("order_in_chain"));
                     dto.setNodeType(rs.getString("node_type"));
                     dto.setContentSequence(rs.getInt("content_sequence"));
-                    java.sql.Timestamp timestamp = rs.getTimestamp("last_updated");
-                    if (timestamp != null) {
-                        dto.setLastUpdated(timestamp.toLocalDateTime());
-                    }
+                    dto.setActive(rs.getBoolean("is_active"));
+                    return dto;
+                }
+        );
+    }
+
+    @Override
+    public List<ChainTemplateResponseDTO> getAllInactiveChainTemplates(){
+        logger.info("Starting getAllInactiveChainTemplates");
+
+        return jdbcTemplate.query(
+                ChainTemplateConstant.GET_ALL_INACTIVE_CHAIN_TEMPLATES,
+                (rs, rowNum) -> {
+                    ChainTemplateResponseDTO dto = new ChainTemplateResponseDTO();
+                    dto.setChainTemplateId(rs.getInt("template_id"));
+                    dto.setChainType(rs.getString("chain_type"));
+                    dto.setOrderInChain(rs.getInt("order_in_chain"));
+                    dto.setNodeType(rs.getString("node_type"));
+                    dto.setContentSequence(rs.getInt("content_sequence"));
                     dto.setActive(rs.getBoolean("is_active"));
                     return dto;
                 }
@@ -87,10 +103,6 @@ public class ChainTemplateDaoImpl implements ChainTemplateDao {
                     dto.setOrderInChain(rs.getInt("order_in_chain"));
                     dto.setNodeType(rs.getString("node_type"));
                     dto.setContentSequence(rs.getInt("content_sequence"));
-                    java.sql.Timestamp timestamp = rs.getTimestamp("last_updated");
-                    if (timestamp != null) {
-                        dto.setLastUpdated(timestamp.toLocalDateTime());
-                    }
                     dto.setActive(rs.getBoolean("is_active"));
                     return dto;
                 },
@@ -156,6 +168,20 @@ public class ChainTemplateDaoImpl implements ChainTemplateDao {
         );
 
         return (count != null) ? count : 0;
+    }
+
+    @Override
+    public int getNextTemplateId(){
+        logger.info("Starting getNextTemplateId");
+
+        Integer maxId = jdbcTemplate.queryForObject(
+                ChainTemplateConstant.FIND_NEXT_TEMPLATE_ID,
+                Integer.class
+        );
+
+        int nextId = (maxId != null) ? maxId + 1 : 1;
+
+        return nextId;
     }
 
 }

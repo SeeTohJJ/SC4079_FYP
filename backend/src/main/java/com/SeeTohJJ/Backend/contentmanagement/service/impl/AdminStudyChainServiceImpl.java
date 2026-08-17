@@ -25,10 +25,17 @@ public class AdminStudyChainServiceImpl implements AdminStudyChainService {
     }
 
     @Override
-    public List<ChainTemplateResponseDTO> getAllChainTemplates(){
-        logger.info("Starting getAllChainTemplates");
+    public List<ChainTemplateResponseDTO> getAllActiveChainTemplates(){
+        logger.info("Starting getAllActiveChainTemplates");
 
-        return chainTemplateDao.getAllChainTemplates();
+        return chainTemplateDao.getAllActiveChainTemplates();
+    }
+
+    @Override
+    public List<ChainTemplateResponseDTO> getAllInactiveChainTemplates(){
+        logger.info("Starting getAllInactiveChainTemplates");
+
+        return chainTemplateDao.getAllInactiveChainTemplates();
     }
 
     @Override
@@ -42,12 +49,12 @@ public class AdminStudyChainServiceImpl implements AdminStudyChainService {
     public ChainTemplateResponseDTO createChainTemplate(ChainTemplateRequest request){
         logger.info("Starting createChainTemplate");
 
-        int templateId =  request.getChainTemplateId();
         String chainType = request.getChainType();
         int orderInChain = request.getOrderInChain();
         String nodeType = request.getNodeType();
         int contentSequence = request.getContentSequence();
 
+        int templateId = chainTemplateDao.getNextTemplateId();
         chainTemplateDao.createChainTemplate(templateId, chainType, orderInChain, nodeType, contentSequence);
 
         return chainTemplateDao.findById(templateId);

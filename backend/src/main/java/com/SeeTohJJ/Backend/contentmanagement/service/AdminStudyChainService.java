@@ -8,7 +8,9 @@ import com.SeeTohJJ.Backend.contentmanagement.dto.response.QuizResponseDTO;
 import java.util.List;
 
 public interface AdminStudyChainService {
-    List<ChainTemplateResponseDTO> getAllChainTemplates();
+    List<ChainTemplateResponseDTO> getAllActiveChainTemplates();
+    List<ChainTemplateResponseDTO> getAllInactiveChainTemplates();
+
     ChainTemplateResponseDTO getChainTemplate(int templateId);
     ChainTemplateResponseDTO createChainTemplate(ChainTemplateRequest request);
     ChainTemplateResponseDTO updateChainTemplate(int templateId, ChainTemplateRequest request);

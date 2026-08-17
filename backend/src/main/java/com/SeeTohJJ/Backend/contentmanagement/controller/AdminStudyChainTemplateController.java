@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/study-chain")
+@RequestMapping("/api/admin/study-chains")
 public class AdminStudyChainTemplateController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminStudyChainTemplateController.class);
@@ -22,11 +22,18 @@ public class AdminStudyChainTemplateController {
         this.adminStudyChainService = adminStudyChainService;
     }
 
-    @GetMapping
-    public ResponseEntity<?> getAllChainTemplates() {
-        logger.info("Starting getAllChainTemplates");
+    @GetMapping("/active")
+    public ResponseEntity<?> getAllActiveChainTemplates() {
+        logger.info("Starting getAllActiveChainTemplates");
 
-        return ResponseEntity.ok(adminStudyChainService.getAllChainTemplates());
+        return ResponseEntity.ok(adminStudyChainService.getAllActiveChainTemplates());
+    }
+
+    @GetMapping("/inactive")
+    public ResponseEntity<?> getAllInactiveChainTemplates() {
+        logger.info("Starting getAllInactiveChainTemplates");
+
+        return ResponseEntity.ok(adminStudyChainService.getAllInactiveChainTemplates());
     }
 
     @GetMapping("/{templateId}")
@@ -36,7 +43,7 @@ public class AdminStudyChainTemplateController {
         return ResponseEntity.ok(adminStudyChainService.getChainTemplate(templateId));
     }
 
-    @PostMapping("/create-chain-template")
+    @PostMapping("/create")
     public ResponseEntity<ChainTemplateResponseDTO> createChainTemplate(@RequestBody ChainTemplateRequest request) {
         logger.info("Starting createChainTemplate");
 

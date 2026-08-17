@@ -9,15 +9,22 @@ public class ChainTemplateConstant {
             ORDER BY order_in_chain
             """;
 
-    public static final String GET_ALL_CHAIN_TEMPLATES = """
-            SELECT template_id, chain_type, order_in_chain, node_type, content_sequence, last_updated, is_active
+    public static final String GET_ALL_ACTIVE_CHAIN_TEMPLATES = """
+            SELECT template_id, chain_type, order_in_chain, node_type, content_sequence, is_active
             FROM study_chain_template
             WHERE is_active = true
-            ORDER BY chain_type, order_in_chain
+            ORDER BY template_id, chain_type, order_in_chain
+            """;
+
+    public static final String GET_ALL_INACTIVE_CHAIN_TEMPLATES = """
+            SELECT template_id, chain_type, order_in_chain, node_type, content_sequence, is_active
+            FROM study_chain_template
+            WHERE is_active = false
+            ORDER BY template_id, chain_type, order_in_chain
             """;
 
     public static final String GET_CHAIN_TEMPLATES_BY_ID = """
-            SELECT template_id, chain_type, order_in_chain, node_type, content_sequence, last_updated, is_active
+            SELECT template_id, chain_type, order_in_chain, node_type, content_sequence, is_active
             FROM study_chain_template
             WHERE template_id = ?
             """;
@@ -49,5 +56,10 @@ public class ChainTemplateConstant {
             SELECT COUNT(DISTINCT chain_type)
             FROM study_chain_template
             WHERE is_active = true
+            """;
+
+    public static final String FIND_NEXT_TEMPLATE_ID = """
+            SELECT MAX(template_id)
+            FROM study_chain_template
             """;
 }

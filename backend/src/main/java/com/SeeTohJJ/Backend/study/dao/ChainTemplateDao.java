@@ -9,11 +9,14 @@ import java.util.List;
 public interface ChainTemplateDao {
 
     List<ChainTemplate> getChainTemplate(NodeGenerationServiceImpl.ChainType chainType);
-    List<ChainTemplateResponseDTO> getAllChainTemplates();
+    List<ChainTemplateResponseDTO> getAllActiveChainTemplates();
+    List<ChainTemplateResponseDTO> getAllInactiveChainTemplates();
+
     ChainTemplateResponseDTO findById(int templateId);
     void createChainTemplate(int templateId, String chainType, int orderInChain, String nodeType, int contentSequence);
     void updateChainTemplate(int templateId, String chainType, int orderInChain, String nodeType, int contentSequence);
     void setChainTemplateInactive(int templateId);
     void setChainTemplateActive(int templateId);
     int getActiveCount();
+    int getNextTemplateId();
 }

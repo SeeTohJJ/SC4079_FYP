@@ -9,7 +9,6 @@ public class ChainTemplateResponseDTO {
     private int orderInChain;
     private String nodeType;
     private int contentSequence;
-    private LocalDateTime lastUpdated;
     private boolean isActive;
 
     public int getChainTemplateId() {
@@ -50,14 +49,6 @@ public class ChainTemplateResponseDTO {
 
     public void setContentSequence(int contentSequence) {
         this.contentSequence = contentSequence;
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
     }
 
     public boolean isActive() {

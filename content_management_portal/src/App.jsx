@@ -14,6 +14,7 @@ import TopicsPage from "./pages/topics/TopicsPage";
 import SubtopicsPage from "./pages/subtopics/SubtopicsPage";
 import LessonsPage from "./pages/lessons/LessonsPage";
 import QuizzesPage from "./pages/quizzes/QuizzesPage";
+import ChainTemplatePage from "./pages/chain-templates/ChainTemplatePage";
 
 function ProtectedRoute({ children }) {
 
@@ -71,6 +72,11 @@ function App() {
                     <Route
                         path="quizzes"
                         element={<QuizzesPage />}
+                    />
+
+                    <Route
+                        path="study-chains"
+                        element={<ChainTemplatePage />}
                     />
 
                 </Route>
