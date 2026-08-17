@@ -44,16 +44,24 @@ public class NodeContentConstant {
         WHERE node_id = ?
         """;
 
-    public static final String GET_ALL_LESSONS = """
-        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.last_updated, sn.is_active, nlc.content
+    public static final String GET_ALL_ACTIVE_LESSONS = """
+        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.is_active, nlc.content
         FROM study_nodes sn
         JOIN node_lesson_content nlc ON sn.node_id = nlc.node_id
         WHERE sn.type = 'LESSON' AND sn.is_active = true
-        ORDER BY sn.order_index
+        ORDER BY sn.subtopic_id, sn.order_index
+        """;
+
+    public static final String GET_ALL_INACTIVE_LESSONS = """
+        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.is_active, nlc.content
+        FROM study_nodes sn
+        JOIN node_lesson_content nlc ON sn.node_id = nlc.node_id
+        WHERE sn.type = 'LESSON' AND sn.is_active = false
+        ORDER BY sn.subtopic_id, sn.order_index
         """;
 
     public static final String GET_LESSON = """
-        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.last_updated, sn.is_active, nlc.content
+        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.is_active, nlc.content
         FROM study_nodes sn
         JOIN node_lesson_content nlc ON sn.node_id = nlc.node_id
         WHERE sn.node_id = ? AND sn.type = 'LESSON' AND sn.is_active = true
@@ -143,5 +151,11 @@ public class NodeContentConstant {
         UPDATE study_nodes
         SET is_active = true
         WHERE node_id = ? AND type = 'QUIZ'
+        """;
+
+    public static final String FIND_NEXT_NODE_ID = """
+        SELECT COALESCE(MAX(CAST(RIGHT(node_id, 3) AS INTEGER)), 0)
+        FROM study_nodes
+        WHERE subtopic_id = ? AND type = ?
         """;
 }

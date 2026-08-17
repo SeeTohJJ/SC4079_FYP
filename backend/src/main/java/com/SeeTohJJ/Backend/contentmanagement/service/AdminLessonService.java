@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface AdminLessonService {
 
-    List<LessonResponseDTO> getAllLessons();
+    List<LessonResponseDTO> getAllActiveLessons();
+    List<LessonResponseDTO> getAllInactiveLessons();
+
     LessonResponseDTO getLesson(String nodeId);
     LessonResponseDTO createLesson(LessonRequest request);
     LessonResponseDTO updateLesson(String nodeId, LessonRequest request);

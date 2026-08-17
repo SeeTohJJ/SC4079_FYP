@@ -25,10 +25,17 @@ public class AdminLessonServiceImpl implements AdminLessonService {
     }
 
     @Override
-    public List<LessonResponseDTO> getAllLessons(){
-        logger.info("Starting getAllLessons");
+    public List<LessonResponseDTO> getAllActiveLessons(){
+        logger.info("Starting getAllActiveLessons");
 
-        return nodeContentDao.getAllLessons();
+        return nodeContentDao.getAllActiveLessons();
+    }
+
+    @Override
+    public List<LessonResponseDTO> getAllInactiveLessons(){
+        logger.info("Starting getAllInactiveLessons");
+
+        return nodeContentDao.getAllInactiveLessons();
     }
 
     @Override
@@ -42,7 +49,6 @@ public class AdminLessonServiceImpl implements AdminLessonService {
     public LessonResponseDTO createLesson(LessonRequest request){
         logger.info("Starting createLesson");
 
-        String nodeId =  request.getNodeId();
         String topicId = request.getTopicId();
         String subtopicId = request.getSubtopicId();
         String title = request.getTitle();
@@ -50,6 +56,7 @@ public class AdminLessonServiceImpl implements AdminLessonService {
         int requiredMastery = request.getRequiredMastery();
         String content = request.getContent();
 
+        String nodeId = nodeContentDao.findNextNodeId(subtopicId, "LESSON");
         nodeContentDao.createLesson(nodeId, topicId, subtopicId, title, orderIndex, requiredMastery, content);
 
         return nodeContentDao.getLesson(nodeId);

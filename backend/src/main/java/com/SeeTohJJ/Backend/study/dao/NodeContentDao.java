@@ -20,7 +20,9 @@ public interface NodeContentDao {
     String getQuizHint(String nodeId);
     String getQuizExplanation(String nodeId);
 
-    List<LessonResponseDTO> getAllLessons();
+    List<LessonResponseDTO> getAllActiveLessons();
+    List<LessonResponseDTO> getAllInactiveLessons();
+
     LessonResponseDTO getLesson(String nodeId);
     void createLesson(String nodeId,
                       String topicId,
@@ -74,4 +76,5 @@ public interface NodeContentDao {
     void setQuizInactive(String nodeId);
     void setQuizActive(String nodeId);
 
+    String findNextNodeId(String subtopicId, String nodeType);
 }

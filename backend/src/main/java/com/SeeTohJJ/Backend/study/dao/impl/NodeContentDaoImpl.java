@@ -9,6 +9,7 @@ import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.QuizContentDTO;
+import com.SeeTohJJ.Backend.topic.constant.SubtopicConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,11 +179,11 @@ public class NodeContentDaoImpl implements NodeContentDao {
     }
 
     @Override
-    public List<LessonResponseDTO> getAllLessons(){
-        logger.info("Starting getAllLessons");
+    public List<LessonResponseDTO> getAllActiveLessons(){
+        logger.info("Starting getAllActiveLessons");
 
         return jdbcTemplate.query(
-                NodeContentConstant.GET_ALL_LESSONS,
+                NodeContentConstant.GET_ALL_ACTIVE_LESSONS,
                 (rs, rowNum) -> {
                     LessonResponseDTO dto = new LessonResponseDTO();
                     dto.setNodeId(rs.getString("node_id"));
@@ -191,10 +192,27 @@ public class NodeContentDaoImpl implements NodeContentDao {
                     dto.setTitle(rs.getString("title"));
                     dto.setOrderIndex(rs.getInt("order_index"));
                     dto.setRequiredMastery(rs.getInt("required_mastery"));
-                    java.sql.Timestamp timestamp = rs.getTimestamp("last_updated");
-                    if (timestamp != null) {
-                        dto.setLastUpdated(timestamp.toLocalDateTime());
-                    }
+                    dto.setActive(rs.getBoolean("is_active"));
+                    dto.setContent(rs.getString("content"));
+                    return dto;
+                }
+        );
+    }
+
+    @Override
+    public List<LessonResponseDTO> getAllInactiveLessons(){
+        logger.info("Starting getAllInactiveLessons");
+
+        return jdbcTemplate.query(
+                NodeContentConstant.GET_ALL_INACTIVE_LESSONS,
+                (rs, rowNum) -> {
+                    LessonResponseDTO dto = new LessonResponseDTO();
+                    dto.setNodeId(rs.getString("node_id"));
+                    dto.setTopicId(rs.getString("topic_id"));
+                    dto.setSubtopicId(rs.getString("subtopic_id"));
+                    dto.setTitle(rs.getString("title"));
+                    dto.setOrderIndex(rs.getInt("order_index"));
+                    dto.setRequiredMastery(rs.getInt("required_mastery"));
                     dto.setActive(rs.getBoolean("is_active"));
                     dto.setContent(rs.getString("content"));
                     return dto;
@@ -216,10 +234,6 @@ public class NodeContentDaoImpl implements NodeContentDao {
                     dto.setTitle(rs.getString("title"));
                     dto.setOrderIndex(rs.getInt("order_index"));
                     dto.setRequiredMastery(rs.getInt("required_mastery"));
-                    java.sql.Timestamp timestamp = rs.getTimestamp("last_updated");
-                    if (timestamp != null) {
-                        dto.setLastUpdated(timestamp.toLocalDateTime());
-                    }
                     dto.setActive(rs.getBoolean("is_active"));
                     dto.setContent(rs.getString("content"));
                     return dto;
@@ -482,4 +496,22 @@ public class NodeContentDaoImpl implements NodeContentDao {
         );
     }
 
+    @Override
+    public String findNextNodeId(String subtopicId, String nodeType){
+        logger.info("Starting findNextNodeId");
+
+        Integer maxId = jdbcTemplate.queryForObject(
+                NodeContentConstant.FIND_NEXT_NODE_ID,
+                Integer.class,
+                subtopicId,
+                nodeType
+        );
+
+        int nextId = (maxId != null) ? maxId + 1 : 1;
+        String topicPart = subtopicId.substring(0, 4);
+        String subtopicPart = subtopicId.substring(4);
+        String nodeAcronym = nodeType.substring(0, 1).toUpperCase();
+
+        return String.format("N-%s-%s-%s-%03d", topicPart, subtopicPart, nodeAcronym, nextId);
+    }
 }

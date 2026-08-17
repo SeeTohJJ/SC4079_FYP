@@ -6,6 +6,8 @@ function TopicsPage() {
 
     const [topics, setTopics] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
     const [editTopicId, setEditTopicId] = useState(null);
     const [editName, setEditName] = useState("");
     const [editDescription, setEditDescription] = useState("");
@@ -14,7 +16,6 @@ function TopicsPage() {
     const [creating, setCreating] = useState(false);
     const [newName, setNewName] = useState("");
     const [newDescription, setNewDescription] = useState("");
-    const [error, setError] = useState("");
 
     const loadTopics = async () => {
         try {
@@ -301,7 +302,7 @@ function TopicsPage() {
                                             <option value="true">
                                                 Active
                                             </option>
-                                            
+
                                             <option value="false">
                                                 Inactive
                                             </option>

@@ -2,21 +2,12 @@ package com.SeeTohJJ.Backend.contentmanagement.dto.request;
 
 public class LessonRequest {
 
-    private String nodeId;
     private String topicId;
     private String subtopicId;
     private String title;
     private int orderIndex;
     private int requiredMastery;
     private String content;
-
-    public String getNodeId() {
-        return nodeId;
-    }
-
-    public void setNodeId(String nodeId) {
-        this.nodeId = nodeId;
-    }
 
     public String getTopicId() {
         return topicId;

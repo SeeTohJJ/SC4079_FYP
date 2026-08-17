@@ -10,7 +10,6 @@ public class LessonResponseDTO {
     private String title;
     private int orderIndex;
     private int requiredMastery;
-    private LocalDateTime lastUpdated;
     private boolean isActive;
     private String content;
 
@@ -60,14 +59,6 @@ public class LessonResponseDTO {
 
     public void setRequiredMastery(int requiredMastery) {
         this.requiredMastery = requiredMastery;
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
     }
 
     public boolean isActive() {

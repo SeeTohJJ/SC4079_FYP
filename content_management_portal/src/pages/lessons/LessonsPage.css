@@ -1,0 +1,96 @@
+.lessons-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.lessons-table th,
+.lessons-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.lessons-table th:nth-child(1),
+.lessons-table td:nth-child(1) {
+    width: 5%;
+}
+
+.lessons-table th:nth-child(2),
+.lessons-table td:nth-child(2) {
+    width: 5%;
+}
+
+.lessons-table th:nth-child(3),
+.lessons-table td:nth-child(3) {
+    width: 5%;
+}
+
+.lessons-table th:nth-child(4),
+.lessons-table td:nth-child(4) {
+    width: 15%;
+}
+
+.lessons-table th:nth-child(5),
+.lessons-table td:nth-child(5) {
+    width: 50%;
+}
+
+.lessons-table th:nth-child(6),
+.lessons-table td:nth-child(6) {
+    width: 5%;
+}
+
+.lessons-table th:nth-child(7),
+.lessons-table td:nth-child(7) {
+    width: 5%;
+}
+
+.lessons-table th:nth-child(8),
+.lessons-table td:nth-child(8) {
+    width: 5%;
+}
+
+.lessons-table input,
+.lessons-table select {
+    width: 100%;
+    margin: 0;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-button {
+    background: #444;
+}
+
+.save-button {
+    background: #2e7d32;
+}
+
+.cancel-button {
+    background: #ddd;
+    color: #333;
+}
+
+.page-header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inactive-button {
+    background: #f1f1f1;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.inactive-button:hover {
+    background: #e5e5e5;
+}

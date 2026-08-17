@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/lesson")
+@RequestMapping("/api/admin/lessons")
 public class AdminLessonController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminLessonController.class);
@@ -23,11 +23,18 @@ public class AdminLessonController {
         this.adminLessonService = adminLessonService;
     }
 
-    @GetMapping
-    public ResponseEntity<?> getAllLessons() {
-        logger.info("Starting getAllLessons");
+    @GetMapping("/active")
+    public ResponseEntity<?> getAllActiveLessons() {
+        logger.info("Starting getAllActiveLessons");
 
-        return ResponseEntity.ok(adminLessonService.getAllLessons());
+        return ResponseEntity.ok(adminLessonService.getAllActiveLessons());
+    }
+
+    @GetMapping("/inactive")
+    public ResponseEntity<?> getAllInactiveLessons() {
+        logger.info("Starting getAllInactiveLessons");
+
+        return ResponseEntity.ok(adminLessonService.getAllInactiveLessons());
     }
 
     @GetMapping("/{nodeId}")
@@ -37,7 +44,7 @@ public class AdminLessonController {
         return ResponseEntity.ok(adminLessonService.getLesson(nodeId));
     }
 
-    @PostMapping("/create-lesson")
+    @PostMapping("/create")
     public ResponseEntity<LessonResponseDTO> createLesson(@RequestBody LessonRequest request) {
         logger.info("Starting createLesson");
 

@@ -12,6 +12,7 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 
 import TopicsPage from "./pages/topics/TopicsPage";
 import SubtopicsPage from "./pages/subtopics/SubtopicsPage";
+import LessonsPage from "./pages/lessons/LessonsPage";
 
 function ProtectedRoute({ children }) {
 
@@ -59,6 +60,11 @@ function App() {
                     <Route
                         path="subtopics"
                         element={<SubtopicsPage />}
+                    />
+
+                    <Route
+                        path="lessons"
+                        element={<LessonsPage />}
                     />
 
                 </Route>
