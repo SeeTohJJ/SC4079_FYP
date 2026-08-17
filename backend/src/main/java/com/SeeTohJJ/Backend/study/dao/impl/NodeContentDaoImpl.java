@@ -320,11 +320,11 @@ public class NodeContentDaoImpl implements NodeContentDao {
 
 
     @Override
-    public List<QuizResponseDTO> getAllQuizzes(){
-        logger.info("Starting getAllQuizzes");
+    public List<QuizResponseDTO> getAllActiveQuizzes(){
+        logger.info("Starting getAllActiveQuizzes");
 
         return jdbcTemplate.query(
-                NodeContentConstant.GET_ALL_QUIZZES,
+                NodeContentConstant.GET_ALL_ACTIVE_QUIZZES,
                 (rs, rowNum) -> {
                     QuizResponseDTO dto = new QuizResponseDTO();
                     dto.setNodeId(rs.getString("node_id"));
@@ -333,10 +333,35 @@ public class NodeContentDaoImpl implements NodeContentDao {
                     dto.setTitle(rs.getString("title"));
                     dto.setOrderIndex(rs.getInt("order_index"));
                     dto.setRequiredMastery(rs.getInt("required_mastery"));
-                    java.sql.Timestamp timestamp = rs.getTimestamp("last_updated");
-                    if (timestamp != null) {
-                        dto.setLastUpdated(timestamp.toLocalDateTime());
-                    }
+                    dto.setActive(rs.getBoolean("is_active"));
+                    dto.setContent(rs.getString("content"));
+                    dto.setOptionA(rs.getString("option_a"));
+                    dto.setOptionB(rs.getString("option_b"));
+                    dto.setOptionC(rs.getString("option_c"));
+                    dto.setOptionD(rs.getString("option_d"));
+                    dto.setCorrectAnswer(rs.getString("correct_answer"));
+                    dto.setDifficultyRating(rs.getInt("difficulty_rating"));
+                    dto.setHint(rs.getString("hint"));
+                    dto.setExplanation(rs.getString("explanation"));
+                    return dto;
+                }
+        );
+    }
+
+    @Override
+    public List<QuizResponseDTO> getAllInactiveQuizzes(){
+        logger.info("Starting getAllInactiveQuizzes");
+
+        return jdbcTemplate.query(
+                NodeContentConstant.GET_ALL_INACTIVE_QUIZZES,
+                (rs, rowNum) -> {
+                    QuizResponseDTO dto = new QuizResponseDTO();
+                    dto.setNodeId(rs.getString("node_id"));
+                    dto.setTopicId(rs.getString("topic_id"));
+                    dto.setSubtopicId(rs.getString("subtopic_id"));
+                    dto.setTitle(rs.getString("title"));
+                    dto.setOrderIndex(rs.getInt("order_index"));
+                    dto.setRequiredMastery(rs.getInt("required_mastery"));
                     dto.setActive(rs.getBoolean("is_active"));
                     dto.setContent(rs.getString("content"));
                     dto.setOptionA(rs.getString("option_a"));
@@ -366,10 +391,6 @@ public class NodeContentDaoImpl implements NodeContentDao {
                     dto.setTitle(rs.getString("title"));
                     dto.setOrderIndex(rs.getInt("order_index"));
                     dto.setRequiredMastery(rs.getInt("required_mastery"));
-                    java.sql.Timestamp timestamp = rs.getTimestamp("last_updated");
-                    if (timestamp != null) {
-                        dto.setLastUpdated(timestamp.toLocalDateTime());
-                    }
                     dto.setActive(rs.getBoolean("is_active"));
                     dto.setContent(rs.getString("content"));
                     dto.setOptionA(rs.getString("option_a"));

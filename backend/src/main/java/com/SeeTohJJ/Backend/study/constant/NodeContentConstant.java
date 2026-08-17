@@ -101,18 +101,27 @@ public class NodeContentConstant {
         WHERE node_id = ? AND type = 'LESSON'
         """;
 
-    public static final String GET_ALL_QUIZZES = """
-        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.last_updated, sn.is_active,
-        nqc.content, nqc.option_a, nqc.option_b, nqc.option_c, nqc.option_d, nqc.difficulty_rating, nqc.hint, nqc.explanation
+    public static final String GET_ALL_ACTIVE_QUIZZES = """
+        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.is_active,
+        nqc.content, nqc.option_a, nqc.option_b, nqc.option_c, nqc.option_d, nqc.correct_answer, nqc.difficulty_rating, nqc.hint, nqc.explanation
         FROM study_nodes sn
         JOIN node_quiz_content nqc ON sn.node_id = nqc.node_id
         WHERE sn.type = 'QUIZ' AND sn.is_active = true
         ORDER BY sn.order_index
         """;
 
+    public static final String GET_ALL_INACTIVE_QUIZZES = """
+        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.is_active,
+        nqc.content, nqc.option_a, nqc.option_b, nqc.option_c, nqc.option_d, nqc.correct_answer, nqc.difficulty_rating, nqc.hint, nqc.explanation
+        FROM study_nodes sn
+        JOIN node_quiz_content nqc ON sn.node_id = nqc.node_id
+        WHERE sn.type = 'QUIZ' AND sn.is_active = false
+        ORDER BY sn.order_index
+        """;
+
     public static final String GET_QUIZ = """
-        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.last_updated, sn.is_active,
-        nqc.content, nqc.option_a, nqc.option_b, nqc.option_c, nqc.option_d, nqc.difficulty_rating, nqc.hint, nqc.explanation
+        SELECT sn.node_id, sn.topic_id, sn.subtopic_id, sn.title, sn.order_index, sn.required_mastery, sn.is_active,
+        nqc.content, nqc.option_a, nqc.option_b, nqc.option_c, nqc.option_d, nqc.correct_answer, nqc.difficulty_rating, nqc.hint, nqc.explanation
         FROM study_nodes sn
         JOIN node_quiz_content nqc ON sn.node_id = nqc.node_id
         WHERE sn.node_id = ? AND sn.type = 'QUIZ' AND sn.is_active = true
@@ -136,7 +145,7 @@ public class NodeContentConstant {
         """;
 
     public static final String UPDATE_QUIZ_CONTENT = """
-        UPDATE study_nodes
+        UPDATE node_quiz_content
         SET title = ?, content = ?, option_a = ?, option_b = ?, option_c = ?, option_d = ?, correct_answer = ?, difficulty_rating = ?, hint = ?, explanation = ?, last_updated = CURRENT_TIMESTAMP
         WHERE node_id = ?
         """;

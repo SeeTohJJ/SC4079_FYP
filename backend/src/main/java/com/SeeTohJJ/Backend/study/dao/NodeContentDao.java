@@ -41,7 +41,9 @@ public interface NodeContentDao {
     void setLessonInactive(String nodeId);
     void setLessonActive(String nodeId);
 
-    List<QuizResponseDTO> getAllQuizzes();
+    List<QuizResponseDTO> getAllActiveQuizzes();
+    List<QuizResponseDTO> getAllInactiveQuizzes();
+
     QuizResponseDTO getQuiz(String nodeId);
     void createQuiz(String nodeId,
                     String topicId,

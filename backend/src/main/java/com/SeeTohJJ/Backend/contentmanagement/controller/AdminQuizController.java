@@ -1,8 +1,6 @@
 package com.SeeTohJJ.Backend.contentmanagement.controller;
 
-import com.SeeTohJJ.Backend.contentmanagement.dto.request.LessonRequest;
 import com.SeeTohJJ.Backend.contentmanagement.dto.request.QuizRequest;
-import com.SeeTohJJ.Backend.contentmanagement.dto.response.LessonResponseDTO;
 import com.SeeTohJJ.Backend.contentmanagement.dto.response.QuizResponseDTO;
 import com.SeeTohJJ.Backend.contentmanagement.service.AdminQuizService;
 import org.slf4j.Logger;
@@ -12,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/quiz")
+@RequestMapping("/api/admin/quizzes")
 public class AdminQuizController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminQuizController.class);
@@ -23,11 +21,18 @@ public class AdminQuizController {
         this.adminQuizService = adminQuizService;
     }
 
-    @GetMapping
-    public ResponseEntity<?> getAllQuizzes() {
-        logger.info("Starting getAllQuizzes");
+    @GetMapping("/active")
+    public ResponseEntity<?> getAllActiveQuizzes() {
+        logger.info("Starting getAllActiveQuizzes");
 
-        return ResponseEntity.ok(adminQuizService.getAllQuizzes());
+        return ResponseEntity.ok(adminQuizService.getAllActiveQuizzes());
+    }
+
+    @GetMapping("/inactive")
+    public ResponseEntity<?> getAllInactiveQuizzes() {
+        logger.info("Starting getAllInactiveQuizzes");
+
+        return ResponseEntity.ok(adminQuizService.getAllInactiveQuizzes());
     }
 
     @GetMapping("/{nodeId}")
@@ -37,7 +42,7 @@ public class AdminQuizController {
         return ResponseEntity.ok(adminQuizService.getQuiz(nodeId));
     }
 
-    @PostMapping("/create-quiz")
+    @PostMapping("/create")
     public ResponseEntity<QuizResponseDTO> createQuiz(@RequestBody QuizRequest request) {
         logger.info("Starting createQuiz");
 

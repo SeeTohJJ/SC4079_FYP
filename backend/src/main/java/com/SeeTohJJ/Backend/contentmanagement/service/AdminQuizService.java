@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface AdminQuizService {
 
-    List<QuizResponseDTO> getAllQuizzes();
+    List<QuizResponseDTO> getAllActiveQuizzes();
+    List<QuizResponseDTO> getAllInactiveQuizzes();
+
     QuizResponseDTO getQuiz(String nodeId);
     QuizResponseDTO createQuiz(QuizRequest request);
     QuizResponseDTO updateQuiz(String nodeId, QuizRequest request);

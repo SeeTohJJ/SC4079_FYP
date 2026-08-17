@@ -23,10 +23,17 @@ public class AdminQuizServiceImpl implements AdminQuizService {
     }
 
     @Override
-    public List<QuizResponseDTO> getAllQuizzes(){
-        logger.info("Starting getAllQuizzes");
+    public List<QuizResponseDTO> getAllActiveQuizzes(){
+        logger.info("Starting getAllActiveQuizzes");
 
-        return nodeContentDao.getAllQuizzes();
+        return nodeContentDao.getAllActiveQuizzes();
+    }
+
+    @Override
+    public List<QuizResponseDTO> getAllInactiveQuizzes(){
+        logger.info("Starting getAllInactiveQuizzes");
+
+        return nodeContentDao.getAllInactiveQuizzes();
     }
 
     @Override
@@ -40,7 +47,6 @@ public class AdminQuizServiceImpl implements AdminQuizService {
     public QuizResponseDTO createQuiz(QuizRequest request){
         logger.info("Starting createQuiz");
 
-        String nodeId =  request.getNodeId();
         String topicId = request.getTopicId();
         String subtopicId = request.getSubtopicId();
         String title = request.getTitle();
@@ -56,6 +62,7 @@ public class AdminQuizServiceImpl implements AdminQuizService {
         String hint  = request.getHint();
         String explanation = request.getExplanation();
 
+        String nodeId = nodeContentDao.findNextNodeId(subtopicId, "QUIZ");
         nodeContentDao.createQuiz(nodeId, topicId, subtopicId, title, orderIndex, requiredMastery, content,
                 optionA, optionB, optionC, optionD, correctAnswer, difficultyRating, hint, explanation);
 
