@@ -14,5 +14,5 @@ public interface AdminSubtopicService {
     SubtopicDTO updateSubtopic(String subtopicId, UpdateSubtopicRequest request);
     void setSubtopicInactive(String subtopicId);
     void setSubtopicActive(String subtopicId);
-
+    int getActiveCount();
 }

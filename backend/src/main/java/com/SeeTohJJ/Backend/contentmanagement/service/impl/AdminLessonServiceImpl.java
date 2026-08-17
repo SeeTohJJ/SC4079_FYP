@@ -92,4 +92,10 @@ public class AdminLessonServiceImpl implements AdminLessonService {
         nodeContentDao.setLessonActive(nodeId);
     }
 
+    @Override
+    public int getActiveCount(){
+        logger.info("Starting getActiveCount");
+
+        return nodeContentDao.getActiveCount("LESSON");
+    }
 }

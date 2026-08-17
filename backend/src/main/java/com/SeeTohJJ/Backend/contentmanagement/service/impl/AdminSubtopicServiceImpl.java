@@ -103,4 +103,11 @@ public class AdminSubtopicServiceImpl implements AdminSubtopicService {
 
         subtopicDao.setSubtopicActive(subtopicId);
     }
+
+    @Override
+    public int getActiveCount() {
+        logger.info("Starting getActiveCount");
+
+        return subtopicDao.getActiveCount();
+    }
 }

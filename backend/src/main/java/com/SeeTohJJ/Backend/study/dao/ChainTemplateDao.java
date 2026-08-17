@@ -15,5 +15,5 @@ public interface ChainTemplateDao {
     void updateChainTemplate(int templateId, String chainType, int orderInChain, String nodeType, int contentSequence);
     void setChainTemplateInactive(int templateId);
     void setChainTemplateActive(int templateId);
-
+    int getActiveCount();
 }

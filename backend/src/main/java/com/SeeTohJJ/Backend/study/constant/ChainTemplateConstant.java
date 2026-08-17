@@ -44,4 +44,10 @@ public class ChainTemplateConstant {
             SET is_active = true
             WHERE template_id = ?
             """;
+
+    public static final String GET_ACTIVE_TEMPLATE_COUNT = """
+            SELECT COUNT(DISTINCT chain_type)
+            FROM study_chain_template
+            WHERE is_active = true
+            """;
 }

@@ -108,5 +108,11 @@ public class AdminQuizServiceImpl implements AdminQuizService {
         nodeContentDao.setQuizActive(nodeId);
     }
 
+    @Override
+    public int getActiveCount(){
+        logger.info("Starting getActiveCount");
+
+        return nodeContentDao.getActiveCount("QUIZ");
+    }
 
 }

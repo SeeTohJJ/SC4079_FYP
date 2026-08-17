@@ -92,4 +92,19 @@ public class UserServiceImpl implements UserService {
 
         loginStreakService.insertInitialLoginStreak(userId);
     }
+
+    @Override
+    public int getActiveUserCount(){
+        logger.info("Starting getActiveUserCount");
+
+        return userProfileDao.getActiveUserCount();
+    }
+
+    @Override
+    public int getActiveAdminCount(){
+        logger.info("Starting getActiveAdminCount");
+
+        return userProfileDao.getActiveAdminCount();
+    }
+
 }

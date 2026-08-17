@@ -101,4 +101,11 @@ public class AdminTopicServiceImpl implements AdminTopicService {
 
         topicDao.setTopicActive(topicId);
     }
+
+    @Override
+    public int getActiveCount(){
+        logger.info("Starting getActiveCount");
+
+        return topicDao.getActiveCount();
+    }
 }

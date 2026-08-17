@@ -16,4 +16,5 @@ public interface TopicDao {
     String findNextTopicId();
     void create(String topicId, String topicName, String topicDescription);
     void update(String topicId, String topicName, String topicDescription);
+    int getActiveCount();
 }

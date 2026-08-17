@@ -79,4 +79,5 @@ public interface NodeContentDao {
     void setQuizActive(String nodeId);
 
     String findNextNodeId(String subtopicId, String nodeType);
+    int getActiveCount(String nodeType);
 }

@@ -146,4 +146,16 @@ public class ChainTemplateDaoImpl implements ChainTemplateDao {
         );
     }
 
+    @Override
+    public int getActiveCount(){
+        logger.info("Starting getActiveCount");
+
+        Integer count = jdbcTemplate.queryForObject(
+                ChainTemplateConstant.GET_ACTIVE_TEMPLATE_COUNT,
+                Integer.class
+        );
+
+        return (count != null) ? count : 0;
+    }
+
 }

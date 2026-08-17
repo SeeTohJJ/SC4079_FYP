@@ -167,4 +167,10 @@ public class NodeContentConstant {
         FROM study_nodes
         WHERE subtopic_id = ? AND type = ?
         """;
+
+    public static final String COUNT_ACTIVE_NODES = """
+        SELECT COUNT(*)
+        FROM study_nodes
+        WHERE type = ? AND is_active = true
+        """;
 }

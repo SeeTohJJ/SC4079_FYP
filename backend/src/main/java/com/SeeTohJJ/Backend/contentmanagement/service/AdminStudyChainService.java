@@ -14,4 +14,6 @@ public interface AdminStudyChainService {
     ChainTemplateResponseDTO updateChainTemplate(int templateId, ChainTemplateRequest request);
     void setChainTemplateInactive(int templateId);
     void setChainTemplateActive(int templateId);
+
+    int getActiveCount();
 }

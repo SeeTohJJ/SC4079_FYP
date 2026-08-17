@@ -80,4 +80,11 @@ public class AdminStudyChainServiceImpl implements AdminStudyChainService {
 
         chainTemplateDao.setChainTemplateActive(templateId);
     }
+
+    @Override
+    public int getActiveCount(){
+        logger.info("Starting getActiveCount");
+
+        return chainTemplateDao.getActiveCount();
+    }
 }

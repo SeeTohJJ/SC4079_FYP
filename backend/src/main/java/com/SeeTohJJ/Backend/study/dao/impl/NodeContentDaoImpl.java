@@ -535,4 +535,17 @@ public class NodeContentDaoImpl implements NodeContentDao {
 
         return String.format("N-%s-%s-%s-%03d", topicPart, subtopicPart, nodeAcronym, nextId);
     }
+
+    @Override
+    public int getActiveCount(String nodeType){
+        logger.info("Starting getActiveCount");
+
+        Integer count = jdbcTemplate.queryForObject(
+                NodeContentConstant.COUNT_ACTIVE_NODES,
+                Integer.class,
+                nodeType
+        );
+
+        return (count != null) ? count : 0;
+    }
 }

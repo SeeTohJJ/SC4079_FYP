@@ -7,5 +7,7 @@ import java.time.LocalDate;
 public interface UserProfileDao {
 
     void setUserProfile(UserProfile userProfile);
+    int getActiveUserCount();
+    int getActiveAdminCount();
 
 }

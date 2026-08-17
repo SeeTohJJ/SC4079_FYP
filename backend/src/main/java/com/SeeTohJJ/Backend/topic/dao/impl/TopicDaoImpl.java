@@ -151,4 +151,16 @@ public class TopicDaoImpl implements TopicDao {
                 topicId
         );
     }
+
+    @Override
+    public int getActiveCount(){
+        logger.info("Starting getActiveCount");
+
+        Integer count = jdbcTemplate.queryForObject(
+                TopicConstant.GET_ACTIVE_TOPIC_COUNT,
+                Integer.class
+        );
+
+        return (count != null) ? count : 0;
+    }
 }

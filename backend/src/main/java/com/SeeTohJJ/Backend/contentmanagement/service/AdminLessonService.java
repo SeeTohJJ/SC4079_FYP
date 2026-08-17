@@ -17,4 +17,6 @@ public interface AdminLessonService {
     LessonResponseDTO updateLesson(String nodeId, LessonRequest request);
     void setLessonInactive(String nodeId);
     void setLessonActive(String nodeId);
+
+    int getActiveCount();
 }

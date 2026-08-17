@@ -271,5 +271,15 @@ public class SubtopicDaoImpl implements SubtopicDao {
         );
     }
 
+    @Override
+    public int getActiveCount() {
+        logger.info("Starting getActiveCount");
 
+        Integer count = jdbcTemplate.queryForObject(
+                SubtopicConstant.GET_ACTIVE_SUBTOPIC_COUNT,
+                Integer.class
+        );
+
+        return (count != null) ? count : 0;
+    }
 }

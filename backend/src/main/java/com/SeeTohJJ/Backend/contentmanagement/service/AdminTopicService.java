@@ -14,5 +14,5 @@ public interface AdminTopicService {
     TopicDTO updateTopic(String topicId, UpdateTopicRequest request);
     void setTopicInactive(String topicId);
     void setTopicActive(String topicId);
-
+    int getActiveCount();
 }

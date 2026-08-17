@@ -65,4 +65,10 @@ public class TopicConstant {
             SET topic_name = ?, description = ?
             WHERE topic_id = ?
             """;
+
+    public static final String GET_ACTIVE_TOPIC_COUNT = """
+            SELECT COUNT(*)
+            FROM topics
+            WHERE is_active = true
+            """;
 }

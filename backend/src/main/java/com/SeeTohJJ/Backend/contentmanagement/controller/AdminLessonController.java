@@ -1,10 +1,8 @@
 package com.SeeTohJJ.Backend.contentmanagement.controller;
 
 import com.SeeTohJJ.Backend.contentmanagement.dto.request.LessonRequest;
-import com.SeeTohJJ.Backend.contentmanagement.dto.request.QuizRequest;
 import com.SeeTohJJ.Backend.contentmanagement.dto.response.LessonResponseDTO;
 import com.SeeTohJJ.Backend.contentmanagement.service.AdminLessonService;
-import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

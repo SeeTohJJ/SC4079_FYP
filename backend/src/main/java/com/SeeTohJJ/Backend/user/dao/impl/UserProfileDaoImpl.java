@@ -38,4 +38,28 @@ public class UserProfileDaoImpl implements UserProfileDao {
         );
     }
 
+    @Override
+    public int getActiveUserCount(){
+        logger.info("Starting getActiveUserCount");
+
+        Integer count = jdbcTemplate.queryForObject(
+                UserConstant.GET_ACTIVE_USER_COUNT,
+                Integer.class
+        );
+
+        return (count != null) ? count : 0;
+    }
+
+    @Override
+    public int getActiveAdminCount(){
+        logger.info("Starting getActiveAdminCount");
+
+        Integer count = jdbcTemplate.queryForObject(
+                UserConstant.GET_ACTIVE_ADMIN_COUNT,
+                Integer.class
+        );
+
+        return (count != null) ? count : 0;
+    }
+
 }

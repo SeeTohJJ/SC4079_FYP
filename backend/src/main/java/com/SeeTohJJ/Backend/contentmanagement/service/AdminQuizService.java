@@ -15,4 +15,6 @@ public interface AdminQuizService {
     QuizResponseDTO updateQuiz(String nodeId, QuizRequest request);
     void setQuizInactive(String nodeId);
     void setQuizActive(String nodeId);
+
+    int getActiveCount();
 }

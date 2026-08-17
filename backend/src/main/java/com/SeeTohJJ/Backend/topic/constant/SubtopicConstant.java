@@ -104,4 +104,10 @@ public class SubtopicConstant {
             SET name = ?, difficulty = ?, p_init = ?, p_transit = ?, p_slip = ?, p_guess = ?, last_updated = CURRENT_TIMESTAMP
             WHERE subtopic_id = ?
             """;
+
+    public static final String GET_ACTIVE_SUBTOPIC_COUNT = """
+            SELECT COUNT(*)
+            FROM subtopics
+            WHERE is_active = true
+            """;
 }

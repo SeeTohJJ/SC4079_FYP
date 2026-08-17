@@ -29,4 +29,16 @@ public class UserConstant {
         INSERT INTO user_activity (user_id)
         VALUES (?)
         """;
+
+    public static final String GET_ACTIVE_USER_COUNT = """
+        SELECT count(*)
+        FROM users
+        WHERE role = 'USER'
+        """;
+
+    public static final String GET_ACTIVE_ADMIN_COUNT = """
+        SELECT count(*)
+        FROM users
+        WHERE role = 'ADMIN'
+        """;
 }

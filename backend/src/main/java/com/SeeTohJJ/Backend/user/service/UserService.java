@@ -9,4 +9,7 @@ import java.util.List;
 public interface UserService {
 
     void insertAllUserInitialTables(Long userId, RegisterRequestDTO request);
+
+    int getActiveUserCount();
+    int getActiveAdminCount();
 }
