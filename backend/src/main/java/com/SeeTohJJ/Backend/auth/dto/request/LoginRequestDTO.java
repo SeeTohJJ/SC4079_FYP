@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.auth.dto;
+package com.SeeTohJJ.Backend.auth.dto.request;
 
 public class LoginRequestDTO {
     private String email;

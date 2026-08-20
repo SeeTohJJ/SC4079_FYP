@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 class AuthService {
   static const String baseUrl = "http://10.0.2.2:8080/api/auth";
 
@@ -56,8 +57,6 @@ class AuthService {
       "country": country,
       "topics": topicsToLearn,
     };
-
-    print(payload);
     
     final response = await http.post(
       Uri.parse("$baseUrl/register"),
@@ -68,20 +67,6 @@ class AuthService {
     return response.statusCode == 200 || response.statusCode == 201;
   }
 
-  Future<bool> forgotPassword(String email) async {
-    final response = await http.post(
-      Uri.parse("$baseUrl/forgot-password"),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode({
-        "email": email,
-      }),
-    );
-
-    return response.statusCode == 200;
-  }
-
   Future<void> logout() async {
     await storage.delete(key: "jwt");
   }
@@ -89,5 +74,44 @@ class AuthService {
   Future<String?> getToken() async {
     return await storage.read(key: "jwt");
   }
+
+  Future<void> forgotPassword(String email) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/forgot-password"),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to send reset code');
+    }
+  }
   
+  Future<String> verifyResetOtp(String email, String otp) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/verify-reset-otp"),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'otp': otp}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Invalid OTP');
+    }
+
+    final data = jsonDecode(response.body);
+
+    return data['resetToken'];
+  }
+
+  Future<void> resetPassword({required String resetToken, required String newPassword}) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/reset-password"),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'resetToken': resetToken, 'newPassword': newPassword}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to reset password');
+    }
+  }
 }

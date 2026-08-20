@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/features/garden/models/user_plant.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:frontend/auth/services/auth_services.dart';
+import 'package:frontend/auth/services/auth_service.dart';
 import 'package:frontend/features/garden/models/garden.dart';
 
 class GardenService {

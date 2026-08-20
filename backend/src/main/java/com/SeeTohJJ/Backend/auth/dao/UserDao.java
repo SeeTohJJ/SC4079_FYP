@@ -7,4 +7,7 @@ public interface UserDao {
     boolean findEmailExist(String email);
     Long registerUser(User user);
     User findUserByEmail(String email);
+    User findUserByUserId(Long userId);
+    void updatePassword(Long userId,String passwordHash);
+
 }

@@ -1,29 +1,37 @@
 import 'package:flutter/material.dart';
-import '../screens/verify_otp_page.dart';
+import '../screens/reset_password_page.dart';
 import '../services/auth_service.dart';
-class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({super.key});
+
+class VerifyOtpPage extends StatefulWidget {
+  final String email;
+
+  const VerifyOtpPage({
+    super.key,
+    required this.email,
+  });
 
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  State<VerifyOtpPage> createState() => _VerifyOtpPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final _emailController = TextEditingController();
+class _VerifyOtpPageState extends State<VerifyOtpPage> {  
+  final _otpController = TextEditingController();
+  final AuthService _authService = AuthService();
+
 
   bool _isLoading = false;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _otpController.dispose();
     super.dispose();
   }
 
-  Future<void> _sendResetCode() async {
-    final email = _emailController.text.trim();
+  Future<void> _verifyOtp() async {
+    final otp = _otpController.text.trim();
 
-    if (email.isEmpty) {
-      _showMessage("Please enter your email.");
+    if (otp.isEmpty) {
+      _showMessage("Please enter the verification code.");
       return;
     }
 
@@ -32,22 +40,27 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     });
 
     try {
-      await AuthService().forgotPassword(email);
+      final resetToken = await _authService.verifyResetOtp(
+        widget.email,
+        otp,
+      );
 
       if (!mounted) return;
 
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => VerifyOtpPage(email: email),
+          builder: (_) => ResetPasswordPage(
+            email: widget.email,
+            otp: otp,
+            resetToken: resetToken,
+          ),
         ),
       );
     } catch (e) {
       if (!mounted) return;
 
-      _showMessage(
-        "Unable to send reset code. Please check your email and try again.",
-      );
+      _showMessage("Invalid or expired verification code.");
     } finally {
       if (mounted) {
         setState(() {
@@ -67,7 +80,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Forgot Password"),
+        title: const Text("Verify Code"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -77,7 +90,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             const SizedBox(height: 40),
 
             const Text(
-              "Reset your password",
+              "Enter verification code",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -86,17 +99,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
             const SizedBox(height: 12),
 
-            const Text(
-              "Enter your email address and we'll send you a verification code.",
+            Text(
+              "We sent a verification code to ${widget.email}",
             ),
 
             const SizedBox(height: 32),
 
             TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
+              controller: _otpController,
+              keyboardType: TextInputType.number,
+              maxLength: 6,
               decoration: const InputDecoration(
-                labelText: "Email",
+                labelText: "Verification Code",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -104,10 +118,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             const SizedBox(height: 24),
 
             ElevatedButton(
-              onPressed: _isLoading ? null : _sendResetCode,
+              onPressed: _isLoading ? null : _verifyOtp,
               child: _isLoading
                   ? const CircularProgressIndicator()
-                  : const Text("Send Code"),
+                  : const Text("Verify"),
             ),
           ],
         ),

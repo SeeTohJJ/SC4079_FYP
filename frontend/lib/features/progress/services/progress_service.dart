@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:frontend/auth/services/auth_services.dart';
+import 'package:frontend/auth/services/auth_service.dart';
 import 'package:frontend/features/progress/models/progress.dart';
 
 class ProgressService {

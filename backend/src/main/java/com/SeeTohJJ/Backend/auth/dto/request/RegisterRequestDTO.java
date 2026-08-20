@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.auth.dto;
+package com.SeeTohJJ.Backend.auth.dto.request;
 
 import java.util.List;
 

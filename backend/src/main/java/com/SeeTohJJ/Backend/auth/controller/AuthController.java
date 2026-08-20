@@ -1,14 +1,16 @@
 package com.SeeTohJJ.Backend.auth.controller;
 
-import com.SeeTohJJ.Backend.auth.dto.LoginRequestDTO;
+import com.SeeTohJJ.Backend.auth.dto.request.*;
 import com.SeeTohJJ.Backend.auth.dto.AuthResponseDTO;
-import com.SeeTohJJ.Backend.auth.dto.RegisterRequestDTO;
 import com.SeeTohJJ.Backend.auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -38,22 +40,48 @@ public class AuthController {
         return authService.login(request);
     }
 
-//    @PostMapping("/forgot-password")
-//    public String forgotPassword(@RequestParam String email) {
-//        logger.info("Starting Forgot Password");
-//
-//        return authService.forgotPassword(email);
-//    }
-//
-//    @PostMapping("/reset-password")
-//    public String resetPassword(
-//            @RequestParam String token,
-//            @RequestParam String newPassword
-//    ) {
-//        logger.info("Starting Reset Password");
-//
-//        return authService.resetPassword(token, newPassword);
-//    }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDTO request) {
+        logger.info("Starting forgotPassword");
+
+        authService.forgotPassword(request.getEmail());
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "message",
+                        "If an account exists for this email, "
+                                + "a verification code has been sent."
+                )
+        );
+    }
+
+    @PostMapping("/verify-reset-otp")
+    public ResponseEntity<?> verifyResetOtp(@RequestBody VerifyResetOTPRequestDTO request) {
+        logger.info("Starting verifyResetOtp");
+
+        String resetToken = authService.verifyResetOtp(request.getEmail(), request.getOtp());
+        logger.info("Reset OTP: " + resetToken);
+        return ResponseEntity.ok(
+                Map.of(
+                        "resetToken",
+                        resetToken
+                )
+        );
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequestDTO request) {
+        logger.info("Starting resetPassword {}, {}",  request.getResetToken(), request.getNewPassword());
+
+        authService.resetPassword(request.getResetToken(), request.getNewPassword());
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "message",
+                        "Password successfully reset"
+                )
+        );
+    }
 
     @PostMapping("/admin/login")
     public AuthResponseDTO adminLogin(@RequestBody LoginRequestDTO request) {

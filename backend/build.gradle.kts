@@ -38,6 +38,8 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
 	implementation("org.springframework.security:spring-security-crypto")
 	implementation("org.bouncycastle:bcprov-jdk18on:1.84")
+	implementation ("org.springframework.boot:spring-boot-starter-mail")
+
 }
 
 tasks.withType<Test> {

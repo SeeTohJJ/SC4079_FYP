@@ -1,7 +1,6 @@
 package com.SeeTohJJ.Backend.user.service.impl;
 
-import com.SeeTohJJ.Backend.auth.dto.RegisterRequestDTO;
-import com.SeeTohJJ.Backend.auth.model.User;
+import com.SeeTohJJ.Backend.auth.dto.request.RegisterRequestDTO;
 import com.SeeTohJJ.Backend.garden.service.GardenService;
 import com.SeeTohJJ.Backend.study.service.gameplay.EnergyService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;

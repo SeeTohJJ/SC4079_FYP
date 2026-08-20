@@ -11,7 +11,7 @@ import 'package:frontend/features/study/services/energy_service.dart';
 import 'package:frontend/features/study/widgets/energy_widget.dart';
 import 'package:frontend/features/study/widgets/study_line_painter.dart';
 import 'package:frontend/features/study/services/study_service.dart';
-import 'package:frontend/auth/services/auth_services.dart';
+import 'package:frontend/auth/services/auth_service.dart';
   
 class StudyPage extends StatefulWidget {
   const StudyPage({super.key});

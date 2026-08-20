@@ -65,4 +65,26 @@ public class UserDaoImpl implements UserDao {
                 email
         );
     }
+
+    @Override
+    public User findUserByUserId(Long userId) {
+        logger.info("Starting findUserByUserId");
+
+        return jdbcTemplate.queryForObject(
+                AuthConstant.FIND_USER_BY_USER_ID,
+                userRowMapper,
+                userId
+        );
+    }
+
+    @Override
+    public void updatePassword(Long userId, String passwordHash) {
+        logger.info("Starting updatePassword");
+
+        jdbcTemplate.update(
+                AuthConstant.UPDATE_USER_PASSWORD,
+                passwordHash,
+                userId
+        );
+    }
 }

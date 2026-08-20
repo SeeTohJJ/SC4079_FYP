@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:frontend/auth/services/auth_services.dart';
+import 'package:frontend/auth/services/auth_service.dart';
 import 'package:frontend/features/study/models/energy.dart';
 import 'package:http/http.dart' as http;
 

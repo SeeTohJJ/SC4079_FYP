@@ -4,7 +4,7 @@ import 'package:frontend/features/study/models/lesson_content.dart';
 import 'package:frontend/features/study/models/quiz_content.dart';
 import 'package:frontend/features/study/models/quiz_result.dart';
 import 'package:http/http.dart' as http;
-import 'package:frontend/auth/services/auth_services.dart';
+import 'package:frontend/auth/services/auth_service.dart';
 
 class StudyService {
   static const String baseUrl = "http://10.0.2.2:8080/api/study";

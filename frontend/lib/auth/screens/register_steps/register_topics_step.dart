@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/register_data.dart';
-import '../../services/auth_services.dart';
+import '../../services/auth_service.dart';
 
 class RegisterTopicsStep extends StatefulWidget {
 
