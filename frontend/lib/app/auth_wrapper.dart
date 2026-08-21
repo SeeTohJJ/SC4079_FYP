@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../core/storage/secure_storage_service.dart';
 import '../auth/screens/login_page.dart';
-import '../features/garden/screens/garden_page.dart';
+import '../navigation/main_navigation_page.dart';
 
 class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
@@ -36,6 +36,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
       print('[AuthWrapper] No valid token, user is not logged in');
     }
 
+    if (!mounted) return;
+
     setState(() {
       loading = false;
     });
@@ -53,7 +55,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
 
     if (loggedIn) {
-      return const GardenPage();
+      return const MainNavigationPage();
     }
 
     return const LoginPage();

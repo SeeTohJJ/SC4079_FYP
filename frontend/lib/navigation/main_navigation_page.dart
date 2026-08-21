@@ -16,7 +16,7 @@ class MainNavigationPage extends StatefulWidget {
 class _MainNavigationPageState extends State<MainNavigationPage> {
   int currentIndex = 0;
 
-  final pages = [
+  final List<Widget> pages = [
     GardenPage(),
     StudyPage(),
     ProgressPage(),
@@ -27,8 +27,10 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[currentIndex],
+
       bottomNavigationBar: AppBottomNavBar(
         currentIndex: currentIndex,
+
         onTap: (index) {
           setState(() {
             currentIndex = index;
