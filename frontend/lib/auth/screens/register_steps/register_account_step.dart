@@ -13,35 +13,51 @@ class RegisterAccountStep extends StatefulWidget {
   });
 
   @override
-  State<RegisterAccountStep> createState() =>
-      _RegisterAccountStepState();
+  State<RegisterAccountStep> createState() => _RegisterAccountStepState();
 }
 
-class _RegisterAccountStepState
-    extends State<RegisterAccountStep> {
+class _RegisterAccountStepState extends State<RegisterAccountStep> {
 
   final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  final passwordController =
-      TextEditingController();
+  bool hasMinLength = false;
+  bool hasUppercase = false;
+  bool hasLowercase = false;
+  bool hasSpecialCharacter = false;
 
-  final confirmPasswordController =
-      TextEditingController();
+  void checkPasswordRequirements(String password) {
+    setState(() {
+      hasMinLength = password.length >= 8;
+      hasUppercase = RegExp(r'[A-Z]').hasMatch(password);
+      hasLowercase = RegExp(r'[a-z]').hasMatch(password);
+      hasSpecialCharacter = RegExp(r'[^a-zA-Z0-9]').hasMatch(password);
+    });
+  }
 
   void continueStep() {
-
     final email = emailController.text.trim();
-    final password = passwordController.text.trim();
-    final confirmPassword =
-        confirmPasswordController.text.trim();
+    final password = passwordController.text;
+    final confirmPassword = confirmPasswordController.text;
 
-    if (email.isEmpty ||
-        password.isEmpty ||
-        confirmPassword.isEmpty) {
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please fill all fields"),
+        ),
+      );
+
+      return;
+    }
+
+    if (!hasMinLength || !hasUppercase || !hasLowercase || !hasSpecialCharacter) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Password does not meet the requirements",
+          ),
         ),
       );
 
@@ -59,23 +75,35 @@ class _RegisterAccountStepState
       return;
     }
 
-    if (password.length < 8) {
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Password must be at least 8 characters",
-          ),
-        ),
-      );
-
-      return;
-    }
-
     widget.data.email = email;
     widget.data.password = password;
 
     widget.onNext();
+  }
+
+  Widget passwordRequirement(String text, bool satisfied) {
+    return Row(
+      children: [
+        Icon(
+          satisfied
+              ? Icons.check_circle
+              : Icons.cancel,
+          size: 18,
+          color: satisfied
+              ? Colors.green
+              : Colors.grey,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: TextStyle(
+            color: satisfied
+                ? Colors.green
+                : Colors.grey,
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -117,6 +145,7 @@ class _RegisterAccountStepState
               labelText: "Password",
               border: OutlineInputBorder(),
             ),
+            onChanged: (value) {checkPasswordRequirements(value);},
           ),
 
           const SizedBox(height: 16),
@@ -128,6 +157,28 @@ class _RegisterAccountStepState
               labelText: "Confirm Password",
               border: OutlineInputBorder(),
             ),
+          ),
+
+          const SizedBox(height: 12),
+
+          Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
+              passwordRequirement("At least 8 characters", hasMinLength),
+
+              const SizedBox(height: 4),
+
+              passwordRequirement("At least 1 uppercase letter", hasUppercase),
+
+              const SizedBox(height: 4),
+
+              passwordRequirement("At least 1 lowercase letter", hasLowercase),
+
+              const SizedBox(height: 4),
+
+              passwordRequirement("At least 1 special character", hasSpecialCharacter),
+            ],
           ),
 
           const SizedBox(height: 24),

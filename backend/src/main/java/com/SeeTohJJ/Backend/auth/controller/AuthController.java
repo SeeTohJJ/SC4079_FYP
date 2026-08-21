@@ -3,6 +3,7 @@ package com.SeeTohJJ.Backend.auth.controller;
 import com.SeeTohJJ.Backend.auth.dto.request.*;
 import com.SeeTohJJ.Backend.auth.dto.AuthResponseDTO;
 import com.SeeTohJJ.Backend.auth.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequestDTO request) {
+    public String register(@Valid @RequestBody RegisterRequestDTO request) {
         logger.info("Starting Register");
 
         return authService.register(request);
