@@ -8,4 +8,5 @@ public interface UserService {
 
     int getActiveUserCount();
     int getActiveAdminCount();
+    String getNameFromId(Long userId);
 }

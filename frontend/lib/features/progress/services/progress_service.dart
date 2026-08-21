@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:frontend/features/progress/models/completed_lesson.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:frontend/auth/services/auth_service.dart';
@@ -11,13 +12,11 @@ class ProgressService {
   static const String baseUrl =
       'http://10.0.2.2:8080/api/progress';
 
-  final AuthService authService =
-      AuthService();
+  final AuthService authService = AuthService();
 
   Future<Progress> getProgress() async {
 
-    final token =
-        await authService.getToken();
+    final token = await authService.getToken();
 
     final response = await http.get(
       Uri.parse('$baseUrl/get_progress'),
@@ -40,5 +39,35 @@ class ProgressService {
     return Progress.fromJson(
       jsonDecode(response.body),
     );
+  }
+
+  Future<List<CompletedLesson>> getCompletedLessons() async {
+    final token = await authService.getToken();
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/get_completed_lessons'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    debugPrint(
+      'Completed lessons response: ${response.statusCode}',
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to load completed lessons',
+      );
+    }
+
+    final List<dynamic> jsonList =
+        jsonDecode(response.body);
+
+    return jsonList
+        .map((json) =>
+            CompletedLesson.fromJson(json))
+        .toList();
   }
 }

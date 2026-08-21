@@ -41,4 +41,10 @@ public class UserConstant {
         FROM users
         WHERE role = 'ADMIN'
         """;
+
+    public static final String GET_NAME_FROM_ID = """
+        SELECT username
+        FROM user_profiles
+        WHERE user_id = ?
+        """;
 }

@@ -62,4 +62,20 @@ public class UserProfileDaoImpl implements UserProfileDao {
         return (count != null) ? count : 0;
     }
 
+    @Override
+    public String getNameFromId(Long userId){
+        logger.info("Starting getNameFromId");
+
+        return jdbcTemplate.query(
+                UserConstant.GET_NAME_FROM_ID,
+                rs -> {
+                    if (rs.next()) {
+                        return rs.getString("username");
+                    } else {
+                        return null;
+                    }
+                },
+                userId
+        );
+    }
 }

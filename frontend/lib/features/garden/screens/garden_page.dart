@@ -193,6 +193,15 @@ class _GardenPageState extends State<GardenPage> {
           const SizedBox(height: 8),
 
           // Growth progress
+          const Text(
+              'Growth Progress',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+
+          const SizedBox(height: 4),
+
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
@@ -211,7 +220,6 @@ class _GardenPageState extends State<GardenPage> {
           // Plant stats
           _buildPlantStats(plant),
 
-          // Leave space for the water button
           const SizedBox(height: 90),
         ],
       ),

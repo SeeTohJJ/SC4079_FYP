@@ -106,4 +106,11 @@ public class UserServiceImpl implements UserService {
         return userProfileDao.getActiveAdminCount();
     }
 
+    @Override
+    public String getNameFromId(Long userId) {
+        logger.info("Starting getNameFromId");
+
+        return userProfileDao.getNameFromId(userId);
+    }
+
 }
