@@ -25,11 +25,25 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   bool _isLoading = false;
 
+  bool _hasMinLength = false;
+  bool _hasUppercase = false;
+  bool _hasLowercase = false;
+  bool _hasSpecialCharacter = false;
+
   @override
   void dispose() {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  void _checkPasswordRequirements(String password) {
+    setState(() {
+      _hasMinLength = password.length >= 8;
+      _hasUppercase = RegExp(r'[A-Z]').hasMatch(password);
+      _hasLowercase = RegExp(r'[a-z]').hasMatch(password);
+      _hasSpecialCharacter = RegExp(r'[^a-zA-Z0-9]').hasMatch(password);
+    });
   }
 
   Future<void> _resetPassword() async {
@@ -41,13 +55,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       return;
     }
 
-    if (password != confirmPassword) {
-      _showMessage("Passwords do not match.");
+    if (!_hasMinLength || !_hasUppercase || !_hasLowercase || !_hasSpecialCharacter) {
+      _showMessage("Password does not meet the requirements.");
       return;
     }
 
-    if (password.length < 8) {
-      _showMessage("Password must be at least 8 characters.");
+    if (password != confirmPassword) {
+      _showMessage("Passwords do not match.");
       return;
     }
 
@@ -87,6 +101,29 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     }
   }
 
+  Widget _passwordRequirement(String text, bool satisfied) {
+    return Row(
+      children: [
+        Icon(
+          satisfied? Icons.check_circle : Icons.cancel,
+          size: 18,
+          color: satisfied
+              ? Colors.green
+              : Colors.grey,
+        ),
+
+        const SizedBox(width: 8),
+
+        Text(
+          text,
+          style: TextStyle(
+            color: satisfied ? Colors.green : Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
   void _showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
@@ -119,6 +156,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             TextField(
               controller: _passwordController,
               obscureText: true,
+              onChanged: _checkPasswordRequirements,
               decoration: const InputDecoration(
                 labelText: "New Password",
                 border: OutlineInputBorder(),
@@ -134,6 +172,27 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 labelText: "Confirm Password",
                 border: OutlineInputBorder(),
               ),
+            ),
+
+            const SizedBox(height: 12),
+
+            Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                _passwordRequirement("At least 8 characters", _hasMinLength),
+
+                const SizedBox(height: 4),
+
+                _passwordRequirement("At least 1 uppercase letter", _hasUppercase),
+                const SizedBox(height: 4),
+
+                _passwordRequirement("At least 1 lowercase letter", _hasLowercase),
+
+                const SizedBox(height: 4),
+
+                _passwordRequirement("At least 1 special character", _hasSpecialCharacter),
+              ],
             ),
 
             const SizedBox(height: 24),
