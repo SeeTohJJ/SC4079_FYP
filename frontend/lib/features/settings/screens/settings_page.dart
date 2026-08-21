@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/auth/screens/change_password_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:frontend/core/storage/secure_storage_service.dart';
@@ -116,12 +117,22 @@ class SettingsPage extends StatelessWidget {
                     'Change Password',
                   ),
 
+                  subtitle: const Text(
+                    'Update your account password',
+                  ),
+
                   trailing: const Icon(
                     Icons.chevron_right,
                   ),
 
                   onTap: () {
-                    // Add change password page later
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            const ChangePasswordPage(),
+                      ),
+                    );
                   },
                 ),
               ),

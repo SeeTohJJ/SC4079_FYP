@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:frontend/core/storage/secure_storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -112,6 +114,36 @@ class AuthService {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to reset password');
+    }
+  }
+
+  Future<void> changePassword({required String currentPassword, required String newPassword}) async {
+
+    final token = await SecureStorageService().getToken();
+
+    final response = await http.post(
+      Uri.parse(
+        '$baseUrl/change-password',
+      ),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        'currentPassword': currentPassword,
+        'newPassword': newPassword,
+      }),
+    );
+
+    debugPrint('CHANGE PASSWORD STATUS: ${response.statusCode}');
+    debugPrint('CHANGE PASSWORD RESPONSE: ${response.body}');
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        response.body.isNotEmpty
+            ? response.body
+            : 'Failed to change password',
+      );
     }
   }
 }

@@ -15,4 +15,5 @@ public interface AuthService {
     void forgotPassword(String email);
     String verifyResetOtp(String email, String otp);
     void resetPassword(String resetToken, String newPassword);
+    void changePassword(String currentPassword, String newPassword);
 }

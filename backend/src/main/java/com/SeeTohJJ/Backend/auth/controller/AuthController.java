@@ -90,4 +90,18 @@ public class AuthController {
 
         return authService.adminLogin(request);
     }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequestDTO request) {
+        logger.info("Starting changePassword");
+
+        authService.changePassword(request.getCurrentPassword(), request.getNewPassword());
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "message",
+                        "Password successfully changed"
+                )
+        );
+    }
 }

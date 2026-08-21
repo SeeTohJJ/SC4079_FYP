@@ -16,6 +16,8 @@ import com.SeeTohJJ.Backend.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -233,6 +235,55 @@ public class AuthServiceImpl implements AuthService {
         passwordResetDao.markResetUsed(passwordReset.getResetId());
 
         passwordResetDao.invalidateAllUserResets(user.getUserId());
+    }
+
+    @Override
+    public void changePassword(String currentPassword, String newPassword){
+        logger.info("Starting changePassword");
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        assert authentication != null;
+        Long userId = Long.valueOf(authentication.getName());
+
+        User user = userDao.findUserByUserId(userId);
+
+        if (user == null) {
+            throw new RuntimeException(
+                    "User not found"
+            );
+        }
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new RuntimeException(
+                    "Current password is incorrect"
+            );
+        }
+
+        validatePassword(newPassword);
+
+        String hashedPassword = passwordEncoder.encode(newPassword);
+
+        userDao.updatePassword(user.getUserId(), hashedPassword);
+    }
+
+    private void validatePassword(String password) {
+
+        if (password == null || password.length() < 8) {
+            throw new RuntimeException("Password must be at least 8 characters");
+        }
+
+        if (!password.matches(".*[A-Z].*")) {
+            throw new RuntimeException("Password must contain at least one uppercase letter");
+        }
+
+        if (!password.matches(".*[a-z].*")) {
+            throw new RuntimeException("Password must contain at least one lowercase letter");
+        }
+
+        if (!password.matches(".*[^a-zA-Z0-9].*")) {
+            throw new RuntimeException("Password must contain at least one special character");
+        }
     }
 
 }
