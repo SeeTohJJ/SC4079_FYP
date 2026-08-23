@@ -18,7 +18,7 @@ class LessonNodePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(lesson.title),
+        title: const Text("Lesson"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),

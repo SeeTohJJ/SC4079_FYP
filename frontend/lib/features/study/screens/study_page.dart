@@ -172,6 +172,50 @@ Widget build(BuildContext context) {
           color = Colors.red;
           break;
       }
+
+      if (node.isCompleted) {
+        return Container(
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.grey.shade500,
+            border: Border.all(
+              color: Colors.grey.shade700,
+              width: 3,
+            ),
+          ),
+          child: const Center(
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+              size: 32,
+            ),
+          ),
+        );
+      }
+
+      return Opacity(
+        opacity: node.isUnlocked ? 1 : 0.3,
+        child: Container(
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            border: Border.all(
+              color: color,
+              width: 3,
+            ),
+          ),
+          child: Center(
+            child: Icon(
+              _getIcon(node.type),
+              color: color,
+            ),
+          ),
+        ),
+      );
     }
 
     return Opacity(
@@ -202,51 +246,84 @@ Widget build(BuildContext context) {
       ),
       builder: (BuildContext context) {
         return Container(
-          width: double.infinity, 
+          width: double.infinity,
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 node.title,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
+
               const SizedBox(height: 10),
-              Text("Type: ${node.type.toString().split('.').last.toUpperCase()}"),
+
+              Text(
+                "Type: ${node.type.toString().split('.').last.toUpperCase()}",
+              ),
+
               const SizedBox(height: 20),
-              
-              // Energy cost
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Energy Cost: ",
-                    style: const TextStyle(fontSize: 16),
+
+              // Show completed status
+              if (node.isCompleted) ...[
+                const Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 40,
+                ),
+
+                const SizedBox(height: 8),
+
+                const Text(
+                  "Completed",
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const Icon(
-                    Icons.bolt,
-                    color: Colors.amber,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${node.energyCost}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                ),
+              ]
+
+              else ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Energy Cost: ",
+                      style: TextStyle(fontSize: 16),
                     ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _openNode(context, node);
-                },
-                child: const Text("Start"),
-              ),
+
+                    const Icon(
+                      Icons.bolt,
+                      color: Colors.amber,
+                      size: 20,
+                    ),
+
+                    const SizedBox(width: 4),
+
+                    Text(
+                      '${node.energyCost}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _openNode(context, node);
+                  },
+                  child: const Text("Start"),
+                ),
+              ],
             ],
           ),
         );
