@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/services.dart';
 import '../../models/register_data.dart';
 
 class RegisterProfileStep extends StatefulWidget {
@@ -60,7 +61,7 @@ class _RegisterProfileStepState
   @override
   Widget build(BuildContext context) {
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
 
       child: Column(
@@ -128,6 +129,9 @@ class _RegisterProfileStepState
               border: OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
           ),
 
           const SizedBox(height: 24),
@@ -179,6 +183,9 @@ class _RegisterProfileStepState
               border: OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
           ),
 
           const SizedBox(height: 24),

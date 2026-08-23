@@ -25,15 +25,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
   }
 
   Future<void> checkLogin() async {
-    print('[AuthWrapper] checkLogin called');
     final token = await storage.getToken();
-    print('[AuthWrapper] token from storage: \\$token');
 
     if (token != null && token.isNotEmpty) {
-      print('[AuthWrapper] User is logged in');
       loggedIn = true;
     } else {
-      print('[AuthWrapper] No valid token, user is not logged in');
+      loggedIn = false;
     }
 
     if (!mounted) return;

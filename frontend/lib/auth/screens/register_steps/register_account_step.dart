@@ -35,7 +35,7 @@ class _RegisterAccountStepState extends State<RegisterAccountStep> {
       hasMinLength = password.length >= 8;
       hasUppercase = RegExp(r'[A-Z]').hasMatch(password);
       hasLowercase = RegExp(r'[a-z]').hasMatch(password);
-      hasSpecialCharacter = RegExp(r'[^a-zA-Z0-9]').hasMatch(password);
+      hasSpecialCharacter = RegExp(r'[!@#$%^&*(),.?":{}|<>_\-\\/\[\]]').hasMatch(password);
     });
   }
 

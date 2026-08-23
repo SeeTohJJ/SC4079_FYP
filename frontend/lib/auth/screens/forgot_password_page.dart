@@ -46,7 +46,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       if (!mounted) return;
 
       _showMessage(
-        "Unable to send reset code. Please check your email and try again.",
+        "Unable to send reset code. Please try again later.",
       );
     } finally {
       if (mounted) {
@@ -97,7 +97,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: "Email",
-                border: OutlineInputBorder(),
+                border: UnderlineInputBorder(),
               ),
             ),
 

@@ -30,6 +30,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   bool _hasLowercase = false;
   bool _hasSpecialCharacter = false;
 
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
+
   @override
   void dispose() {
     _passwordController.dispose();
@@ -155,11 +158,29 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
             TextField(
               controller: _passwordController,
-              obscureText: true,
+              obscureText: obscurePassword,
               onChanged: _checkPasswordRequirements,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "New Password",
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
+                suffixIcon: GestureDetector(
+                  onTapDown: (_) {
+                    setState(() {
+                      obscurePassword = false;
+                    });
+                  },
+                  onTapUp: (_) {
+                    setState(() {
+                      obscurePassword = true;
+                    });
+                  },
+                  onTapCancel: () {
+                    setState(() {
+                      obscurePassword = true;
+                    });
+                  },
+                  child: const Icon(Icons.visibility),
+                ),
               ),
             ),
 
@@ -167,10 +188,28 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
             TextField(
               controller: _confirmPasswordController,
-              obscureText: true,
-              decoration: const InputDecoration(
+              obscureText: obscureConfirmPassword,
+              decoration: InputDecoration(
                 labelText: "Confirm Password",
                 border: OutlineInputBorder(),
+                suffixIcon: GestureDetector(
+                  onTapDown: (_) {
+                    setState(() {
+                      obscurePassword = false;
+                    });
+                  },
+                  onTapUp: (_) {
+                    setState(() {
+                      obscurePassword = true;
+                    });
+                  },
+                  onTapCancel: () {
+                    setState(() {
+                      obscurePassword = true;
+                    });
+                  },
+                  child: const Icon(Icons.visibility),
+                ),
               ),
             ),
 

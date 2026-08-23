@@ -14,7 +14,7 @@ class MainNavigationPage extends StatefulWidget {
 }
 
 class _MainNavigationPageState extends State<MainNavigationPage> {
-  int currentIndex = 0;
+  int currentIndex = 1;
 
   final List<Widget> pages = [
     GardenPage(),
