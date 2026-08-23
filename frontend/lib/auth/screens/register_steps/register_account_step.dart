@@ -27,6 +27,9 @@ class _RegisterAccountStepState extends State<RegisterAccountStep> {
   bool hasLowercase = false;
   bool hasSpecialCharacter = false;
 
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
+
   void checkPasswordRequirements(String password) {
     setState(() {
       hasMinLength = password.length >= 8;
@@ -109,7 +112,7 @@ class _RegisterAccountStepState extends State<RegisterAccountStep> {
   @override
   Widget build(BuildContext context) {
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
 
       child: Column(
@@ -132,7 +135,7 @@ class _RegisterAccountStepState extends State<RegisterAccountStep> {
             controller: emailController,
             decoration: const InputDecoration(
               labelText: "Email",
-              border: OutlineInputBorder(),
+              border: UnderlineInputBorder(),
             ),
           ),
 
@@ -140,22 +143,58 @@ class _RegisterAccountStepState extends State<RegisterAccountStep> {
 
           TextField(
             controller: passwordController,
-            obscureText: true,
-            decoration: const InputDecoration(
+            obscureText: obscurePassword,
+            decoration: InputDecoration(
               labelText: "Password",
-              border: OutlineInputBorder(),
+              border: const UnderlineInputBorder(),
+              suffixIcon: GestureDetector(
+                onTapDown: (_) {
+                  setState(() {
+                    obscurePassword = false;
+                  });
+                },
+                onTapUp: (_) {
+                  setState(() {
+                    obscurePassword = true;
+                  });
+                },
+                onTapCancel: () {
+                  setState(() {
+                    obscurePassword = true;
+                  });
+                },
+                child: const Icon(Icons.visibility),
+              ),
             ),
-            onChanged: (value) {checkPasswordRequirements(value);},
+            onChanged: checkPasswordRequirements,
           ),
 
           const SizedBox(height: 16),
 
           TextField(
             controller: confirmPasswordController,
-            obscureText: true,
-            decoration: const InputDecoration(
+            obscureText: obscureConfirmPassword,
+            decoration: InputDecoration(
               labelText: "Confirm Password",
-              border: OutlineInputBorder(),
+              border: const UnderlineInputBorder(),
+              suffixIcon: GestureDetector(
+                onTapDown: (_) {
+                  setState(() {
+                    obscureConfirmPassword = false;
+                  });
+                },
+                onTapUp: (_) {
+                  setState(() {
+                    obscureConfirmPassword = true;
+                  });
+                },
+                onTapCancel: () {
+                  setState(() {
+                    obscureConfirmPassword = true;
+                  });
+                },
+                child: const Icon(Icons.visibility),
+              ),
             ),
           ),
 

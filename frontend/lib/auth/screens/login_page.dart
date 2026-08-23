@@ -16,6 +16,9 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String? _errorMessage;
 
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,13 +32,38 @@ class _LoginPageState extends State<LoginPage> {
               controller: emailController,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
+
             const SizedBox(height: 16),
+
             TextField(
               controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
+              obscureText: obscurePassword,
+              decoration: InputDecoration(
+                labelText: "Password",
+                border: const UnderlineInputBorder(),
+                suffixIcon: GestureDetector(
+                  onTapDown: (_) {
+                    setState(() {
+                      obscurePassword = false;
+                    });
+                  },
+                  onTapUp: (_) {
+                    setState(() {
+                      obscurePassword = true;
+                    });
+                  },
+                  onTapCancel: () {
+                    setState(() {
+                      obscurePassword = true;
+                    });
+                  },
+                  child: const Icon(Icons.visibility),
+                ),
+              ),
             ),
+
             const SizedBox(height: 24),
+
             if (_errorMessage != null) ...[
               Text(
                 _errorMessage!,
