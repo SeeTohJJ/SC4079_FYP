@@ -1,11 +1,10 @@
 package com.SeeTohJJ.Backend.topic.service.impl;
 
 import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
-import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.dao.SubtopicDao;
-import com.SeeTohJJ.Backend.topic.dao.TopicDao;
 import com.SeeTohJJ.Backend.user.dao.UserInterestedTopicsDao;
-import com.SeeTohJJ.Backend.study.dao.mastery.UserTopicMasteryDao;
+import com.SeeTohJJ.Backend.user.dao.mastery.UserTopicMasteryDao;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;

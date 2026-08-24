@@ -8,7 +8,8 @@ import com.SeeTohJJ.Backend.study.service.adaptive.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
-import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserSubtopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserTopicService;
 import com.SeeTohJJ.Backend.study.service.result.QuizResultService;
 import com.SeeTohJJ.Backend.study.service.submission.QuizSubmissionService;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
@@ -37,6 +38,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
     private final QuizResultService quizResultService;
     private final UserTopicService userTopicService;
     private final GardenService gardenService;
+    private final UserSubtopicService userSubtopicService;
 
     @Autowired
     public QuizSubmissionServiceImpl(NodeGenerationService nodeGenerationService,
@@ -49,7 +51,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                                      ForgettingService forgettingService,
                                      ContentRetrievalService contentRetrievalService,
                                      AttemptHistoryService attemptHistoryService,
-                                     ConfidenceService confidenceService, QuizResultService quizResultService, UserTopicService userTopicService, GardenService gardenService) {
+                                     ConfidenceService confidenceService, QuizResultService quizResultService, UserTopicService userTopicService, GardenService gardenService, UserSubtopicService userSubtopicService) {
         this.nodeGenerationService = nodeGenerationService;
         this.bktService = bktService;
         this.eloService = eloService;
@@ -64,6 +66,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         this.quizResultService = quizResultService;
         this.userTopicService = userTopicService;
         this.gardenService = gardenService;
+        this.userSubtopicService = userSubtopicService;
     }
 
     @Override
@@ -85,8 +88,11 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         String topicId = subtopicId.substring(0, 4);
         double pastPKnow = userTopicService.getAveragePKnow(userId, topicId);
 
+        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         attemptHistoryService.saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken, hintUsed);
+        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         forgettingService.updateForgettingDecay(userId, subtopicId);
+        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         bktService.runBktModel(
                 userId,
                 subtopicId,
@@ -94,10 +100,12 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                 timeTaken,
                 confidenceService.getConfidence(userId, nodeId, timeTaken,  hintUsed)
         );
+        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
-
+        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         boolean newChainCreated = processQuizCompletion(userId, nodeId);
-//        gardenService.onStudyCompleted(userId, topicId, StudyNode.NodeType.QUIZ, isCorrectAnswer);
+        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
+        //        gardenService.onStudyCompleted(userId, topicId, StudyNode.NodeType.QUIZ, isCorrectAnswer);
 
         return quizResultService.buildQuizResult(userId, topicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated, timeTaken);
     }

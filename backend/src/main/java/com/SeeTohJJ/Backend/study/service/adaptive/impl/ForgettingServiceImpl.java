@@ -1,7 +1,8 @@
 package com.SeeTohJJ.Backend.study.service.adaptive.impl;
 
 import com.SeeTohJJ.Backend.study.service.adaptive.ForgettingService;
-import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserSubtopicService;
+import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ public class ForgettingServiceImpl implements ForgettingService {
     private static final Logger logger = LoggerFactory.getLogger(ForgettingServiceImpl.class);
 
     private final UserSubtopicService userSubtopicService;
+    private final SubTopicService subTopicService;
 
     @Autowired
-    public ForgettingServiceImpl(UserSubtopicService userSubtopicService) {
+    public ForgettingServiceImpl(UserSubtopicService userSubtopicService, SubTopicService subTopicService) {
         this.userSubtopicService = userSubtopicService;
+        this.subTopicService = subTopicService;
     }
 
 
@@ -28,9 +31,10 @@ public class ForgettingServiceImpl implements ForgettingService {
         logger.info("Start applyForgetting");
 
         long daysSinceReview = ChronoUnit.DAYS.between(lastUpdated, LocalDateTime.now());
-
+        logger.info("daysSinceReview: " + daysSinceReview);
         double lambda = getForgettingRate(currentPKnow); // forgetting rate
-
+        logger.info("lambda: " + lambda);
+        logger.info("return: " + currentPKnow * Math.exp(-lambda * daysSinceReview));
         return currentPKnow * Math.exp(-lambda * daysSinceReview);
     }
 
@@ -45,7 +49,7 @@ public class ForgettingServiceImpl implements ForgettingService {
         logger.info("Start updateForgettingDecay");
 
         LocalDateTime lastUpdated = userSubtopicService.getLastUpdated(userId, subtopicId);
-        userSubtopicService.setUserSubtopicPKnow(userId, subtopicId, applyForgetting(userId, lastUpdated));
+        userSubtopicService.setUserSubtopicPKnow(userId, subtopicId, applyForgetting(userSubtopicService.getUserPKnow(userId, subtopicId), lastUpdated));
     }
 
 }

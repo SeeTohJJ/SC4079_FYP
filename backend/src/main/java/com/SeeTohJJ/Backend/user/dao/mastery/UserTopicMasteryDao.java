@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.study.dao.mastery;
+package com.SeeTohJJ.Backend.user.dao.mastery;
 
 
 import java.time.LocalDate;

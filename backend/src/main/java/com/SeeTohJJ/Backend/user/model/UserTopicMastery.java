@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.topic.model;
+package com.SeeTohJJ.Backend.user.model;
 
 import java.time.LocalDateTime;
 import java.util.Date;

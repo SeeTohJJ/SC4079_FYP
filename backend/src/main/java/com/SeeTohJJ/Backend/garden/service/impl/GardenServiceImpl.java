@@ -9,7 +9,7 @@ import com.SeeTohJJ.Backend.garden.model.UserCurrency;
 import com.SeeTohJJ.Backend.garden.model.UserPlant;
 import com.SeeTohJJ.Backend.garden.service.GardenService;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
-import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

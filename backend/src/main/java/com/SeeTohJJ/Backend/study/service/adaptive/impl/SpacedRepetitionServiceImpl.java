@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.study.service.adaptive.impl;
 
-import com.SeeTohJJ.Backend.study.dao.mastery.UserTopicMasteryDao;
+import com.SeeTohJJ.Backend.user.dao.mastery.UserTopicMasteryDao;
 import com.SeeTohJJ.Backend.study.service.adaptive.SpacedRepetitionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

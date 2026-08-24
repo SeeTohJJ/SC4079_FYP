@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.study.service.progress;
+package com.SeeTohJJ.Backend.user.service.mastery;
 
 import java.time.LocalDate;
 

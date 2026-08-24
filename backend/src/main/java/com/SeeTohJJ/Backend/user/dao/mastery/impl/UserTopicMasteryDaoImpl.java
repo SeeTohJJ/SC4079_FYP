@@ -1,7 +1,7 @@
-package com.SeeTohJJ.Backend.study.dao.mastery.impl;
+package com.SeeTohJJ.Backend.user.dao.mastery.impl;
 
-import com.SeeTohJJ.Backend.study.constant.UserTopicMasteryConstant;
-import com.SeeTohJJ.Backend.study.dao.mastery.UserTopicMasteryDao;
+import com.SeeTohJJ.Backend.user.constant.UserTopicMasteryConstant;
+import com.SeeTohJJ.Backend.user.dao.mastery.UserTopicMasteryDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;

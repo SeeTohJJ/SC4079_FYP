@@ -1,7 +1,7 @@
 package com.SeeTohJJ.Backend.study.service.result.impl;
 
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
-import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserTopicService;
 import com.SeeTohJJ.Backend.study.service.result.FeedbackService;
 import com.SeeTohJJ.Backend.study.service.result.QuizResultService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;

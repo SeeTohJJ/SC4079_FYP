@@ -1,6 +1,6 @@
 package com.SeeTohJJ.Backend.user.service.impl;
 
-import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserTopicService;
 import com.SeeTohJJ.Backend.topic.model.Topic;
 import com.SeeTohJJ.Backend.user.dao.ProgressDao;
 import com.SeeTohJJ.Backend.user.dto.CompletedLessonResponseDTO;

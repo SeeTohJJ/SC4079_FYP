@@ -2,8 +2,8 @@ package com.SeeTohJJ.Backend.study.service.adaptive.impl;
 
 import com.SeeTohJJ.Backend.study.service.adaptive.BktService;
 import com.SeeTohJJ.Backend.study.service.adaptive.SpacedRepetitionService;
-import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
-import com.SeeTohJJ.Backend.study.service.progress.UserTopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserSubtopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserTopicService;
 import com.SeeTohJJ.Backend.topic.model.BktParameters;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import org.slf4j.Logger;

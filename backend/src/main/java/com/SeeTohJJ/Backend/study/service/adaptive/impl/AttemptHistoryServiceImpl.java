@@ -2,7 +2,7 @@ package com.SeeTohJJ.Backend.study.service.adaptive.impl;
 
 import com.SeeTohJJ.Backend.study.dao.AttemptHistoryDao;
 import com.SeeTohJJ.Backend.study.service.adaptive.AttemptHistoryService;
-import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

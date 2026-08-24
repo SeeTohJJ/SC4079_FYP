@@ -1,8 +1,8 @@
-package com.SeeTohJJ.Backend.study.service.progress.impl;
+package com.SeeTohJJ.Backend.user.service.mastery.impl;
 
-import com.SeeTohJJ.Backend.study.dao.mastery.UserSubtopicMasteryDao;
-import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
-import com.SeeTohJJ.Backend.topic.model.UserSubTopicMastery;
+import com.SeeTohJJ.Backend.user.dao.mastery.UserSubtopicMasteryDao;
+import com.SeeTohJJ.Backend.user.service.mastery.UserSubtopicService;
+import com.SeeTohJJ.Backend.user.model.UserSubTopicMastery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

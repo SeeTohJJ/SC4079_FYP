@@ -2,7 +2,7 @@ package com.SeeTohJJ.Backend.topic.service.impl;
 
 import com.SeeTohJJ.Backend.topic.dao.TopicDao;
 import com.SeeTohJJ.Backend.user.dao.UserInterestedTopicsDao;
-import com.SeeTohJJ.Backend.study.dao.mastery.UserTopicMasteryDao;
+import com.SeeTohJJ.Backend.user.dao.mastery.UserTopicMasteryDao;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

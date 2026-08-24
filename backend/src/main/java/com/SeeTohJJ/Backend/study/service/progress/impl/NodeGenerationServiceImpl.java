@@ -12,7 +12,7 @@ import com.SeeTohJJ.Backend.study.model.chain.ChainTemplate;
 import com.SeeTohJJ.Backend.study.service.adaptive.SpacedRepetitionService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
 import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
-import com.SeeTohJJ.Backend.study.service.progress.UserSubtopicService;
+import com.SeeTohJJ.Backend.user.service.mastery.UserSubtopicService;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 

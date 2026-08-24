@@ -3,7 +3,7 @@ package com.SeeTohJJ.Backend.user.dao.impl;
 import com.SeeTohJJ.Backend.topic.model.Topic;
 import com.SeeTohJJ.Backend.user.constant.UserInterestedTopicsConstant;
 import com.SeeTohJJ.Backend.user.dao.UserInterestedTopicsDao;
-import com.SeeTohJJ.Backend.topic.model.UserInterestedTopic;
+import com.SeeTohJJ.Backend.user.model.UserInterestedTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;

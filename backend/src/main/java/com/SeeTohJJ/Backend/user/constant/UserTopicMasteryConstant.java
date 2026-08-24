@@ -1,4 +1,4 @@
-package com.SeeTohJJ.Backend.study.constant;
+package com.SeeTohJJ.Backend.user.constant;
 
 public class UserTopicMasteryConstant {
 
