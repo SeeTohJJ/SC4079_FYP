@@ -3,7 +3,7 @@ class TopicProgress {
   final String topicName;
   final int completedLessons;
   final int totalLessons;
-  final double masteryScore;
+  final int masteryScore;
 
   TopicProgress({
     required this.topicId,
@@ -24,7 +24,7 @@ class TopicProgress {
       totalLessons:
           json['totalLessons'],
       masteryScore:
-          (json['masteryScore'] as num).toDouble(),
+          json['mastery'],
     );
   }
 }

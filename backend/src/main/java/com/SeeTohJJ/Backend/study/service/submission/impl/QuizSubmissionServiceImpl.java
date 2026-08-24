@@ -4,6 +4,7 @@ import com.SeeTohJJ.Backend.garden.service.GardenService;
 import com.SeeTohJJ.Backend.study.dao.StudyPathDao;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
+import com.SeeTohJJ.Backend.study.model.StudyNode;
 import com.SeeTohJJ.Backend.study.service.adaptive.*;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.NodeGenerationService;
@@ -88,11 +89,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         String topicId = subtopicId.substring(0, 4);
         double pastPKnow = userTopicService.getAveragePKnow(userId, topicId);
 
-        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         attemptHistoryService.saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken, hintUsed);
-        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         forgettingService.updateForgettingDecay(userId, subtopicId);
-        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         bktService.runBktModel(
                 userId,
                 subtopicId,
@@ -100,14 +98,21 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                 timeTaken,
                 confidenceService.getConfidence(userId, nodeId, timeTaken,  hintUsed)
         );
-        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
         eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
-        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
-        boolean newChainCreated = processQuizCompletion(userId, nodeId);
-        logger.info("PastPKnow: " + userSubtopicService.getUserPKnow(userId, subtopicId));
-        //        gardenService.onStudyCompleted(userId, topicId, StudyNode.NodeType.QUIZ, isCorrectAnswer);
 
-        return quizResultService.buildQuizResult(userId, topicId, isCorrectAnswer, pastPKnow, userTopicService.getAveragePKnow(userId, topicId), newChainCreated, timeTaken);
+        boolean newChainCreated = processQuizCompletion(userId, nodeId);
+        int waterReward = gardenService.onStudyCompleted(userId, topicId, StudyNode.NodeType.QUIZ, isCorrectAnswer);
+
+        return quizResultService.buildQuizResult(
+                userId,
+                topicId,
+                isCorrectAnswer,
+                userTopicService.calculateMasteryThreshold(pastPKnow),
+                userTopicService.calculateMasteryThreshold(userTopicService.getAveragePKnow(userId, topicId)),
+                newChainCreated,
+                timeTaken,
+                waterReward
+        );
     }
 
     public boolean processQuizCompletion(Long userId, String nodeId){

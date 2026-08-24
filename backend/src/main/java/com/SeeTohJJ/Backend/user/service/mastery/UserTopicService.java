@@ -10,4 +10,5 @@ public interface UserTopicService {
     double getAverageElo(Long userId, String topicId);
     double getAveragePKnow(Long userId, String topicId);
     LocalDate getNextReviewDate(Long userId, String topicId);
+    int calculateMasteryThreshold(double pKnow);
 }

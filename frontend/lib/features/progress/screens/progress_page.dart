@@ -266,27 +266,42 @@ class _ProgressPageState
             const SizedBox(height: 16),
 
             Row(
-              mainAxisAlignment:
-                  MainAxisAlignment
-                      .spaceBetween,
-
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 const Text(
                   'Mastery',
                 ),
 
                 Text(
-                  '${mastery.toStringAsFixed(0)}%',
+                  getMasteryTitle(topic.masteryScore),
                 ),
               ],
             ),
 
             const SizedBox(height: 6),
 
-            LinearProgressIndicator(
-              value:
-                  topic.masteryScore,
+            Row(
+              children: List.generate(
+                10,
+                (index) {
+                  final isFilled = topic.masteryScore > index;
+
+                  return Expanded(
+                    child: Container(
+                      height: 10,
+                      margin: EdgeInsets.only(
+                        right: index == 9 ? 0 : 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isFilled
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.grey.shade800,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -485,5 +500,34 @@ Widget _buildLessonsLibrary() {
     greetings.shuffle();
 
     _greeting = greetings.first;
+  }
+
+  String getMasteryTitle(int masteryScore) {
+    switch (masteryScore) {
+      case 0:
+        return 'Insufficient Data';
+      case 1:
+        return 'Very Low';
+      case 2:
+        return 'Low';
+      case 3:
+        return 'Developing';
+      case 4:
+        return 'Basic';
+      case 5:
+        return 'Intermediate';
+      case 6:
+        return 'Proficient';
+      case 7:
+        return 'Advanced';
+      case 8:
+        return 'High Proficiency';
+      case 9:
+        return 'Near Mastery';
+      case 10:
+        return 'Mastered';
+      default:
+        return 'Unknown';
+    }
   }
 }

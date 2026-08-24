@@ -14,7 +14,6 @@ public interface UserSubtopicService {
     boolean isSubtopicMastered(Long userId, String subtopicId);
     void insertNewSubtopicMastery(Long userId, String subtopicId, double PKnow);
     boolean pKnowGreaterThanRating(Long userId, String subtopicId);
-    void setUserSubTopicInterest(Long userId, String subtopicId);
     void updateAttemptStatistics(Long userId, String subtopicId, boolean isCorrectAnswer);
     String getUserLowestPKnowSubtopic(Long userId);
     String getUserLowestPKnowSubtopicNotMastered(Long userId);

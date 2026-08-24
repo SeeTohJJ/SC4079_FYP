@@ -6,12 +6,13 @@ public class QuizResultResponseDTO {
 
     private boolean correct;
     private String topicName;
-    private double previousPKnow;
-    private double updatedPKnow;
+    private int previousMastery;
+    private int updatedMastery;
 
     private LocalDate nextReviewDate;
     private String feedback;
     private boolean newChainGenerated;
+    private int waterReward;
 
     public boolean isCorrect() {
         return correct;
@@ -29,20 +30,20 @@ public class QuizResultResponseDTO {
         this.topicName = topicName;
     }
 
-    public double getPreviousPKnow() {
-        return previousPKnow;
+    public int getPreviousMastery() {
+        return previousMastery;
     }
 
-    public void setPreviousPKnow(double previousPKnow) {
-        this.previousPKnow = previousPKnow;
+    public void setPreviousMastery(int previousMastery) {
+        this.previousMastery = previousMastery;
     }
 
-    public double getUpdatedPKnow() {
-        return updatedPKnow;
+    public int getUpdatedMastery() {
+        return updatedMastery;
     }
 
-    public void setUpdatedPKnow(double updatedPKnow) {
-        this.updatedPKnow = updatedPKnow;
+    public void setUpdatedMastery(int updatedMastery) {
+        this.updatedMastery = updatedMastery;
     }
 
     public LocalDate getNextReviewDate() {
@@ -67,5 +68,13 @@ public class QuizResultResponseDTO {
 
     public void setNewChainGenerated(boolean newChainGenerated) {
         this.newChainGenerated = newChainGenerated;
+    }
+
+    public int getWaterReward() {
+        return waterReward;
+    }
+
+    public void setWaterReward(int waterReward) {
+        this.waterReward = waterReward;
     }
 }

@@ -263,4 +263,22 @@ public class GardenServiceImpl implements GardenService {
         userCurrencyDao.insert(userId);
     }
 
+    @Override
+    public int onStudyCompleted(Long userId, String topicId, StudyNode.NodeType nodeType, boolean isCorrectAnswer){
+        logger.info("Starting onStudyCompleted");
+
+        onNodeCompleted(userId, topicId, nodeType, isCorrectAnswer);
+
+        if (nodeType.equals(StudyNode.NodeType.LESSON)){
+            return GardenConstant.WATER_REWARD_LESSON;
+        } else if (nodeType.equals(StudyNode.NodeType.QUIZ)){
+            if (isCorrectAnswer){
+                return GardenConstant.WATER_REWARD_QUIZ;
+            } else {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
 }

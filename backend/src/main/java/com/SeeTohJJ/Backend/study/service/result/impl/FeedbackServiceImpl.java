@@ -16,25 +16,25 @@ public class FeedbackServiceImpl implements FeedbackService {
     private static final int FAST_THRESHOLD_SECONDS = 5;
     private static final int SLOW_THRESHOLD_SECONDS = 20;
 
-    private static final double HIGH_MASTERY = 0.80;
-    private static final double MEDIUM_MASTERY = 0.50;
+    private static final double HIGH_MASTERY = 8;
+    private static final double MEDIUM_MASTERY = 5;
 
     @Override
-    public String generateFeedback(boolean isCorrect, double updatedPKnow, int timeTaken) {
+    public String generateFeedback(boolean isCorrect, int updatedMastery, int timeTaken) {
         logger.info("Starting generateFeedback");
 
         boolean isFast = timeTaken <= FAST_THRESHOLD_SECONDS;
         boolean isSlow = timeTaken > SLOW_THRESHOLD_SECONDS;
 
-        List<String> pool = getFeedbackPool(isCorrect, updatedPKnow, isFast, isSlow);
+        List<String> pool = getFeedbackPool(isCorrect, updatedMastery, isFast, isSlow);
 
         int index = ThreadLocalRandom.current().nextInt(pool.size());
         return pool.get(index);
     }
 
-    private List<String> getFeedbackPool(boolean isCorrect, double pKnow, boolean isFast, boolean isSlow) {
+    private List<String> getFeedbackPool(boolean isCorrect, int mastery, boolean isFast, boolean isSlow) {
         if (isCorrect) {
-            if (pKnow >= HIGH_MASTERY) {
+            if (mastery >= HIGH_MASTERY) {
                 if (isFast) {
                     return List.of(
                             "Lightning fast and perfectly accurate! You own this topic.",
@@ -54,7 +54,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                             "Superb execution—your foundation here is rock solid."
                     );
                 }
-            } else if (pKnow >= MEDIUM_MASTERY) {
+            } else if (mastery >= MEDIUM_MASTERY) {
                 if (isFast) {
                     return List.of(
                             "Quick and correct! Your confidence is really growing.",
@@ -87,7 +87,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 }
             }
         } else { // Incorrect
-            if (pKnow >= HIGH_MASTERY) {
+            if (mastery >= HIGH_MASTERY) {
                 if (isFast) {
                     return List.of(
                             "Whoa, too fast! You know this—just read carefully next time.",
@@ -101,7 +101,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                             "Unexpected miss, but don't lose confidence—your grasp is strong."
                     );
                 }
-            } else if (pKnow >= MEDIUM_MASTERY) {
+            } else if (mastery >= MEDIUM_MASTERY) {
                 if (isFast) {
                     return List.of(
                             "A bit rushed! Take a few extra seconds next time to be sure.",

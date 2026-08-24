@@ -6,19 +6,19 @@ public class TopicProgressResponseDTO {
     private String topicName;
     private int completedLessons;
     private int totalLessons;
-    private double masteryScore;
+    private int mastery;
 
     public TopicProgressResponseDTO(
             String topicId,
             String topicName,
             int completedLessons,
             int totalLessons,
-            double masteryScore) {
+            int mastery) {
         this.topicId = topicId;
         this.topicName = topicName;
         this.completedLessons = completedLessons;
         this.totalLessons = totalLessons;
-        this.masteryScore = masteryScore;
+        this.mastery = mastery;
     }
 
     public String getTopicId() {
@@ -53,11 +53,11 @@ public class TopicProgressResponseDTO {
         this.totalLessons = totalLessons;
     }
 
-    public double getMasteryScore() {
-        return masteryScore;
+    public int getMastery() {
+        return mastery;
     }
 
-    public void setMasteryScore(double masteryScore) {
-        this.masteryScore = masteryScore;
+    public void setMastery(int mastery) {
+        this.mastery = mastery;
     }
 }

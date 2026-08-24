@@ -69,5 +69,30 @@ public class UserTopicServiceImpl implements UserTopicService {
         return userTopicMasteryDao.getNextReview(userId, topicId);
     }
 
+    @Override
+    public int calculateMasteryThreshold(double pKnow){
+        logger.info("Starting calculateMasteryThreshold");
 
+        if (pKnow < 0.30) {
+            return 1;
+        } else if (pKnow < 0.50) {
+            return 2;
+        } else if (pKnow < 0.60) {
+            return 3;
+        } else if (pKnow < 0.70) {
+            return 4;
+        } else if (pKnow < 0.80) {
+            return 5;
+        } else if (pKnow < 0.85) {
+            return 6;
+        } else if (pKnow < 0.90) {
+            return 7;
+        } else if (pKnow < 0.95) {
+            return 8;
+        } else if (pKnow < 0.98) {
+            return 9;
+        } else {
+            return 10;
+        }
+    }
 }

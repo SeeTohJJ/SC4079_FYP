@@ -10,4 +10,5 @@ public interface GardenService {
     void onNodeCompleted(Long userId,String topicId, StudyNode.NodeType nodeType, boolean isCorrectAnswer);
     void insertPlant(Long userId, String topicId);
     void insertInitialGardenTables(Long userId);
+    int onStudyCompleted(Long userId, String topicId, StudyNode.NodeType nodeType, boolean isCorrectAnswer);
 }

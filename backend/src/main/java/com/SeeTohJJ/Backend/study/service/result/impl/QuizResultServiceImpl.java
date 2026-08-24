@@ -29,21 +29,23 @@ public class QuizResultServiceImpl implements QuizResultService {
     public QuizResultResponseDTO buildQuizResult(Long userId,
                                                  String topicId,
                                                  boolean correct,
-                                                 double previousPKnow,
-                                                 double updatedPKnow,
+                                                 int previousMastery,
+                                                 int updatedMastery,
                                                  boolean newChainCreated,
-                                                 int timeTaken) {
+                                                 int timeTaken,
+                                                 int waterReward) {
         logger.info("Starting buildQuizResult");
 
         QuizResultResponseDTO quizResultResponseDTO = new QuizResultResponseDTO();
 
         quizResultResponseDTO.setCorrect(correct);
-        quizResultResponseDTO.setPreviousPKnow(previousPKnow);
-        quizResultResponseDTO.setUpdatedPKnow(updatedPKnow);
+        quizResultResponseDTO.setPreviousMastery(previousMastery);
+        quizResultResponseDTO.setUpdatedMastery(updatedMastery);
         quizResultResponseDTO.setNewChainGenerated(newChainCreated);
         quizResultResponseDTO.setTopicName(topicService.getTopicName(topicId));
         quizResultResponseDTO.setNextReviewDate(userTopicService.getNextReviewDate(userId, topicId));
-        quizResultResponseDTO.setFeedback(feedbackService.generateFeedback(correct, updatedPKnow, timeTaken));
+        quizResultResponseDTO.setFeedback(feedbackService.generateFeedback(correct, updatedMastery, timeTaken));
+        quizResultResponseDTO.setWaterReward(waterReward);
         return quizResultResponseDTO;
     }
 

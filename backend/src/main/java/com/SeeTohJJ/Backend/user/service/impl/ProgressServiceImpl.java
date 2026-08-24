@@ -55,14 +55,14 @@ public class ProgressServiceImpl implements ProgressService {
 
             int completedLessons = progressDao.getCompletedLessons(userId, topicId);
             int totalLessons = progressDao.getTotalLessons(topicId);
-            double pKnow = userTopicService.getAveragePKnow(userId, topicId);
+            int mastery = userTopicService.calculateMasteryThreshold(userTopicService.getAveragePKnow(userId, topicId));
             topicProgress.add(
                     new TopicProgressResponseDTO(
                             topicId,
                             topic.getName(),
                             completedLessons,
                             totalLessons,
-                            pKnow
+                            mastery
                     )
             );
         }

@@ -89,14 +89,6 @@ public class UserSubtopicServiceImpl implements UserSubtopicService {
     }
 
     @Override
-    public void setUserSubTopicInterest(Long userId, String subtopicId){
-        logger.info("Starting setUserSubTopicInterest");
-
-//        userSubtopicMasteryDao.insertUserInterestedSubtopic(userId, subtopicId);
-//        userSubtopicMasteryDao.insertInitialSubtopicProgress(userId, subtopicId);
-    }
-
-    @Override
     public void updateAttemptStatistics(Long userId, String subTopicId, boolean isCorrectAnswer) {
         logger.info("Starting updateAttemptStatistics");
 
@@ -182,5 +174,4 @@ public class UserSubtopicServiceImpl implements UserSubtopicService {
 
         return userSubtopicMasteryDao.getAveragePKnowOfTopic(userId, topicId);
     }
-
 }
