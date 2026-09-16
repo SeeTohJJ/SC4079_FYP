@@ -28,4 +28,5 @@ public interface SubtopicDao {
                 double pInit, double pTransit, double pSlip, double pGuess);
 
     int getActiveCount();
+    String getName(String subtopicId);
 }

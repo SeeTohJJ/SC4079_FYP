@@ -5,6 +5,7 @@ import com.SeeTohJJ.Backend.ai.dto.QuizGenerationContext;
 import com.SeeTohJJ.Backend.ai.service.GeminiPromptService;
 import com.SeeTohJJ.Backend.ai.service.GeminiQuizService;
 import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
+import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import com.SeeTohJJ.Backend.user.model.UserProfile;
 import com.SeeTohJJ.Backend.user.model.UserTopicMastery;
@@ -31,12 +32,17 @@ public class GeminiQuizServiceImpl implements GeminiQuizService {
     private final UserTopicService userTopicService;
     private final UserStudyPathService userStudyPathService;
     private final TopicService topicService;
+    private final SubTopicService subTopicService;
 
     public GeminiQuizServiceImpl(
             Client client,
             GeminiPromptService promptService,
             ObjectMapper objectMapper,
-            UserService userService, UserTopicService userTopicService, UserStudyPathService userStudyPathService, TopicService topicService) {
+            UserService userService,
+            UserTopicService userTopicService,
+            UserStudyPathService userStudyPathService,
+            TopicService topicService,
+            SubTopicService subTopicService) {
         this.client = client;
         this.promptService = promptService;
         this.objectMapper = objectMapper;
@@ -44,6 +50,7 @@ public class GeminiQuizServiceImpl implements GeminiQuizService {
         this.userTopicService = userTopicService;
         this.userStudyPathService = userStudyPathService;
         this.topicService = topicService;
+        this.subTopicService = subTopicService;
     }
 
     private GeminiGeneratedQuizDTO generateQuiz(
@@ -192,6 +199,6 @@ public class GeminiQuizServiceImpl implements GeminiQuizService {
         context.setEloRating(userTopicService.getAverageElo(userId, currentTopicId));
         context.setMasteryScore(userTopicService.getAveragePKnow(userId, currentTopicId));
 
-        return generateQuiz(context, topicService.getDescription(currentTopicId));
+        return generateQuiz(context, subTopicService.getName(currentSubtopicId));
     }
 }

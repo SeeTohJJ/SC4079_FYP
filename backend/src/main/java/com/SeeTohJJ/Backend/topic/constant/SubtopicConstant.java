@@ -110,4 +110,10 @@ public class SubtopicConstant {
             FROM subtopics
             WHERE is_active = true
             """;
+
+    public static final String GET_SUBTOPIC_NAME = """
+            SELECT name
+            FROM subtopics
+            WHERE subtopic_id = ?
+            """;
 }

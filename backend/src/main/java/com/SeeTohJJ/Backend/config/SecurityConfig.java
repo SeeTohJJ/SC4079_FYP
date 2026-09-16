@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Authentication endpoints
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/study/**").permitAll()
+                        .requestMatchers("/api/study/**").permitAll() // TODO Delete after testing api
 
                         // Admin CMS endpoints
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

@@ -137,6 +137,13 @@ public class SubTopicServiceImpl implements SubTopicService {
         return subtopicDao.getTopicIdFromSubtopicId(subtopicId);
     }
 
+    @Override
+    public String getName(String subtopicId){
+        logger.info("Starting getName");
+
+        return subtopicDao.getName(subtopicId);
+    }
+
 
 
 }

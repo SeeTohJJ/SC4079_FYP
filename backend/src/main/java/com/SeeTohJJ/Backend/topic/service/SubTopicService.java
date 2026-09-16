@@ -12,4 +12,5 @@ public interface SubTopicService {
     String getNextSubtopic(String currentSubtopic);
     int getNodeDifficulty(String nodeId);
     String getTopicIdFromSubtopicId(String subtopicId);
+    String getName(String subtopicId);
 }

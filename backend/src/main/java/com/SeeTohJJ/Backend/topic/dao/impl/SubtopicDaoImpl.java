@@ -282,4 +282,16 @@ public class SubtopicDaoImpl implements SubtopicDao {
 
         return (count != null) ? count : 0;
     }
+
+    @Override
+    public String getName(String subtopicId){
+        logger.info("Starting getName");
+
+        return jdbcTemplate.queryForObject(
+                SubtopicConstant.GET_SUBTOPIC_NAME,
+                String.class,
+                subtopicId
+        );
+    }
+
 }
