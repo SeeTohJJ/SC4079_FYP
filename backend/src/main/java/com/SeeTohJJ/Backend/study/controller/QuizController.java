@@ -1,9 +1,11 @@
 package com.SeeTohJJ.Backend.study.controller;
 
+import com.SeeTohJJ.Backend.ai.dto.GeminiGeneratedQuizDTO;
 import com.SeeTohJJ.Backend.auth.service.JwtService;
 import com.SeeTohJJ.Backend.study.constant.EnergyConstant;
 import com.SeeTohJJ.Backend.study.dto.NodeRequestDTO;
 import com.SeeTohJJ.Backend.study.dto.node.QuizContentDTO;
+import com.SeeTohJJ.Backend.study.dto.result.GeminiQuizSubmissionDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
 import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
@@ -82,5 +84,23 @@ public class QuizController {
         String explanation = quizSubmissionService.getQuizExplanation(nodeId);
 
         return ResponseEntity.ok(explanation);
+    }
+
+    @GetMapping("/GetGeminiQuizContent")
+    public GeminiGeneratedQuizDTO getGeminiQuizContent(@RequestHeader("Authorization") String authHeader) {
+        logger.info("Starting getGeminiQuizContent");
+
+        Long userId = jwtService.extractUserId(authHeader.substring(7));
+
+        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_QUIZ);
+        return contentRetrievalService.getGeminiQuizContent(userId);
+    }
+
+    @PostMapping("/SubmitGeminiQuiz")
+    public QuizResultResponseDTO submitGeminiQuiz(@RequestHeader("Authorization") String authHeader,
+                                            @RequestBody GeminiQuizSubmissionDTO request){
+        logger.info("Starting SubmitGeminiQuiz");
+
+        return quizSubmissionService.completeGeminiQuiz(jwtService.extractUserId(authHeader.substring(7)), request);
     }
 }

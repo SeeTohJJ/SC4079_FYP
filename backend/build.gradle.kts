@@ -24,6 +24,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("com.fasterxml.jackson.core:jackson-databind")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-jdbc-test")
@@ -39,7 +40,7 @@ dependencies {
 	implementation("org.springframework.security:spring-security-crypto")
 	implementation("org.bouncycastle:bcprov-jdk18on:1.84")
 	implementation ("org.springframework.boot:spring-boot-starter-mail")
-
+	implementation("com.google.genai:google-genai:1.67.0")
 }
 
 tasks.withType<Test> {

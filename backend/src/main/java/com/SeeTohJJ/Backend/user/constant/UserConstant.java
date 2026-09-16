@@ -47,4 +47,10 @@ public class UserConstant {
         FROM user_profiles
         WHERE user_id = ?
         """;
+
+    public static final String GET_USER_PROFILE = """
+        SELECT *
+        FROM user_profiles
+        WHERE user_id = ?
+        """;
 }

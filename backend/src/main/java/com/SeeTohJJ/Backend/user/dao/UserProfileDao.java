@@ -10,4 +10,5 @@ public interface UserProfileDao {
     int getActiveUserCount();
     int getActiveAdminCount();
     String getNameFromId(Long userId);
+    UserProfile getUserProfile(Long userId);
 }

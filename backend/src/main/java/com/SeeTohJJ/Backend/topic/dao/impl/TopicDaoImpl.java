@@ -163,4 +163,15 @@ public class TopicDaoImpl implements TopicDao {
 
         return (count != null) ? count : 0;
     }
+
+    @Override
+    public String getDescription(String topicId){
+        logger.info("Starting getDescription {}", topicId);
+
+        return jdbcTemplate.queryForObject(
+                TopicConstant.GET_TOPIC_DESCRIPTION,
+                String.class,
+                topicId
+        );
+    }
 }

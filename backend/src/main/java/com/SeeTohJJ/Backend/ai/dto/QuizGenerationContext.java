@@ -1,10 +1,10 @@
 package com.SeeTohJJ.Backend.ai.dto;
 
-public class QuizGenerationContent {
+public class QuizGenerationContext {
 
     private String employment_status;
     private Integer age;
-    private String income;
+    private Integer income;
     private String country;
 
     private String topic;
@@ -29,11 +29,11 @@ public class QuizGenerationContent {
         this.age = age;
     }
 
-    public String getIncome() {
+    public Integer getIncome() {
         return income;
     }
 
-    public void setIncome(String income) {
+    public void setIncome(Integer income) {
         this.income = income;
     }
 

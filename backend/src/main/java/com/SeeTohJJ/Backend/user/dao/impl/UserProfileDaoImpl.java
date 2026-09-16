@@ -78,4 +78,31 @@ public class UserProfileDaoImpl implements UserProfileDao {
                 userId
         );
     }
+
+    @Override
+    public UserProfile getUserProfile(Long userId){
+        logger.info("Starting getUserProfile");
+
+        return jdbcTemplate.query(
+                UserConstant.GET_USER_PROFILE,
+                rs -> {
+                    if (rs.next()) {
+                        UserProfile userProfile = new UserProfile();
+                        userProfile.setUserId(rs.getLong("user_id"));
+                        userProfile.setUsername(rs.getString("username"));
+                        userProfile.setGender(rs.getString("gender"));
+                        userProfile.setAge(rs.getInt("age"));
+                        userProfile.setEmploymentStatus(rs.getString("employment_status"));
+                        userProfile.setIncome(rs.getInt("income"));
+                        userProfile.setCountry(rs.getString("country"));
+                        return userProfile;
+                    } else {
+                        return null;
+                    }
+                },
+                userId
+        );
+
+    }
+
 }

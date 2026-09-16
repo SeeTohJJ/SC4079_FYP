@@ -74,10 +74,6 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         }
 
         // Need to find if there is an user interested topic with uncompleted tutorial
-        // Need to complete tutorial once the last quiz node in tutorial is completed
-        // If no user interested topic with uncompleted tutorial, generate a special interest decision node
-        // for user to add a topic to their interest (choose between 2 option)
-
         String topicId = topicService.getUncompletedTutorialTopic(userId);
 
         if (topicId != null) {

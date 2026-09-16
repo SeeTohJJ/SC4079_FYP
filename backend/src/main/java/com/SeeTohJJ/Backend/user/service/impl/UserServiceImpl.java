@@ -113,4 +113,11 @@ public class UserServiceImpl implements UserService {
         return userProfileDao.getNameFromId(userId);
     }
 
+    @Override
+    public UserProfile getUserProfile(Long userId) {
+        logger.info("Starting getUserProfile");
+
+        return userProfileDao.getUserProfile(userId);
+    }
+
 }

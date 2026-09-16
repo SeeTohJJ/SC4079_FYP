@@ -1,5 +1,6 @@
 package com.SeeTohJJ.Backend.study.service.content;
 
+import com.SeeTohJJ.Backend.ai.dto.GeminiGeneratedQuizDTO;
 import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
@@ -14,4 +15,5 @@ public interface ContentRetrievalService {
     double getQuestionRating(String nodeId);
     String getHint(String nodeId);
     String getExplanation(String nodeId);
+    GeminiGeneratedQuizDTO getGeminiQuizContent(Long userId);
 }

@@ -2,6 +2,7 @@ package com.SeeTohJJ.Backend.study.service.submission.impl;
 
 import com.SeeTohJJ.Backend.garden.service.GardenService;
 import com.SeeTohJJ.Backend.study.dao.StudyPathDao;
+import com.SeeTohJJ.Backend.study.dto.result.GeminiQuizSubmissionDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.study.dto.result.QuizSubmissionDTO;
 import com.SeeTohJJ.Backend.study.model.StudyNode;
@@ -156,6 +157,44 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
         logger.info("Starting getQuizExplanation");
 
         return contentRetrievalService.getExplanation(nodeId);
+    }
+
+    @Override
+    public QuizResultResponseDTO completeGeminiQuiz(Long userId, GeminiQuizSubmissionDTO quizResult){
+        logger.info("Starting completeGeminiQuiz");
+
+        String nodeId = quizResult.getNodeId();
+        int timeTaken = quizResult.getTimeTaken();
+        boolean isCorrectAnswer = quizResult.getOptionSelected().equals(quizResult.getCorrectAnswer());
+        String subtopicId = subTopicService.getSubTopicId(nodeId);
+        boolean hintUsed = quizResult.isHintUsed();
+        String topicId = subtopicId.substring(0, 4);
+        double pastPKnow = userTopicService.getAveragePKnow(userId, topicId);
+
+        attemptHistoryService.saveQuestionAttemptHistory(userId, nodeId, isCorrectAnswer, timeTaken, hintUsed);
+        forgettingService.updateForgettingDecay(userId, subtopicId);
+        bktService.runBktModel(
+                userId,
+                subtopicId,
+                isCorrectAnswer,
+                timeTaken,
+                confidenceService.getConfidence(userId, nodeId, timeTaken,  hintUsed)
+        );
+        eloService.updateUserElo(userId, subtopicId, nodeId, isCorrectAnswer);
+
+        boolean newChainCreated = processQuizCompletion(userId, nodeId);
+        int waterReward = gardenService.onStudyCompleted(userId, topicId, StudyNode.NodeType.QUIZ, isCorrectAnswer);
+
+        return quizResultService.buildQuizResult(
+                userId,
+                topicId,
+                isCorrectAnswer,
+                userTopicService.calculateMasteryThreshold(pastPKnow),
+                userTopicService.calculateMasteryThreshold(userTopicService.getAveragePKnow(userId, topicId)),
+                newChainCreated,
+                timeTaken,
+                waterReward
+        );
     }
 
 

@@ -1,6 +1,9 @@
 package com.SeeTohJJ.Backend.ai.service;
 
-public interface GeminiService {
+import com.SeeTohJJ.Backend.ai.dto.QuizGenerationContext;
+
+public interface GeminiPromptService {
 
     String test();
+    String buildQuizPrompt(QuizGenerationContext context, String learningObjectives);
 }

@@ -71,4 +71,10 @@ public class TopicConstant {
             FROM topics
             WHERE is_active = true
             """;
+
+    public static final String GET_TOPIC_DESCRIPTION = """
+            SELECT description
+            FROM topics
+            WHERE topic_id = ?
+            """;
 }

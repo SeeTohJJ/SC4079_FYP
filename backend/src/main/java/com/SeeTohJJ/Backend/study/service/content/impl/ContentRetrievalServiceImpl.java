@@ -1,5 +1,7 @@
 package com.SeeTohJJ.Backend.study.service.content.impl;
 
+import com.SeeTohJJ.Backend.ai.dto.GeminiGeneratedQuizDTO;
+import com.SeeTohJJ.Backend.ai.service.GeminiQuizService;
 import com.SeeTohJJ.Backend.study.dao.NodeContentDao;
 import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
@@ -16,10 +18,12 @@ public class ContentRetrievalServiceImpl implements ContentRetrievalService {
     private static final Logger logger = LoggerFactory.getLogger(ContentRetrievalServiceImpl.class);
 
     private final NodeContentDao nodeContentDao;
+    private final GeminiQuizService geminiQuizService;
 
     @Autowired
-    public ContentRetrievalServiceImpl(NodeContentDao nodeContentDao) {
+    public ContentRetrievalServiceImpl(NodeContentDao nodeContentDao, GeminiQuizService geminiQuizService) {
         this.nodeContentDao  = nodeContentDao;
+        this.geminiQuizService = geminiQuizService;
     }
 
     @Override
@@ -70,5 +74,13 @@ public class ContentRetrievalServiceImpl implements ContentRetrievalService {
 
         return nodeContentDao.getQuizExplanation(nodeId);
     }
+
+    @Override
+    public GeminiGeneratedQuizDTO getGeminiQuizContent(Long userId){
+        logger.info("Starting getGeminiQuizContent");
+
+        return geminiQuizService.getQuizContent(userId);
+    }
+
 
 }

@@ -13,4 +13,5 @@ public interface TopicService {
     String getUncompletedTutorialTopic(Long userId);
     String getTopicId(String nodeId);
     String getTopicName(String topicId);
+    String getDescription(String topicId);
 }

@@ -1,7 +1,8 @@
 package com.SeeTohJJ.Backend.ai.dto;
 
-public class GeneratedQuiz {
+public class GeminiGeneratedQuizDTO {
 
+    private String nodeId;
     private String title;
     private String question;
     private String optionA;
@@ -11,7 +12,15 @@ public class GeneratedQuiz {
     private String correctAnswer;
     private String hint;
 
-    public GeneratedQuiz() {
+    public GeminiGeneratedQuizDTO() {
+    }
+
+    public String getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(String nodeId) {
+        this.nodeId = nodeId;
     }
 
     public String getTitle() {
