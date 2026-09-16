@@ -88,6 +88,12 @@ public class UserStudyPathServiceImpl implements UserStudyPathService {
         return studyPathDao.getIncorrectNodes(userId, subtopicId, reviewNodeCount);
     }
 
+    @Override
+    public String getNextGeneratedNodeId(Long userId){
+        logger.info("Starting getNextGeneratedNodeId");
+
+        return studyPathDao.getNextGeneratedNodeId(userId);
+    }
 
 
 }

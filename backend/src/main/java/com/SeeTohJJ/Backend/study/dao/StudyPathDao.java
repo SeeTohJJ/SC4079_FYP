@@ -19,5 +19,6 @@ public interface StudyPathDao {
     String getCurrentSubtopic(Long userId);
     int getUserLastPositionIndex(Long userId);
     List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount);
+    String getNextGeneratedNodeId(Long userId);
 }
 

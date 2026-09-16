@@ -303,7 +303,7 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
                     nodeId = reviewNodes.get(reviewIndex++);
 
                 } else {
-
+                    // TODO change this to create a new gpt prompt to generate based on questions the user got wrong
                     // Not enough incorrect questions, use a normal quiz
                     nodeId = subTopicService.getNodeId(
                             subtopicId,
@@ -319,6 +319,10 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
 
                 }
                 actualNodeType = StudyNode.NodeType.QUIZ.toString();
+
+            } else if (StudyNode.NodeType.GENERATED.toString().equals(actualNodeType)) {
+
+                nodeId = userStudyPathService.getNextGeneratedNodeId(userId);
 
             } else {
 

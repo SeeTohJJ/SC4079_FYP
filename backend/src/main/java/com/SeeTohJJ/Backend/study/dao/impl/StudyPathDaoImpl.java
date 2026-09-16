@@ -196,6 +196,15 @@ public class StudyPathDaoImpl implements StudyPathDao {
         }
     }
 
+    @Override
+    public String getNextGeneratedNodeId(Long userId){
+        logger.info("Starting getNextGeneratedNodeId");
 
+        return jdbcTemplate.queryForObject(
+                StudyPathConstant.GET_NEXT_GENERATED_NODE_ID,
+                (rs, rowNum) -> rs.getString("node_id"),
+                userId
+        );
+    }
 
 }

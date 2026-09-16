@@ -114,4 +114,10 @@ public class StudyPathConstant {
         WHERE unp.user_id = ? AND unp.node_type = 'LESSON' AND unp.is_completed = true
         ORDER BY unp.last_updated DESC
         """;
+
+    public static final String GET_NEXT_GENERATED_NODE_ID = """
+        SELECT CONCAT('G-', LPAD(COALESCE(MAX(CAST(SUBSTRING(node_id, 3) AS UNSIGNED)), 0) + 1, 4, '0')) AS next_node_id
+        FROM user_node_progress
+        WHERE user_id = ? AND node_id LIKE 'G-%';
+        """;
 }

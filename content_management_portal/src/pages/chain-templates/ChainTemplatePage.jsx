@@ -306,6 +306,10 @@ function ChainTemplatePage() {
                                                 <option value="BOSS">
                                                     Boss
                                                 </option>
+
+                                                <option value="GENERATED">
+                                                    Generated
+                                                </option>
                                             </select>
                                         </div>
 
@@ -465,6 +469,10 @@ function ChainTemplatePage() {
 
                                                             <option value="BOSS">
                                                                 Boss
+                                                            </option>
+
+                                                            <option value="GENERATED">
+                                                                Generated
                                                             </option>
                                                         </select>
                                                     </div>

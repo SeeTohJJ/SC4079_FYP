@@ -9,7 +9,8 @@ public class StudyNode {
         QUIZ,
         DECISION,
         TEST,
-        REVIEW
+        REVIEW,
+        GENERATED
     }
 
     private String nodeId;

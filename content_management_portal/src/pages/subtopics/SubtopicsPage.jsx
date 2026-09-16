@@ -238,7 +238,7 @@ function SubtopicsPage() {
                         <th>Subtopic ID</th>
                         <th>Name</th>
                         <th>Difficulty</th>
-                        <th>p(L0)</th>
+                        <th>P(L0)</th>
                         <th>P(T)</th>
                         <th>P(S)</th>
                         <th>P(G)</th>
