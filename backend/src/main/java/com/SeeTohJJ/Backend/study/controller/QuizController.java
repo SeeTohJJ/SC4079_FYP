@@ -1,6 +1,7 @@
 package com.SeeTohJJ.Backend.study.controller;
 
 import com.SeeTohJJ.Backend.ai.dto.GeminiGeneratedQuizDTO;
+import com.SeeTohJJ.Backend.ai.service.GeminiQuizService;
 import com.SeeTohJJ.Backend.auth.service.JwtService;
 import com.SeeTohJJ.Backend.study.constant.EnergyConstant;
 import com.SeeTohJJ.Backend.study.dto.NodeRequestDTO;
@@ -27,16 +28,18 @@ public class QuizController {
     private final JwtService jwtService;
     private final ContentRetrievalService contentRetrievalService;
     private final EnergyService energyService;
+    private final GeminiQuizService geminiQuizService;
 
     @Autowired
     public QuizController(QuizSubmissionService quizSubmissionService,
                           JwtService jwtService,
                           ContentRetrievalService contentRetrievalService,
-                          EnergyService energyService) {
+                          EnergyService energyService, GeminiQuizService geminiQuizService) {
         this.quizSubmissionService = quizSubmissionService;
         this.jwtService = jwtService;
         this.contentRetrievalService = contentRetrievalService;
         this.energyService = energyService;
+        this.geminiQuizService = geminiQuizService;
     }
 
     @PostMapping("/GetQuizContent")
@@ -93,7 +96,7 @@ public class QuizController {
         Long userId = jwtService.extractUserId(authHeader.substring(7));
 
         energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_QUIZ);
-        return contentRetrievalService.getGeminiQuizContent(userId);
+        return geminiQuizService.getQuizContent(userId);
     }
 
     @PostMapping("/SubmitGeminiQuiz")
@@ -102,5 +105,16 @@ public class QuizController {
         logger.info("Starting SubmitGeminiQuiz");
 
         return quizSubmissionService.completeGeminiQuiz(jwtService.extractUserId(authHeader.substring(7)), request);
+    }
+
+    @GetMapping("/GetGeminiReviewContent")
+    public GeminiGeneratedQuizDTO getGeminiReviewContent() {
+        logger.info("Starting getGeminiReviewContent");
+
+//        Long userId = jwtService.extractUserId(authHeader.substring(7));
+        Long userId = Long.valueOf("11");
+
+        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_QUIZ);
+        return geminiQuizService.getReviewContent(userId);
     }
 }

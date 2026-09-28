@@ -75,6 +75,7 @@ public class GeminiPromptServiceImpl implements GeminiPromptService {
         return "ADVANCED";
     }
 
+    @Override
     public String buildQuizPrompt(QuizGenerationContext context, String learningObjectives) {
 
         String difficulty = determineDifficulty(context.getEloRating());
@@ -144,6 +145,70 @@ public class GeminiPromptServiceImpl implements GeminiPromptService {
                 context.getMasteryScore(),
                 difficulty,
                 learningObjectives
+        );
+    }
+
+    @Override
+    public String buildReviewPrompt(QuizGenerationContext context, List<String> nodeContents) {
+
+        String difficulty = determineDifficulty(context.getEloRating());
+
+        String mistakesFormatted = (nodeContents == null || nodeContents.isEmpty())
+                ? "None provided"
+                : String.join("\n- ", nodeContents);
+
+        return """
+            You are a financial literacy question generator for a mobile learning application.
+
+            Generate ONE multiple-choice question based on the user's previous incorrect attempts.
+
+            MOST RECENT MISTAKEN CONCEPTS:
+            - %s
+
+            USER LEARNING STATE:
+            Topic: %s
+            Subtopic: %s
+            Mastery: %.2f
+            Difficulty: %s
+
+            REQUIREMENTS:
+            1. Generate exactly one multiple-choice question.
+            2. Generate exactly four options.
+            3. There must be exactly one correct answer.
+            4. Match the requested difficulty.
+            5. Personalise the scenario using the user's occupation where appropriate.
+            6. Use income only when useful for the scenario.
+            7. Do not assume the user's actual financial behaviour.
+            8. Do not provide personalised financial advice.
+            9. Do not recommend specific financial products.
+            10. Test only the supplied learning objectives.
+            11. Provide a hint to guide the user to the correct answer.
+            12. Return ONLY the requested JSON structure.
+
+            The "correctAnswer" field must match one of the four options verbatim.
+            The "hint" field must provide a hint for the question.
+            Do not use an "options" array.
+            Do not use "correct_answer_index".
+            Do not wrap the JSON in markdown code fences.
+            Return JSON only.
+
+            RETURN EXACTLY THIS JSON STRUCTURE:
+
+            {
+              "question": "string",
+              "optionA": "string",
+              "optionB": "string",
+              "optionC": "string",
+              "optionD": "string",
+              "correctAnswer": "string",
+              "hint": "string"
+            }
+            """.formatted(
+                mistakesFormatted,
+                context.getTopic(),
+                context.getSubtopic(),
+                context.getMasteryScore(),
+                difficulty
         );
     }
 }

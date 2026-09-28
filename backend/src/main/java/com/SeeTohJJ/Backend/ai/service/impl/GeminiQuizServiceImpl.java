@@ -4,11 +4,11 @@ import com.SeeTohJJ.Backend.ai.dto.GeminiGeneratedQuizDTO;
 import com.SeeTohJJ.Backend.ai.dto.QuizGenerationContext;
 import com.SeeTohJJ.Backend.ai.service.GeminiPromptService;
 import com.SeeTohJJ.Backend.ai.service.GeminiQuizService;
+import com.SeeTohJJ.Backend.study.service.content.ContentRetrievalService;
 import com.SeeTohJJ.Backend.study.service.progress.UserStudyPathService;
 import com.SeeTohJJ.Backend.topic.service.SubTopicService;
 import com.SeeTohJJ.Backend.topic.service.TopicService;
 import com.SeeTohJJ.Backend.user.model.UserProfile;
-import com.SeeTohJJ.Backend.user.model.UserTopicMastery;
 import com.SeeTohJJ.Backend.user.service.UserService;
 import com.SeeTohJJ.Backend.user.service.mastery.UserTopicService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,6 +19,7 @@ import com.google.genai.gaos.models.operations.CreateInteractionRequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class GeminiQuizServiceImpl implements GeminiQuizService {
@@ -33,6 +34,7 @@ public class GeminiQuizServiceImpl implements GeminiQuizService {
     private final UserStudyPathService userStudyPathService;
     private final TopicService topicService;
     private final SubTopicService subTopicService;
+    private final ContentRetrievalService contentRetrievalService;
 
     public GeminiQuizServiceImpl(
             Client client,
@@ -42,7 +44,7 @@ public class GeminiQuizServiceImpl implements GeminiQuizService {
             UserTopicService userTopicService,
             UserStudyPathService userStudyPathService,
             TopicService topicService,
-            SubTopicService subTopicService) {
+            SubTopicService subTopicService, ContentRetrievalService contentRetrievalService) {
         this.client = client;
         this.promptService = promptService;
         this.objectMapper = objectMapper;
@@ -51,6 +53,7 @@ public class GeminiQuizServiceImpl implements GeminiQuizService {
         this.userStudyPathService = userStudyPathService;
         this.topicService = topicService;
         this.subTopicService = subTopicService;
+        this.contentRetrievalService = contentRetrievalService;
     }
 
     private GeminiGeneratedQuizDTO generateQuiz(
@@ -62,7 +65,108 @@ public class GeminiQuizServiceImpl implements GeminiQuizService {
                 learningObjectives
         );
 
-        logger.info("Gemini prompt: {}", prompt);
+        return callGemini(context, prompt);
+    }
+
+    private void validateQuiz(GeminiGeneratedQuizDTO quiz) {
+
+        if (quiz.getQuestion() == null ||
+                quiz.getQuestion().isBlank()) {
+
+            throw new RuntimeException(
+                    "Invalid generated question"
+            );
+        }
+
+        if (quiz.getOptionA() == null ||
+            quiz.getOptionB() == null ||
+            quiz.getOptionC() == null ||
+            quiz.getOptionD() == null) {
+
+            throw new RuntimeException(
+                    "Quiz must contain exactly four options"
+            );
+        }
+
+        if (quiz.getCorrectAnswer() == null) {
+
+            throw new RuntimeException(
+                    "Missing correct answer"
+            );
+        }
+
+        boolean answerExists =
+                quiz.getCorrectAnswer().equals(quiz.getOptionA()) ||
+                quiz.getCorrectAnswer().equals(quiz.getOptionB()) ||
+                quiz.getCorrectAnswer().equals(quiz.getOptionC()) ||
+                quiz.getCorrectAnswer().equals(quiz.getOptionD()) ||
+                quiz.getOptionA().isBlank() ||
+                quiz.getOptionB().isBlank() ||
+                quiz.getOptionC().isBlank() ||
+                quiz.getOptionD().isBlank();
+
+        if (!answerExists) {
+            throw new RuntimeException(
+                    "Correct answer does not match an option"
+            );
+        }
+    }
+
+    @Override
+    public GeminiGeneratedQuizDTO getQuizContent(Long userId) {
+        logger.info("Start getQuizContent");
+
+        UserProfile user = userService.getUserProfile(userId);
+        String currentSubtopicId = userStudyPathService.getCurrentSubtopic(userId);
+        String currentTopicId = currentSubtopicId.substring(0, 4);
+
+        QuizGenerationContext context = new QuizGenerationContext();
+        context.setAge(user.getAge());
+        context.setIncome(user.getIncome());
+        context.setCountry(user.getCountry());
+        context.setEmployment_status(user.getEmploymentStatus());
+        context.setSubtopic(subTopicService.getName(currentSubtopicId));
+        context.setTopic(topicService.getTopicName(currentTopicId));
+        context.setEloRating(userTopicService.getAverageElo(userId, currentTopicId));
+        context.setMasteryScore(userTopicService.getAveragePKnow(userId, currentTopicId));
+
+        return generateQuiz(context, subTopicService.getName(currentSubtopicId));
+    }
+
+    @Override
+    public GeminiGeneratedQuizDTO getReviewContent(Long userId) {
+        logger.info("Start getReviewContent");
+
+        String currentSubtopicId = userStudyPathService.getCurrentSubtopic(userId);
+        String currentTopicId = currentSubtopicId.substring(0, 4);
+
+        QuizGenerationContext context = new QuizGenerationContext();
+        context.setSubtopic(subTopicService.getName(currentSubtopicId));
+        context.setTopic(topicService.getTopicName(currentTopicId));
+        context.setEloRating(userTopicService.getAverageElo(userId, currentTopicId));
+        context.setMasteryScore(userTopicService.getAveragePKnow(userId, currentTopicId));
+
+        List<String> nodeIds = userStudyPathService.getRecentMistakeHistory(userId);
+        List<String> nodeContents = contentRetrievalService.getMistakeHistoryContent(nodeIds);
+
+        return generateReview(context, nodeContents);
+    }
+
+    private GeminiGeneratedQuizDTO generateReview(
+            QuizGenerationContext context,
+            List<String> nodeContents) {
+
+        String prompt = promptService.buildReviewPrompt(
+                context,
+                nodeContents
+        );
+
+        return callGemini(context, prompt);
+    }
+
+    private GeminiGeneratedQuizDTO callGemini(QuizGenerationContext context, String prompt){
+        logger.info("callGemini with: ");
+        logger.info(prompt);
 
         CreateModelInteraction params =
                 CreateModelInteraction.builder()
@@ -135,70 +239,5 @@ public class GeminiQuizServiceImpl implements GeminiQuizService {
         quiz.setNodeId(context.getSubtopic() + "_quiz");
 
         return quiz;
-    }
-
-    private void validateQuiz(GeminiGeneratedQuizDTO quiz) {
-
-        if (quiz.getQuestion() == null ||
-                quiz.getQuestion().isBlank()) {
-
-            throw new RuntimeException(
-                    "Invalid generated question"
-            );
-        }
-
-        if (quiz.getOptionA() == null ||
-            quiz.getOptionB() == null ||
-            quiz.getOptionC() == null ||
-            quiz.getOptionD() == null) {
-
-            throw new RuntimeException(
-                    "Quiz must contain exactly four options"
-            );
-        }
-
-        if (quiz.getCorrectAnswer() == null) {
-
-            throw new RuntimeException(
-                    "Missing correct answer"
-            );
-        }
-
-        boolean answerExists =
-                quiz.getCorrectAnswer().equals(quiz.getOptionA()) ||
-                quiz.getCorrectAnswer().equals(quiz.getOptionB()) ||
-                quiz.getCorrectAnswer().equals(quiz.getOptionC()) ||
-                quiz.getCorrectAnswer().equals(quiz.getOptionD()) ||
-                quiz.getOptionA().isBlank() ||
-                quiz.getOptionB().isBlank() ||
-                quiz.getOptionC().isBlank() ||
-                quiz.getOptionD().isBlank();
-
-        if (!answerExists) {
-            throw new RuntimeException(
-                    "Correct answer does not match an option"
-            );
-        }
-    }
-
-    @Override
-    public GeminiGeneratedQuizDTO getQuizContent(Long userId) {
-        logger.info("Start getQuizContent");
-
-        UserProfile user = userService.getUserProfile(userId);
-        String currentSubtopicId = userStudyPathService.getCurrentSubtopic(userId);
-        String currentTopicId = currentSubtopicId.substring(0, 4);
-
-        QuizGenerationContext context = new QuizGenerationContext();
-        context.setAge(user.getAge());
-        context.setIncome(user.getIncome());
-        context.setCountry(user.getCountry());
-        context.setEmployment_status(user.getEmploymentStatus());
-        context.setSubtopic(currentSubtopicId);
-        context.setTopic(currentTopicId);
-        context.setEloRating(userTopicService.getAverageElo(userId, currentTopicId));
-        context.setMasteryScore(userTopicService.getAveragePKnow(userId, currentTopicId));
-
-        return generateQuiz(context, subTopicService.getName(currentSubtopicId));
     }
 }

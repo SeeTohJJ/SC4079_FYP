@@ -14,4 +14,6 @@ public interface UserStudyPathService {
     void completeTutorialForInterestedTopic(Long userId, String subtopicId);
     List<String> getIncorrectNodes(Long userId, String subtopicId, int reviewNodeCount);
     String getNextGeneratedNodeId(Long userId);
+    String getNextGeneratedReviewId(Long userId);
+    List<String> getRecentMistakeHistory(Long userId);
 }

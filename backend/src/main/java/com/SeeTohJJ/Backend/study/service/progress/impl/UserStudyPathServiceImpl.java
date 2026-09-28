@@ -95,5 +95,19 @@ public class UserStudyPathServiceImpl implements UserStudyPathService {
         return studyPathDao.getNextGeneratedNodeId(userId);
     }
 
+    @Override
+    public String getNextGeneratedReviewId(Long userId){
+        logger.info("Starting getNextGeneratedReviewId");
+
+        return studyPathDao.getNextGeneratedReviewId(userId);
+    }
+
+    @Override
+    public List<String> getRecentMistakeHistory(Long userId){
+        logger.info("Starting getRecentMistakeHistory");
+
+        return studyPathDao.getRecentMistakeHistory(userId);
+    }
+
 
 }

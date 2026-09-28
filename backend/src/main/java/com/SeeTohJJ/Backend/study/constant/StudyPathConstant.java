@@ -120,4 +120,19 @@ public class StudyPathConstant {
         FROM user_node_progress
         WHERE user_id = ? AND node_id LIKE 'G-%';
         """;
+
+    public static final String GET_NEXT_GENERATED_REVIEW_ID = """
+        SELECT CONCAT('G-', LPAD(COALESCE(MAX(CAST(SUBSTRING(node_id, 3) AS UNSIGNED)), 0) + 1, 4, '0')) AS next_node_id
+        FROM user_node_progress
+        WHERE user_id = ? AND node_id LIKE 'R-%';
+        """;
+
+    public static final String GET_RECENT_MISTAKE_HISTORY = """
+        SELECT node_id
+        FROM user_question_attempts
+        WHERE user_id = ? AND is_correct = false
+        GROUP BY node_id
+        ORDER BY MAX(answered_at) DESC
+        LIMIT 3;
+        """;
 }

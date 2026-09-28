@@ -13,17 +13,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ContentRetrievalServiceImpl implements ContentRetrievalService {
     private static final Logger logger = LoggerFactory.getLogger(ContentRetrievalServiceImpl.class);
 
     private final NodeContentDao nodeContentDao;
-    private final GeminiQuizService geminiQuizService;
 
     @Autowired
-    public ContentRetrievalServiceImpl(NodeContentDao nodeContentDao, GeminiQuizService geminiQuizService) {
+    public ContentRetrievalServiceImpl(NodeContentDao nodeContentDao) {
         this.nodeContentDao  = nodeContentDao;
-        this.geminiQuizService = geminiQuizService;
     }
 
     @Override
@@ -76,11 +76,10 @@ public class ContentRetrievalServiceImpl implements ContentRetrievalService {
     }
 
     @Override
-    public GeminiGeneratedQuizDTO getGeminiQuizContent(Long userId){
-        logger.info("Starting getGeminiQuizContent");
+    public List<String> getMistakeHistoryContent(List<String> nodeIds){
+        logger.info("Starting getMistakeHistoryContent");
 
-        return geminiQuizService.getQuizContent(userId);
+        return nodeContentDao.getMistakeHistoryContent(nodeIds);
     }
-
 
 }

@@ -301,24 +301,14 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
                 if (reviewIndex < reviewNodes.size()) {
 
                     nodeId = reviewNodes.get(reviewIndex++);
+                    actualNodeType = StudyNode.NodeType.QUIZ.toString();
 
                 } else {
-                    // TODO change this to create a new gpt prompt to generate based on questions the user got wrong
-                    // Not enough incorrect questions, use a normal quiz
-                    nodeId = subTopicService.getNodeId(
-                            subtopicId,
-                            StudyNode.NodeType.QUIZ.toString(),
-                            fallbackQuizSequence++,
-                            currentChain);
 
-                    if (nodeId == null) {
-                        throw new ChainGenerationException(
-                                "Unable to find fallback quiz for subtopic "
-                                        + subtopicId);
-                    }
+                    nodeId = userStudyPathService.getNextGeneratedReviewId(userId);
+                    actualNodeType = StudyNode.NodeType.REVIEW.toString();
 
                 }
-                actualNodeType = StudyNode.NodeType.QUIZ.toString();
 
             } else if (StudyNode.NodeType.GENERATED.toString().equals(actualNodeType)) {
 

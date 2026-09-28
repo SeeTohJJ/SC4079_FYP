@@ -207,4 +207,26 @@ public class StudyPathDaoImpl implements StudyPathDao {
         );
     }
 
+    @Override
+    public String getNextGeneratedReviewId(Long userId){
+        logger.info("Starting getNextGeneratedReviewId");
+
+        return jdbcTemplate.queryForObject(
+                StudyPathConstant.GET_NEXT_GENERATED_REVIEW_ID,
+                (rs, rowNum) -> rs.getString("node_id"),
+                userId
+        );
+    }
+
+    @Override
+    public List<String> getRecentMistakeHistory(Long userId) {
+        logger.info("Starting getRecentMistakeHistory for userId: {}", userId);
+
+        return jdbcTemplate.query(
+                StudyPathConstant.GET_RECENT_MISTAKE_HISTORY,
+                (rs, rowNum) -> rs.getString("node_id"),
+                userId
+        );
+    }
+
 }

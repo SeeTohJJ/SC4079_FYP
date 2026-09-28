@@ -1,6 +1,5 @@
 package com.SeeTohJJ.Backend.study.dao.impl;
 
-import com.SeeTohJJ.Backend.contentmanagement.dto.request.LessonRequest;
 import com.SeeTohJJ.Backend.contentmanagement.dto.response.LessonResponseDTO;
 import com.SeeTohJJ.Backend.contentmanagement.dto.response.QuizResponseDTO;
 import com.SeeTohJJ.Backend.study.constant.NodeContentConstant;
@@ -9,7 +8,6 @@ import com.SeeTohJJ.Backend.study.dto.node.DecisionContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.QuizContentDTO;
-import com.SeeTohJJ.Backend.topic.constant.SubtopicConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -547,5 +545,22 @@ public class NodeContentDaoImpl implements NodeContentDao {
         );
 
         return (count != null) ? count : 0;
+    }
+
+    @Override
+    public List<String> getMistakeHistoryContent(List<String> nodeIds) {
+        logger.info("Starting getMistakeHistoryContent");
+
+        if (nodeIds == null || nodeIds.isEmpty()) {
+            return List.of();
+        }
+
+        String placeholders = String.join(", ", Collections.nCopies(nodeIds.size(), "?"));
+
+        return jdbcTemplate.queryForList(
+                NodeContentConstant.GET_RECENT_QUIZ_MISTAKE_QUESTION.formatted(placeholders),
+                String.class,
+                nodeIds.toArray()
+        );
     }
 }

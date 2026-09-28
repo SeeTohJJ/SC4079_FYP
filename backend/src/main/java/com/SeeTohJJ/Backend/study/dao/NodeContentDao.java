@@ -80,4 +80,5 @@ public interface NodeContentDao {
 
     String findNextNodeId(String subtopicId, String nodeType);
     int getActiveCount(String nodeType);
+    List<String> getMistakeHistoryContent(List<String> nodeIds);
 }

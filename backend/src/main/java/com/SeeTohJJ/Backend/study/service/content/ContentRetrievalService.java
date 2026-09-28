@@ -6,6 +6,8 @@ import com.SeeTohJJ.Backend.study.dto.node.EventContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.LessonContentDTO;
 import com.SeeTohJJ.Backend.study.dto.node.QuizContentDTO;
 
+import java.util.List;
+
 public interface ContentRetrievalService {
 
     LessonContentDTO getLessonNodeContent(String nodeId);
@@ -15,5 +17,5 @@ public interface ContentRetrievalService {
     double getQuestionRating(String nodeId);
     String getHint(String nodeId);
     String getExplanation(String nodeId);
-    GeminiGeneratedQuizDTO getGeminiQuizContent(Long userId);
+    List<String> getMistakeHistoryContent(List<String> nodeIds);
 }

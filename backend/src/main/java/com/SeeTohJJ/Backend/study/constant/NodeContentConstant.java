@@ -173,4 +173,10 @@ public class NodeContentConstant {
         FROM study_nodes
         WHERE type = ? AND is_active = true
         """;
+
+    public static final String GET_RECENT_QUIZ_MISTAKE_QUESTION = """
+        SELECT content
+        FROM node_quiz_content
+        WHERE node_id IN (%s)
+        """;
 }
