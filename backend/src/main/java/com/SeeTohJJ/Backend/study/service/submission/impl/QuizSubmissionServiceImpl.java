@@ -80,7 +80,7 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
 
     @Override
     public QuizResultResponseDTO completeQuiz(Long userId, QuizSubmissionDTO quizResult){
-        logger.info("Starting completeQuiz");
+        logger.info("Starting completeQuiz {}", quizResult.getNodeId());
 
         String nodeId = quizResult.getNodeId();
         int timeTaken = quizResult.getTimeTaken();

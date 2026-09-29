@@ -40,7 +40,7 @@ public class GardenConstant {
 
     public static final String UPDATE_USER_PLANT = """
             UPDATE user_plant
-            SET current_growth = ?, max_growth = ?, happiness = ?, last_watered = ?, last_growth_update = ?, stage = ?
+            SET current_growth = ?, max_growth = ?, happiness = ?, last_watered = NOW(), last_growth_update = ?, stage = ?
             WHERE user_id = ? AND topic_id = ?
             """;
 

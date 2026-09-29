@@ -78,7 +78,7 @@ Widget build(BuildContext context) {
         Expanded(
           child: SingleChildScrollView(
             child: SizedBox(
-              height: 1200,
+              height: nodes.length * 120.0 + 100,
               width: double.infinity,
               child: Stack(
                 children: [
@@ -170,6 +170,12 @@ Widget build(BuildContext context) {
           break;
         case NodeType.boss:
           color = Colors.red;
+          break;
+        case NodeType.review:
+          color = Colors.teal;
+          break;
+        case NodeType.generated:
+          color = Colors.grey;
           break;
       }
 
@@ -343,6 +349,10 @@ Widget build(BuildContext context) {
         return Icons.monetization_on;
       case NodeType.boss:
         return Icons.emoji_events;
+      case NodeType.review:
+        return Icons.refresh;
+      case NodeType.generated:
+        return Icons.psychology;
     }
   }
 
@@ -427,6 +437,52 @@ Widget build(BuildContext context) {
           ),
         );
         break;
+      case NodeType.review:
+          final quiz = await studyService.getQuizContent(node.id);
+
+          if (!mounted) return;
+
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => QuizNodePage(
+                nodeId: node.id,
+                quiz: quiz,
+              ),
+            ),
+          );
+
+          if (!mounted) return;
+
+          if (result == true) {
+            await loadNodes();
+            await loadEnergy();
+          }
+
+          break;
+      case NodeType.generated:
+          final quiz = await studyService.getGeminiQuizContent();
+
+          if (!mounted) return;
+
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => QuizNodePage(
+                nodeId: node.id,
+                quiz: quiz,
+              ),
+            ),
+          );
+
+          if (!mounted) return;
+
+          if (result == true) {
+            await loadNodes();
+            await loadEnergy();
+          }
+
+          break;
       }
     } on InsufficientEnergyException catch (e) {
       if (!mounted) return;

@@ -10,7 +10,7 @@ public class StudyPathConstant {
         """;
 
     public static final String GET_EXISTING_NODE_PATH = """
-        SELECT node_id, node_type, position_index, is_unlocked, is_completed
+        SELECT node_id, node_type, position_index, is_unlocked, is_completed, user_id
         FROM user_node_progress
         WHERE user_id = ?
         ORDER BY position_index
@@ -84,10 +84,11 @@ public class StudyPathConstant {
         """;
 
     public static final String GET_INCORRECT_NODES = """
-        SELECT node_id
-        FROM user_question_attempts
-        WHERE user_id = ? AND subtopic_id = ? AND is_correct = false
-        ORDER BY answered_at DESC
+        SELECT a.node_id
+        FROM user_question_attempts a
+        JOIN study_nodes n ON a.node_id = n.node_id
+        WHERE a.user_id = ? AND n.subtopic_id = ? AND a.is_correct = false
+        ORDER BY a.answered_at DESC
         LIMIT ?
         """;
 
@@ -116,15 +117,29 @@ public class StudyPathConstant {
         """;
 
     public static final String GET_NEXT_GENERATED_NODE_ID = """
-        SELECT CONCAT('G-', LPAD(COALESCE(MAX(CAST(SUBSTRING(node_id, 3) AS UNSIGNED)), 0) + 1, 4, '0')) AS next_node_id
+        SELECT CONCAT(
+            'G-',
+            LPAD(
+                (COALESCE(MAX(CAST(SUBSTRING(node_id, 3) AS INTEGER)), 0) + 1)::TEXT,
+                4,
+                '0'
+            )
+        ) AS next_node_id
         FROM user_node_progress
         WHERE user_id = ? AND node_id LIKE 'G-%';
         """;
 
     public static final String GET_NEXT_GENERATED_REVIEW_ID = """
-        SELECT CONCAT('G-', LPAD(COALESCE(MAX(CAST(SUBSTRING(node_id, 3) AS UNSIGNED)), 0) + 1, 4, '0')) AS next_node_id
+        SELECT CONCAT(
+            'G-',
+            LPAD(
+                (COALESCE(MAX(CAST(SUBSTRING(node_id, 3) AS INTEGER)), 0) + 1)::TEXT,
+                4,
+                '0'
+            )
+        ) AS next_node_id
         FROM user_node_progress
-        WHERE user_id = ? AND node_id LIKE 'R-%';
+        WHERE user_id = ? AND node_id LIKE 'G-%';
         """;
 
     public static final String GET_RECENT_MISTAKE_HISTORY = """
@@ -134,5 +149,15 @@ public class StudyPathConstant {
         GROUP BY node_id
         ORDER BY MAX(answered_at) DESC
         LIMIT 3;
+        """;
+
+    public static final String GET_RECENT_NON_GENERATED_NODE_ID = """
+        SELECT node_id
+        FROM user_node_progress
+        WHERE user_id = ?
+          AND node_id <> ?
+          AND node_id NOT LIKE 'G-%'
+        ORDER BY last_updated DESC
+        LIMIT 1;
         """;
 }

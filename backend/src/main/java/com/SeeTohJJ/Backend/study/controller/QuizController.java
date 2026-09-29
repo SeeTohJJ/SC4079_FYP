@@ -89,7 +89,7 @@ public class QuizController {
         return ResponseEntity.ok(explanation);
     }
 
-    @GetMapping("/GetGeminiQuizContent")
+    @PostMapping("/GetGeminiQuizContent")
     public GeminiGeneratedQuizDTO getGeminiQuizContent(@RequestHeader("Authorization") String authHeader) {
         logger.info("Starting getGeminiQuizContent");
 
@@ -107,7 +107,7 @@ public class QuizController {
         return quizSubmissionService.completeGeminiQuiz(jwtService.extractUserId(authHeader.substring(7)), request);
     }
 
-    @GetMapping("/GetGeminiReviewContent")
+    @PostMapping("/GetGeminiReviewContent")
     public GeminiGeneratedQuizDTO getGeminiReviewContent() {
         logger.info("Starting getGeminiReviewContent");
 

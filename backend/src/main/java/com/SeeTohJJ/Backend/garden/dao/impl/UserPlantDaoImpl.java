@@ -87,13 +87,13 @@ public class UserPlantDaoImpl implements UserPlantDao {
     @Override
     public void update(UserPlant plant){
         logger.info("Starting update user plant: {}", plant);
+        logger.info("{}", plant.getHappiness());
 
         jdbcTemplate.update(
                 GardenConstant.UPDATE_USER_PLANT,
                 plant.getCurrentGrowth(),
                 plant.getMaxGrowth(),
                 plant.getHappiness(),
-                plant.getLastWatered(),
                 plant.getLastGrowthUpdate(),
                 plant.getStage(),
                 plant.getUserId(),

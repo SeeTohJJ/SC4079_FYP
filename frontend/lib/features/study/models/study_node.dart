@@ -4,6 +4,8 @@ enum NodeType {
   decision,
   reward,
   boss,
+  review,
+  generated,
 }
 
 class StudyNode {
@@ -46,6 +48,10 @@ class StudyNode {
         return NodeType.reward;
       case 'BOSS':
         return NodeType.boss;
+      case 'REVIEW':
+        return NodeType.review;
+      case 'GENERATED':
+        return NodeType.generated;
       default:
         throw Exception("Unknown node type: $type");
     }

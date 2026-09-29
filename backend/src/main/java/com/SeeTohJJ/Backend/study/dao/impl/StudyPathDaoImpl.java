@@ -202,7 +202,7 @@ public class StudyPathDaoImpl implements StudyPathDao {
 
         return jdbcTemplate.queryForObject(
                 StudyPathConstant.GET_NEXT_GENERATED_NODE_ID,
-                (rs, rowNum) -> rs.getString("node_id"),
+                (rs, rowNum) -> rs.getString("next_node_id"),
                 userId
         );
     }
@@ -213,7 +213,7 @@ public class StudyPathDaoImpl implements StudyPathDao {
 
         return jdbcTemplate.queryForObject(
                 StudyPathConstant.GET_NEXT_GENERATED_REVIEW_ID,
-                (rs, rowNum) -> rs.getString("node_id"),
+                (rs, rowNum) -> rs.getString("next_node_id"),
                 userId
         );
     }
@@ -226,6 +226,18 @@ public class StudyPathDaoImpl implements StudyPathDao {
                 StudyPathConstant.GET_RECENT_MISTAKE_HISTORY,
                 (rs, rowNum) -> rs.getString("node_id"),
                 userId
+        );
+    }
+
+    @Override
+    public String getRecentNonGeneratedNodeId(Long userId, String generatedNodeId){
+        logger.info("Starting getRecentNonGeneratedNodeId {}, {}", userId, generatedNodeId);
+
+        return jdbcTemplate.queryForObject(
+                StudyPathConstant.GET_RECENT_NON_GENERATED_NODE_ID,
+                (rs, rowNum) -> rs.getString("node_id"),
+                userId,
+                generatedNodeId
         );
     }
 

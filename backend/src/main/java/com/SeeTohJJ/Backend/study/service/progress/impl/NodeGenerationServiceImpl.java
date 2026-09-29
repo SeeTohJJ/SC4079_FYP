@@ -94,16 +94,23 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         List<UserNodeProgress> nodePaths = studyPathDao.getExistingNodePath(userId);
 
         return nodePaths.stream()
-                .map(this::convertToStudyNodePathDTO)
+                .map(nodeProgress -> convertToStudyNodePathDTO(nodeProgress, userId))
                 .toList();
     }
 
     private StudyNodePathDTO convertToStudyNodePathDTO(
-            UserNodeProgress nodeProgress) {
+            UserNodeProgress nodeProgress,
+            Long userId) {
 
         StudyNodePathDTO dto = new StudyNodePathDTO();
+        String topicName;
 
-        String topicName = topicService.getTopicName(topicService.getTopicId(nodeProgress.getNodeId()));
+        if (nodeProgress.getNodeId().startsWith("G-")){
+            topicName = topicService.getTopicName(topicService.getTopicId(studyPathDao.getRecentNonGeneratedNodeId(userId, nodeProgress.getNodeId())));
+        }
+        else {
+            topicName = topicService.getTopicName(topicService.getTopicId(nodeProgress.getNodeId()));
+        }
 
         dto.setNodeId(nodeProgress.getNodeId());
         dto.setNodeTopic(topicName);
@@ -188,9 +195,11 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
             String nextSubtopic = subTopicService.getNextSubtopic(currentSubtopic);
 
             if(nextSubtopic != null) {
+                userSubtopicService.insertNewSubtopicMastery(userId, nextSubtopic, subTopicService.getPInit(nextSubtopic));
                 generateStandardChain(userId, nextSubtopic);
             }
             else {
+
                 nextSubtopic = userSubtopicService.getUserLowestPKnowSubtopicNotMastered(userId);
                 if(nextSubtopic != null) {
                     generateStandardChain(userId, nextSubtopic);

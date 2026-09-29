@@ -22,5 +22,6 @@ public interface StudyPathDao {
     String getNextGeneratedNodeId(Long userId);
     String getNextGeneratedReviewId(Long userId);
     List<String> getRecentMistakeHistory(Long userId);
+    String getRecentNonGeneratedNodeId(Long userId, String generatedNodeId);
 }
 

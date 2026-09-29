@@ -170,5 +170,26 @@ class StudyService {
     return QuizResult.fromJson(jsonDecode(response.body));
   }
 
+  Future<QuizContent> getGeminiQuizContent() async {
+    final token = await authService.getToken();
+
+    if (token == null) {
+      throw Exception("Not logged in");
+    }
+
+    final response = await http.post(
+      Uri.parse("$baseUrl/GetGeminiQuizContent"),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to load quiz");
+    }
+
+    return QuizContent.fromJson(jsonDecode(response.body));
+  }
   
 }

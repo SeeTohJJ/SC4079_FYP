@@ -207,10 +207,7 @@ class _GardenPageState extends State<GardenPage> {
               horizontal: 20,
             ),
             child: LinearProgressIndicator(
-              value: plant.growth.clamp(
-                0.0,
-                1.0,
-              ),
+              value: (plant.growth / 100.0).clamp(0.0, 1.0),
               minHeight: 10,
             ),
           ),
@@ -227,45 +224,25 @@ class _GardenPageState extends State<GardenPage> {
   }
 
   Widget _buildPlantVisual(UserPlant plant) {
-    IconData icon;
+    final topic = plant.topicName.toLowerCase();
+    final stage = plant.stage.toLowerCase();
 
-    switch (plant.stage) {
-      case 'SEEDING':
-        icon = Icons.grass;
-        break;
-
-      case 'SPROUTING':
-        icon = Icons.spa;
-        break;
-
-      case "VEGETATING":
-        icon = Icons.local_florist;
-        break;
-
-      case "FLOWERING":
-        icon = Icons.park;
-        break;
-
-      case "RIPENING":
-        icon = Icons.apple;
-        break;
-
-      default:
-        icon = Icons.forest;
-        break;
-    }
+    final imagePath = 'assets/art/budgeting/$stage.png';
 
     return Center(
       child: AnimatedSwitcher(
         duration: const Duration(
           milliseconds: 300,
         ),
-        child: Icon(
-          icon,
+        child: Image.asset(
+          imagePath,
           key: ValueKey(
             '${plant.topicName}_${plant.stage}',
           ),
-          size: 180,
+          width: 180,
+          height: 180,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.none,
         ),
       ),
     );

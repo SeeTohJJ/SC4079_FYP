@@ -26,6 +26,12 @@ class StudyNodeWidget extends StatelessWidget {
       case NodeType.boss:
         color = Colors.red;
         break;
+      case NodeType.review:
+        color = Colors.teal;
+        break;
+      case NodeType.generated:
+        color = Colors.grey;
+        break;
     }
 
     return GestureDetector(
@@ -71,6 +77,10 @@ class StudyNodeWidget extends StatelessWidget {
         return Icons.monetization_on;
       case NodeType.boss:
         return Icons.emoji_events;
+      case NodeType.review:
+        return Icons.refresh;
+      case NodeType.generated:
+        return Icons.psychology;
     }
   }
 }

@@ -61,6 +61,7 @@ public class GardenServiceImpl implements GardenService {
         List<PlantDTO> list = new ArrayList<>();
 
         for(UserPlant plant : plants){
+            logger.info("{}", plant.getHappiness());
             updateDailyHappinessDecay(plant);
             updateGrowth(plant);
 
@@ -77,6 +78,7 @@ public class GardenServiceImpl implements GardenService {
 
     private PlantDTO convertToDTO(UserPlant plant){
         logger.info("Starting convertToDTO");
+        logger.info("{}", plant.getHappiness());
 
         PlantDTO dto = new PlantDTO();
 
@@ -215,9 +217,11 @@ public class GardenServiceImpl implements GardenService {
         if(days==0){
             return;
         }
-
+        logger.info("updateDailyHappinessDecay: {}", plant.getHappiness());
         int happiness = plant.getHappiness() - (int)(days * GardenConstant.DAILY_HAPPINESS_DECAY);
+        logger.info("updateDailyHappinessDecay: {}", happiness);
         happiness = Math.max(0, happiness);
+        logger.info("updateDailyHappinessDecay: {}", happiness);
         plant.setHappiness(happiness);
     }
 

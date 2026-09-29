@@ -26,7 +26,7 @@ public class TopicDaoImpl implements TopicDao {
 
     @Override
     public String getTopicId(String nodeId){
-        logger.info("Starting getTopicId");
+        logger.info("Starting getTopicId {}", nodeId);
 
         return jdbcTemplate.queryForObject(
                 TopicConstant.GET_TOPIC_ID,

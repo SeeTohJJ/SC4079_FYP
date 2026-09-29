@@ -26,7 +26,7 @@ public class SubtopicDaoImpl implements SubtopicDao {
 
     @Override
     public String getSubTopicId(String nodeId){
-        logger.info("Starting getSubTopicId");
+        logger.info("Starting getSubTopicId {}", nodeId);
 
         return jdbcTemplate.queryForObject(
                 SubtopicConstant.GET_SUBTOPIC_ID,

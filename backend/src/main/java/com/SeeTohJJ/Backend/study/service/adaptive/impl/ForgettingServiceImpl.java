@@ -28,7 +28,7 @@ public class ForgettingServiceImpl implements ForgettingService {
 
     @Override
     public double applyForgetting(double currentPKnow, LocalDateTime lastUpdated) {
-        logger.info("Start applyForgetting");
+        logger.info("Start applyForgetting {}", lastUpdated);
 
         long daysSinceReview = ChronoUnit.DAYS.between(lastUpdated, LocalDateTime.now());
         logger.info("daysSinceReview: " + daysSinceReview);

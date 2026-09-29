@@ -23,7 +23,7 @@ public class SubtopicConstant {
     public static final String GET_NODE_ID_BY_ORDER_INDEX = """
             SELECT node_id
             FROM study_nodes
-            WHERE subtopic_id = ? AND order_index = ? AND type = ?
+            WHERE subtopic_id = ? AND order_index = ? AND type = ? AND is_active = true
             """;
 
     public static final String CHECK_SUBTOPIC_EXIST = """

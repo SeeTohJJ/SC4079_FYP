@@ -47,6 +47,7 @@ public class UserSubtopicMasteryConstant {
     public static final String INSERT_NEW_SUBTOPIC_MASTERY = """
             INSERT INTO user_subtopic_mastery (user_id, subtopic_id, p_know, is_mastered, last_updated)
             VALUES (?, ?, ?, false, CURRENT_TIMESTAMP)
+            ON CONFLICT (user_id, subtopic_id) DO NOTHING;
             """;
 
     public static final String GET_USER_ATTEMPT_HISTORY = """
