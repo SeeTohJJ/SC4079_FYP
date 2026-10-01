@@ -8,6 +8,12 @@ public class StudyNodePathDTO {
     private String nodeTopic;
     private StudyNode.NodeType nodeType;
     private int positionIndex;
+
+    private String subtopicId;
+    private String subtopicName;
+    private String topicName;
+    private String title;
+
     private boolean isUnlocked;
     private boolean isCompleted;
     private int energyCost;
@@ -42,6 +48,38 @@ public class StudyNodePathDTO {
 
     public void setPositionIndex(int positionIndex) {
         this.positionIndex = positionIndex;
+    }
+
+    public String getSubtopicId() {
+        return subtopicId;
+    }
+
+    public void setSubtopicId(String subtopicId) {
+        this.subtopicId = subtopicId;
+    }
+
+    public String getSubtopicName() {
+        return subtopicName;
+    }
+
+    public void setSubtopicName(String subtopicName) {
+        this.subtopicName = subtopicName;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public boolean isUnlocked() {

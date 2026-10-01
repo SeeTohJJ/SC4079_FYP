@@ -10,10 +10,23 @@ public class StudyPathConstant {
         """;
 
     public static final String GET_EXISTING_NODE_PATH = """
-        SELECT node_id, node_type, position_index, is_unlocked, is_completed, user_id
-        FROM user_node_progress
-        WHERE user_id = ?
-        ORDER BY position_index
+            SELECT
+                unp.node_id,
+                unp.node_type,
+                unp.position_index,
+                unp.is_unlocked,
+                unp.is_completed,
+                unp.user_id,
+                sn.subtopic_id,
+                t.topic_name,
+                st.name,
+                sn.title
+            FROM user_node_progress unp
+            JOIN study_nodes sn ON unp.node_id = sn.node_id
+            JOIN topics t ON sn.topic_id = t.topic_id
+            JOIN subtopics st ON sn.subtopic_id = st.subtopic_id
+            WHERE unp.user_id = ?
+            ORDER BY unp.position_index;
         """;
 
     public static final String COUNT_ACTIVE_NODES = """

@@ -30,7 +30,7 @@ class DecisionNodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(node.title)),
+      appBar: AppBar(title: Text(node.nodeTopic)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

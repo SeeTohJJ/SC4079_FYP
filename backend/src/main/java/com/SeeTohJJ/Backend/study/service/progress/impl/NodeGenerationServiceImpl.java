@@ -119,6 +119,10 @@ public class NodeGenerationServiceImpl implements NodeGenerationService {
         dto.setUnlocked(nodeProgress.isUnlocked());
         dto.setCompleted(nodeProgress.isCompleted());
         dto.setEnergyCost(getNodeEnergyCost(nodeProgress.getNodeType()));
+        dto.setSubtopicId(nodeProgress.getSubtopicId());
+        dto.setSubtopicName(nodeProgress.getSubtopicName());
+        dto.setTopicName(nodeProgress.getTopicName());
+        dto.setTitle(nodeProgress.getTitle());
 
         return dto;
     }

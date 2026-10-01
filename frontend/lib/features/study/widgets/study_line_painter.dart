@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/features/study/models/study_node.dart';
+import 'package:frontend/features/study/models/subtopic_study_node.dart';
 
 class StudyPathPainter extends CustomPainter {
-  final List<StudyNode> nodes;
+  final List<SubtopicStudyNode> nodes;
   final double Function(int) getX;
   final double Function(int) getY;
 
@@ -14,20 +14,17 @@ class StudyPathPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.grey.shade400
-      ..strokeWidth = 4
-      ..strokeCap = StrokeCap.round;
-
     for (int i = 0; i < nodes.length - 1; i++) {
-      // Skip if either node is locked
-      if (!nodes[i].isUnlocked || !nodes[i + 1].isUnlocked) {
+      final current = nodes[i];
+      final next = nodes[i + 1];
+
+      if (!current.isUnlocked || !next.isUnlocked) {
         continue;
       }
 
-      Paint paint;
+      final Paint paint;
 
-      if (nodes[i].isCompleted) {
+      if (current.progress >= 1.0) {
         paint = Paint()
           ..color = Colors.green
           ..strokeWidth = 5
@@ -40,13 +37,13 @@ class StudyPathPainter extends CustomPainter {
       }
 
       final start = Offset(
-        getX(i) + 35,
-        getY(i) + 35,
+        getX(i) + 43,
+        getY(i) + 43,
       );
 
       final end = Offset(
-        getX(i + 1) + 35,
-        getY(i + 1) + 35,
+        getX(i + 1) + 43,
+        getY(i + 1) + 43,
       );
 
       canvas.drawLine(start, end, paint);
@@ -54,5 +51,7 @@ class StudyPathPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant StudyPathPainter oldDelegate) {
+    return true;
+  }
 }

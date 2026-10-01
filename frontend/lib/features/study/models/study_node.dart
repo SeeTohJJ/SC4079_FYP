@@ -10,26 +10,40 @@ enum NodeType {
 
 class StudyNode {
   final String id;
-  final String title;
+  final String nodeTopic;
   final NodeType type;
+
+  final String subtopicId;
+  final String subtopicName;
+  final String topicName;
+  final String nodeTitle;
+
   bool isUnlocked;
   bool isCompleted;
   int energyCost;
 
   StudyNode({
     required this.id,
-    required this.title,
+    required this.nodeTopic,
     required this.type,
-    this.isUnlocked = false,
-    this.isCompleted = false,
+    required this.subtopicId,
+    required this.subtopicName,
+    required this.topicName,
+    required this.nodeTitle,
+    required this.isCompleted,
+    required this.isUnlocked,
     required this.energyCost,
   });
 
-    factory StudyNode.fromJson(Map<String, dynamic> json) {
+  factory StudyNode.fromJson(Map<String, dynamic> json) {
     return StudyNode(
       id: json['nodeId'],
-      title: json['nodeTopic'],
+      nodeTopic: json['nodeTopic'],
       type: _mapType(json['nodeType']),
+      subtopicId: json['subtopicId'],
+      subtopicName: json['subtopicName'],
+      topicName: json['topicName'],
+      nodeTitle: json['title'],
       isUnlocked: json['unlocked'] ?? false,
       isCompleted: json['completed'] ?? false,
       energyCost: json['energyCost'] ?? 0,

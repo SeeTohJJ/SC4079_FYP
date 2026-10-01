@@ -54,7 +54,7 @@ class StudyNodeWidget extends StatelessWidget {
             children: [
               Icon(_getIcon(node.type), color: color),
               const SizedBox(width: 12),
-              Text(node.title),
+              Text(node.nodeTopic),
               const Spacer(),
               if (node.isCompleted)
                 const Icon(Icons.check, color: Colors.green),

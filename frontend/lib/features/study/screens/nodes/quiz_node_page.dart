@@ -7,11 +7,13 @@ import 'package:frontend/features/study/widgets/quiz_result_dialog.dart';
 class QuizNodePage extends StatefulWidget {
   final String nodeId;
   final QuizContent quiz;
+  final bool reviewMode;
 
   const QuizNodePage({
     super.key,
     required this.nodeId,
     required this.quiz,
+    this.reviewMode = false,
   });
 
   @override
@@ -165,7 +167,8 @@ class _QuizNodePageState extends State<QuizNodePage> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 75, 5, 75),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Colors.black,
                 ),
                 onPressed: selectedOptionId == null ? null : submit,
                 child: const Text("Submit Quiz"),

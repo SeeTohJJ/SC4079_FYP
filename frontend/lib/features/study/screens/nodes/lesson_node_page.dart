@@ -7,11 +7,13 @@ final studyService = StudyService();
 class LessonNodePage extends StatelessWidget {
   final LessonContent lesson;
   final String nodeId;
+  final bool reviewMode;
   
   const LessonNodePage({
     super.key,
     required this.lesson,
     required this.nodeId,
+    this.reviewMode = false,
   });
 
   @override
@@ -41,6 +43,10 @@ class LessonNodePage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+              style: ElevatedButton.styleFrom( 
+                backgroundColor: Theme.of(context).colorScheme.primary, 
+                foregroundColor: Colors.black, 
+                ),
               onPressed: () async {
 
                 await studyService.submitLesson(nodeId);

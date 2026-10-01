@@ -20,27 +20,16 @@ public class StudyPathRowMapper implements RowMapper<UserNodeProgress> {
 
         UserNodeProgress progress = new UserNodeProgress();
 
-        progress.setNodeId(
-                rs.getString("node_id")
-        );
-
-        progress.setNodeType(
-                StudyNode.NodeType.valueOf(rs.getString("node_type"))
-        );
-
-        progress.setPositionIndex(
-                rs.getInt("position_index")
-        );
-
-        progress.setCompleted(
-                rs.getBoolean("is_completed")
-        );
-
-        progress.setUnlocked(
-                rs.getBoolean("is_unlocked")
-        );
+        progress.setNodeId(rs.getString("node_id"));
+        progress.setNodeType(StudyNode.NodeType.valueOf(rs.getString("node_type")));
+        progress.setPositionIndex(rs.getInt("position_index"));
+        progress.setCompleted(rs.getBoolean("is_completed"));
+        progress.setUnlocked(rs.getBoolean("is_unlocked"));
+        progress.setSubtopicId(rs.getString("subtopic_id"));
+        progress.setTopicName(rs.getString("topic_name"));
+        progress.setSubtopicName(rs.getString("name"));
+        progress.setTitle(rs.getString("title"));
 
         return progress;
     }
 }
-
