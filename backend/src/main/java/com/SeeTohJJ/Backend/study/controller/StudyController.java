@@ -57,8 +57,6 @@ public class StudyController {
                                              @RequestBody NodeRequestDTO request) {
         logger.info("Starting getLessonContent");
 
-        Long userId = jwtService.extractUserId(authHeader.substring(7));
-
         return contentRetrievalService.getLessonNodeContent(request.getNodeId());
     }
 

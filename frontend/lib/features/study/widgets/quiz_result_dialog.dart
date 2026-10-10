@@ -164,13 +164,8 @@ class QuizResultDialog extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      const Color.fromARGB(
-                    255,
-                    75,
-                    5,
-                    75,
-                  ),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Colors.black,
                 ),
                 onPressed: () =>
                     Navigator.pop(context),

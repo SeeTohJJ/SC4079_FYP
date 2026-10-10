@@ -47,8 +47,6 @@ public class QuizController {
                                          @RequestBody NodeRequestDTO request) {
         logger.info("Starting getQuizContent");
 
-        Long userId = jwtService.extractUserId(authHeader.substring(7));
-
         return contentRetrievalService.getQuizContent(request.getNodeId());
     }
 

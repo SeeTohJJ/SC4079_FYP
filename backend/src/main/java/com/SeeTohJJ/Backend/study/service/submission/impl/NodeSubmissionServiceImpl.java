@@ -33,7 +33,12 @@ public class NodeSubmissionServiceImpl implements NodeSubmissionService {
         userStudyPathService.completeNode(userId, nodeId);
 
         int currentIndex = userStudyPathService.getNodePositionIndexInPath(userId, nodeId);
-        gardenService.onNodeCompleted(userId, topicService.getTopicId(nodeId), StudyNode.NodeType.LESSON, false);
+        gardenService.onNodeCompleted(
+                userId,
+                topicService.getTopicId(nodeId),
+                StudyNode.NodeType.LESSON,
+                false
+        );
 
         if (userStudyPathService.checkIfNextNodePosExist(userId,currentIndex)) {
             userStudyPathService.unlockNextNode(userId, currentIndex);
