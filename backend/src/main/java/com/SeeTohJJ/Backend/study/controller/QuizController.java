@@ -49,7 +49,6 @@ public class QuizController {
 
         Long userId = jwtService.extractUserId(authHeader.substring(7));
 
-        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_QUIZ);
         return contentRetrievalService.getQuizContent(request.getNodeId());
     }
 
@@ -58,7 +57,11 @@ public class QuizController {
                                             @RequestBody QuizSubmissionDTO request){
         logger.info("Starting submitQuiz");
 
-        return quizSubmissionService.completeQuiz(jwtService.extractUserId(authHeader.substring(7)), request);
+        Long userId = jwtService.extractUserId(authHeader.substring(7));
+
+        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_QUIZ);
+
+        return quizSubmissionService.completeQuiz(userId, request);
     }
 
     @GetMapping("/GetQuizHint/{nodeId}")

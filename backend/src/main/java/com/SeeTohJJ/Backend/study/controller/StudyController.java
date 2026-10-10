@@ -59,7 +59,6 @@ public class StudyController {
 
         Long userId = jwtService.extractUserId(authHeader.substring(7));
 
-        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_LESSON);
         return contentRetrievalService.getLessonNodeContent(request.getNodeId());
     }
 
@@ -82,10 +81,14 @@ public class StudyController {
                                              @RequestBody LessonSubmissionDTO request){
         logger.info("Starting lessonResult");
 
+        Long userId = jwtService.extractUserId(authHeader.substring(7));
+
         nodeSubmissionService.completeLesson(
-                jwtService.extractUserId(authHeader.substring(7)),
+                userId,
                 request.getNodeId()
         );
+
+        energyService.consumeEnergy(userId, EnergyConstant.ENERGY_COST_LESSON);
 
         return ResponseEntity.ok().build();
     }

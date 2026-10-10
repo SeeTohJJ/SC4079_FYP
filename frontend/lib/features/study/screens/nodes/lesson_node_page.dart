@@ -20,19 +20,13 @@ class LessonNodePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Lesson"),
+        title: Text(lesson.title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              lesson.title,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-
-            const SizedBox(height: 24),
 
             Text(
               lesson.content,
@@ -49,13 +43,15 @@ class LessonNodePage extends StatelessWidget {
                 ),
               onPressed: () async {
 
-                await studyService.submitLesson(nodeId);
+                if (!reviewMode) {
+                  await studyService.submitLesson(nodeId);
+                }
 
                 if (!context.mounted) return;
 
                 Navigator.pop(context, true);
               },
-              child: const Text("Complete Lesson"),
+              child: Text(reviewMode ? "Close" : "Complete Lesson"),
             )
             ),
           ],
