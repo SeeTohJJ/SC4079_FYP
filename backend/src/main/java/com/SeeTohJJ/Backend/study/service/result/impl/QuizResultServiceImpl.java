@@ -1,5 +1,6 @@
 package com.SeeTohJJ.Backend.study.service.result.impl;
 
+import com.SeeTohJJ.Backend.study.dao.impl.NodeContentDaoImpl;
 import com.SeeTohJJ.Backend.study.dto.result.QuizResultResponseDTO;
 import com.SeeTohJJ.Backend.user.service.mastery.UserTopicService;
 import com.SeeTohJJ.Backend.study.service.result.FeedbackService;
@@ -17,11 +18,13 @@ public class QuizResultServiceImpl implements QuizResultService {
     private final UserTopicService userTopicService;
     private final TopicService topicService;
     private final FeedbackService feedbackService;
+    private final NodeContentDaoImpl nodeContentDaoImpl;
 
-    public QuizResultServiceImpl(UserTopicService userTopicService, TopicService topicService, FeedbackService feedbackService) {
+    public QuizResultServiceImpl(UserTopicService userTopicService, TopicService topicService, FeedbackService feedbackService, NodeContentDaoImpl nodeContentDaoImpl) {
         this.userTopicService = userTopicService;
         this.topicService = topicService;
         this.feedbackService = feedbackService;
+        this.nodeContentDaoImpl = nodeContentDaoImpl;
     }
 
 
@@ -33,7 +36,8 @@ public class QuizResultServiceImpl implements QuizResultService {
                                                  int updatedMastery,
                                                  boolean newChainCreated,
                                                  int timeTaken,
-                                                 int waterReward) {
+                                                 int waterReward,
+                                                 String nodeId) {
         logger.info("Starting buildQuizResult");
 
         QuizResultResponseDTO quizResultResponseDTO = new QuizResultResponseDTO();
@@ -44,7 +48,20 @@ public class QuizResultServiceImpl implements QuizResultService {
         quizResultResponseDTO.setNewChainGenerated(newChainCreated);
         quizResultResponseDTO.setTopicName(topicService.getTopicName(topicId));
         quizResultResponseDTO.setNextReviewDate(userTopicService.getNextReviewDate(userId, topicId));
-        quizResultResponseDTO.setFeedback(feedbackService.generateFeedback(correct, updatedMastery, timeTaken));
+
+        String feedback;
+
+        if (nodeId != null) {
+            feedback = correct
+                    ? feedbackService.generateFeedback(true, updatedMastery, timeTaken)
+                    : nodeContentDaoImpl.getQuizExplanation(nodeId);
+        } else {
+            feedback = feedbackService.generateFeedback(
+                    correct, updatedMastery, timeTaken
+            );
+        }
+
+        quizResultResponseDTO.setFeedback(feedback);
         quizResultResponseDTO.setWaterReward(waterReward);
         return quizResultResponseDTO;
     }

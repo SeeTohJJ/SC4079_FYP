@@ -31,10 +31,8 @@ public class ForgettingServiceImpl implements ForgettingService {
         logger.info("Start applyForgetting {}", lastUpdated);
 
         long daysSinceReview = ChronoUnit.DAYS.between(lastUpdated, LocalDateTime.now());
-        logger.info("daysSinceReview: " + daysSinceReview);
         double lambda = getForgettingRate(currentPKnow); // forgetting rate
-        logger.info("lambda: " + lambda);
-        logger.info("return: " + currentPKnow * Math.exp(-lambda * daysSinceReview));
+
         return currentPKnow * Math.exp(-lambda * daysSinceReview);
     }
 

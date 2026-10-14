@@ -112,7 +112,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                 userTopicService.calculateMasteryThreshold(userTopicService.getAveragePKnow(userId, topicId)),
                 newChainCreated,
                 timeTaken,
-                waterReward
+                waterReward,
+                nodeId
         );
     }
 
@@ -193,7 +194,8 @@ public class QuizSubmissionServiceImpl implements QuizSubmissionService {
                 userTopicService.calculateMasteryThreshold(userTopicService.getAveragePKnow(userId, topicId)),
                 newChainCreated,
                 timeTaken,
-                waterReward
+                waterReward,
+                null
         );
     }
 

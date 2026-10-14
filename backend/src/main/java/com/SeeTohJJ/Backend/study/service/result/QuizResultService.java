@@ -11,5 +11,6 @@ public interface QuizResultService {
                                           int updatedMastery,
                                           boolean newChainCreated,
                                           int timeTaken,
-                                          int waterReward);
+                                          int waterReward,
+                                          String nodeId);
 }

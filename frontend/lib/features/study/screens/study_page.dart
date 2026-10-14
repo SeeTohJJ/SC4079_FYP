@@ -1060,21 +1060,185 @@ class _StudyPageState extends State<StudyPage> {
               TextOverflow.ellipsis,
         ),
 
+
         onTap: unlocked
             ? () {
-                Navigator.pop(
-                  context,
-                );
-
-                _openActivity(
-                  activity,
-                  reviewMode:
-                      completed,
-                );
+                if (!completed &&
+                    (activity.type == NodeType.lesson ||
+                    activity.type == NodeType.quiz ||
+                    activity.type == NodeType.review ||
+                    activity.type == NodeType.generated)) {
+                  _showActivityConfirmationSheet(activity);
+                } else {
+                  // Completed activities retain your existing review behaviour.
+                  Navigator.pop(context);
+                  _openActivity(
+                    activity,
+                    reviewMode: completed,
+                  );
+                }
               }
             : null,
+
       ),
     );
+  }
+
+
+  Future<void> _showActivityConfirmationSheet(
+    StudyNode activity,
+  ) async {
+    final shouldStart = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        return SafeArea(
+          top: false,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+            decoration: const BoxDecoration(
+              color: Color(0xFF1E1E1E),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Drag handle
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF666666),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Activity type
+                Text(
+                  _getActivityTypeLabel(activity.type),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // Activity title
+                Text(
+                  activity.nodeTitle,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Energy cost
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2B2B2B),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.bolt,
+                        color: Color(0xFFE9B949),
+                        size: 30,
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text(
+                          'Energy cost',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${activity.energyCost} energy',
+                        style: const TextStyle(
+                          color: Color(0xFFE9B949),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Start button
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: const Color(0xFF17211E),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(sheetContext, true);
+                    },
+                    child: const Text(
+                      'Start',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // Cancel button
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(sheetContext, false);
+                    },
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Color(0xFFAAAAAA),
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (shouldStart == true && mounted) {
+      Navigator.pop(context);
+
+      await _openActivity(activity);
+    }
   }
 
   // ============================================================
