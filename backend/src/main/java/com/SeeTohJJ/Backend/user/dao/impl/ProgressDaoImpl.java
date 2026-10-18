@@ -67,7 +67,8 @@ public class ProgressDaoImpl implements ProgressDao {
                     (rs, rowNum) -> new CompletedLessonResponseDTO(
                             rs.getString("node_id"),
                             rs.getString("title"),
-                            rs.getString("topic_id")
+                            rs.getString("topic_id"),
+                            rs.getString("subtopic_id")
                     ),
                     userId
             );

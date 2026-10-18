@@ -7,11 +7,13 @@ public class CompletedLessonResponseDTO {
     private String nodeId;
     private String title;
     private String topicId;
+    private String subtopicId;
 
-    public CompletedLessonResponseDTO(String nodeId, String title, String topicId) {
+    public CompletedLessonResponseDTO(String nodeId, String title, String topicId,  String subtopicId) {
         this.nodeId = nodeId;
         this.title = title;
         this.topicId = topicId;
+        this.subtopicId = subtopicId;
     }
 
     public String getNodeId() {
@@ -36,5 +38,13 @@ public class CompletedLessonResponseDTO {
 
     public void setTopicIde(String topicId) {
         this.topicId = topicId;
+    }
+
+    public String getSubtopicId() {
+        return subtopicId;
+    }
+
+    public void setSubtopicId(String subtopicId) {
+        this.subtopicId = subtopicId;
     }
 }

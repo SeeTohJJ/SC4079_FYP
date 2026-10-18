@@ -309,16 +309,21 @@ class _ProgressPageState
     );
   }
 
-  Map<String, List<CompletedLesson>> _groupLessonsByTopic() {
 
-    final Map<String, List<CompletedLesson>>
+  Map<String, Map<String, List<CompletedLesson>>>
+      _groupLessonsByTopicAndSubtopic() {
+    final Map<String, Map<String, List<CompletedLesson>>>
         grouped = {};
 
     for (final lesson in completedLessons) {
       grouped
           .putIfAbsent(
             lesson.topicId,
-            () => [],
+            () => <String, List<CompletedLesson>>{},
+          )
+          .putIfAbsent(
+            lesson.subtopicId,
+            () => <CompletedLesson>[],
           )
           .add(lesson);
     }
@@ -326,100 +331,97 @@ class _ProgressPageState
     return grouped;
   }
 
-Widget _buildLessonsLibrary() {
-  if (completedLessons.isEmpty) {
-    return const Padding(
-      padding: EdgeInsets.only(top: 40),
-      child: Center(
-        child: Column(
-          children: [
-            Icon(
-              Icons.menu_book_outlined,
-              size: 64,
-            ),
 
-            SizedBox(height: 16),
-
-            Text(
-              'No completed lessons yet',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+  Widget _buildLessonsLibrary() {
+    if (completedLessons.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.only(top: 40),
+        child: Center(
+          child: Column(
+            children: [
+              Icon(
+                Icons.menu_book_outlined,
+                size: 64,
               ),
-            ),
 
-            SizedBox(height: 8),
+              SizedBox(height: 16),
 
-            Text(
-              'Complete lessons to see them here.',
-              textAlign: TextAlign.center,
-            ),
-          ],
+              Text(
+                'No completed lessons yet',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              SizedBox(height: 8),
+
+              Text(
+                'Complete lessons to see them here.',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
+    }
 
   final groupedLessons =
-      _groupLessonsByTopic();
+      _groupLessonsByTopicAndSubtopic();
 
   return Column(
-    children: groupedLessons.entries.map(
-      (entry) {
-        final topicId = entry.key;
+    children: groupedLessons.entries.map((topicEntry) {
+      final topicName = _getTopicName(topicEntry.key);
 
-        final topicName =
-            _getTopicName(topicId);
+      final topicLessons = topicEntry.value.values
+          .expand((lessons) => lessons)
+          .length;
 
-        final lessons = entry.value;
-
-        return Card(
-          margin: const EdgeInsets.only(
-            bottom: 12,
+      return Card(
+        margin: const EdgeInsets.only(bottom: 12),
+        child: ExpansionTile(
+          leading: const Icon(Icons.folder),
+          title: Text(
+            topicName,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
           ),
+          subtitle: Text('$topicLessons completed lessons'),
+          children: topicEntry.value.entries.map((subtopicEntry) {
+            final lessons = subtopicEntry.value;
 
-          child: ExpansionTile(
-            title: Text(
-              topicName,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+            return Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: ExpansionTile(
+                leading: const Icon(Icons.folder_open),
+                title: Text(
+                  _getSubtopicName(subtopicEntry.key),
+                ),
+                subtitle: Text('${lessons.length} lessons'),
+                children: lessons.map((lesson) {
+                  return ListTile(
+                    contentPadding: const EdgeInsets.only(
+                      left: 24,
+                      right: 16,
+                    ),
+                    leading: const Icon(Icons.menu_book),
+                    title: Text(lesson.title),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      _openLesson(lesson.nodeId);
+                    },
+                  );
+                }).toList(),
               ),
-            ),
-
-            leading: const Icon(
-              Icons.folder,
-            ),
-
-            children: lessons.map(
-              (lesson) {
-                return ListTile(
-                  title: Text(
-                    lesson.title,
-                  ),
-
-                  leading: const Icon(
-                    Icons.menu_book,
-                  ),
-
-                  trailing: const Icon(
-                    Icons.chevron_right,
-                  ),
-
-                  onTap: () {
-                    _openLesson(
-                      lesson.nodeId,
-                    );
-                  },
-                );
-              },
-            ).toList(),
-          ),
-        );
-      },
-    ).toList(),
+            );
+          }).toList(),
+        ),
+      );
+    }).toList(),
   );
-}
+  }
 
   Future<void> _openLesson(String nodeId) async {
     try {
@@ -466,6 +468,25 @@ Widget _buildLessonsLibrary() {
 
       default:
         return topicId;
+    }
+  }
+
+  String _getSubtopicName(String subtopicId) {
+    switch (subtopicId) {
+      case 'T001S001':
+        return 'Introduction to Budgeting';
+
+      case 'T001S002':
+        return 'Needs vs Wants';
+
+      case 'T001S003':
+        return 'Creating a Monthly Budget';
+
+      case 'T001S004':
+        return 'Tracking Expenses';
+
+      default:
+        return subtopicId;
     }
   }
 

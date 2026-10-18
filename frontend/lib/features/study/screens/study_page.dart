@@ -1093,6 +1093,8 @@ class _StudyPageState extends State<StudyPage> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (sheetContext) {
+        final hasEnoughEnergy = energy != null && energy!.currentEnergy >= activity.energyCost;
+
         return SafeArea(
           top: false,
           child: Container(
@@ -1183,6 +1185,23 @@ class _StudyPageState extends State<StudyPage> {
 
                 const SizedBox(height: 24),
 
+                if (energy != null &&
+                    energy!.currentEnergy < activity.energyCost) ...[
+                  const SizedBox(height: 12),
+                  Center(
+                    child: Text(
+                      'Not enough energy. You have '
+                      '${energy!.currentEnergy}, but need '
+                      '${activity.energyCost}.',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+
                 // Start button
                 SizedBox(
                   width: double.infinity,
@@ -1195,9 +1214,11 @@ class _StudyPageState extends State<StudyPage> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pop(sheetContext, true);
-                    },
+                    onPressed: hasEnoughEnergy
+                    ? () {
+                        Navigator.pop(sheetContext, true);
+                      }
+                    : null,
                     child: const Text(
                       'Start',
                       style: TextStyle(

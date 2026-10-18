@@ -2,11 +2,13 @@ class CompletedLesson {
   final String nodeId;
   final String title;
   final String topicId;
+  final String subtopicId;
 
   CompletedLesson({
     required this.nodeId,
     required this.title,
     required this.topicId,
+    required this.subtopicId,
   });
 
   factory CompletedLesson.fromJson(
@@ -15,6 +17,7 @@ class CompletedLesson {
       nodeId: json['nodeId'],
       title: json['title'],
       topicId: json['topicId'],
+      subtopicId: json['subtopicId'],
     );
   }
 }

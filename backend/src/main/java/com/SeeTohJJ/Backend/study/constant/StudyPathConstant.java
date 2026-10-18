@@ -122,7 +122,7 @@ public class StudyPathConstant {
         """;
 
     public static final String GET_ALL_COMPLETED_LESSONS_INFO = """
-        SELECT unp.node_id, sn.title, sn.topic_id
+        SELECT unp.node_id, sn.title, sn.topic_id, sn.subtopic_id
         FROM user_node_progress unp
         JOIN study_nodes sn ON unp.node_id = sn.node_id
         WHERE unp.user_id = ? AND unp.node_type = 'LESSON' AND unp.is_completed = true
